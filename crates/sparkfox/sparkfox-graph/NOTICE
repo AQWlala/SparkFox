@@ -1,0 +1,28 @@
+sparkfox-graph
+Copyright 2026 SparkFox Contributors (AGPL-3.0-or-later)
+
+This product includes software and design concepts derived from:
+
+1. OpenAkita MDRM (Multi-hop Dynamic Relation Model)
+   - Use: Multi-hop graph traversal algorithm design (clean-room rewrite in Rust)
+   - License: Open-source (verified 2026-07-19)
+   - Note: A-02 P0 修复后，sparkfox-graph 降级为通用图遍历引擎。
+     sparkfox-graph 内部由两套独立后端实现：
+     (a) PetgraphBackend：维护 graph_node / graph_edge 独立表（Task 9.2/8.12 实现），
+         作为通用图遍历引擎的本地存储，与 sparkfox-knowledge 解耦。
+         - graph_node 表：节点 ID、类型、标签、属性 JSON、创建/更新时间戳
+         - graph_edge 表：边 ID、源节点 ID、目标节点 ID、关系类型、权重、属性 JSON、方向、时间戳
+     (b) KnowledgeGraphBackend：反向引用 sparkfox-knowledge 的 knowledge /
+         entity / knowledge_event / event_entity_relation 表，不维护独立图结构表。
+     GraphBackend trait 与两套后端实现均为 SparkFox Contributors 独立编写。
+
+2. SAG (SQL-Retrieval Augmented Generation with Query-Time Dynamic Hyperedges)
+   - Repository: SAG-Benchmark (local clone at d:\xin kaifa\SAG-Benchmark)
+   - License: MIT License (Copyright (c) 2026 Zleap Team) — verified 2026-07-19
+   - Use: 间接依赖（通过 sparkfox-knowledge 的 SAG 5-table schema 反向引用）
+   - Note: sparkfox-graph 不直接复制 SAG schema，仅通过 GraphBackend trait 抽象访问。
+
+All GraphBackend trait definitions, PetgraphBackend implementation (graph_node /
+graph_edge independent tables), KnowledgeGraphBackend implementation, BFS traversal
+logic, and unit tests are independently authored by SparkFox Contributors and licensed
+under AGPL-3.0-or-later.

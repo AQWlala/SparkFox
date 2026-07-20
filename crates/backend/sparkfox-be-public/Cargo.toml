@@ -1,0 +1,28 @@
+[package]
+name = "sparkfox-be-public"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+# The single capability source of truth + the Remote surface + dispatch.
+sparkfox-be-gateway.workspace = true
+# Instance API token validation and installation-owner authentication.
+sparkfox-be-auth.workspace = true
+sparkfox-be-common.workspace = true
+# rmcp's official axum-mountable Streamable-HTTP MCP server transport. NOTE:
+# version is pinned to the lockfile-resolved 1.7 (sparkfox-be-app declares "1.5" but
+# the workspace unifies to 1.7); the streamable-http-server transport feature is
+# OFF in sparkfox-be-app and enabled only here.
+rmcp = { version = "1.7", features = ["server", "transport-streamable-http-server", "schemars"] }
+axum.workspace = true
+tokio.workspace = true
+futures.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+tracing.workspace = true
+
+[dev-dependencies]
+reqwest.workspace = true
+tower = { version = "0.5", features = ["util"] }

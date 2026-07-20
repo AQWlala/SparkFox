@@ -1,0 +1,29 @@
+[package]
+name = "sparkfox-ag-browser"
+description = "BrowserTool facade for Nomi browser-use (wraps the in-process CDP engine)"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+sparkfox-ag-browser-engine.workspace = true
+sparkfox-ag-types.workspace    = true
+sparkfox-ag-config.workspace   = true
+sparkfox-ag-protocol.workspace = true
+sparkfox-ag-tools.workspace    = true
+# F1: secret:NAME 拦截 → origin-bound vault 解析 → TypeInput::Secret 注入（值不过 LLM）。
+sparkfox-be-secret.workspace = true
+
+base64.workspace      = true
+serde.workspace       = true
+tracing.workspace     = true
+tokio.workspace       = true
+serde_json.workspace  = true
+async-trait.workspace = true
+image.workspace       = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+# P3-X2: per-pet secret vault round-trip tests use a temp dir.
+tempfile.workspace = true

@@ -1,0 +1,611 @@
+/**
+ * SparkFox Monitor — Apple 主题样式
+ *
+ * 设计：
+ * - 系统蓝 #007AFF 主色
+ * - 圆角 12px（卡片）/ 8px（按钮）/ 6px（小元素）
+ * - SF Pro 字体
+ * - 浅灰背景 #F5F5F7
+ * - 边框 #D2D2D7
+ * - 系统灰 #8E8E93
+ */
+
+/* ─── 主页面容器 ─── */
+.sf-monitor-view {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-family: var(--sf-font-family);
+  color: var(--sf-color-text, #1D1D1F);
+}
+
+/* ─── 顶部标题栏 ─── */
+.sf-monitor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.sf-monitor-title h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.sf-monitor-title p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #8E8E93;
+}
+
+.sf-monitor-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+/* ─── 统计卡片网格 ─── */
+.sf-stat-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.sf-stat-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: #FFFFFF;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-xl);
+  box-shadow: var(--sf-shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.sf-stat-card:hover {
+  box-shadow: var(--sf-shadow-md);
+  transform: translateY(-1px);
+}
+
+.sf-stat-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--sf-radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.sf-stat-card-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sf-stat-card-label {
+  font-size: 12px;
+  color: #8E8E93;
+  font-weight: 500;
+}
+
+.sf-stat-card-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.sf-stat-card-unit {
+  font-size: 13px;
+  color: #8E8E93;
+  font-weight: 500;
+}
+
+.sf-stat-card-trend {
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: auto;
+}
+
+.sf-stat-card-sub {
+  font-size: 11px;
+  color: #AEAEB2;
+  margin-top: 2px;
+}
+
+/* ─── Token 统计面板 ─── */
+.sf-token-stats-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.sf-token-card {
+  background: #FFFFFF !important;
+  border: 1px solid #D2D2D7 !important;
+  border-radius: var(--sf-radius-xl) !important;
+  box-shadow: var(--sf-shadow-sm) !important;
+}
+
+.sf-token-card .arco-card-body {
+  padding: 20px !important;
+}
+
+.sf-token-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.sf-token-card-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.sf-token-card-count {
+  font-size: 12px;
+  color: #8E8E93;
+}
+
+/* ─── 时间周期切换 ─── */
+.sf-token-period-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.sf-token-period-header h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.sf-token-period-tabs {
+  display: flex;
+  gap: 4px;
+  background: #F5F5F7;
+  padding: 3px;
+  border-radius: var(--sf-radius-md);
+}
+
+.sf-token-period-tab {
+  padding: 6px 12px;
+  border: none;
+  background: transparent;
+  color: #6E6E73;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: var(--sf-radius-small);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.sf-token-period-tab:hover:not(.active):not(:disabled) {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.sf-token-period-tab.active {
+  background: #FFFFFF;
+  color: #007AFF;
+  box-shadow: var(--sf-shadow-sm);
+}
+
+.sf-token-period-tab:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ─── 总计网格 ─── */
+.sf-token-total-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+}
+
+.sf-token-total-cell {
+  padding: 12px;
+  background: #F5F5F7;
+  border-radius: var(--sf-radius-md);
+  text-align: center;
+}
+
+.sf-token-total-label {
+  font-size: 11px;
+  color: #8E8E93;
+  margin-bottom: 4px;
+}
+
+.sf-token-total-value {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1D1D1F;
+  letter-spacing: -0.3px;
+}
+
+/* ─── 时间线柱状图 ─── */
+.sf-timeline-chart {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 160px;
+  padding: 12px 0;
+  overflow-x: auto;
+}
+
+.sf-timeline-bar-col {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  min-width: 24px;
+  height: 100%;
+}
+
+.sf-timeline-bar-track {
+  flex: 1;
+  width: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.sf-timeline-bar-fill {
+  width: 70%;
+  min-height: 2px;
+  border-radius: 3px 3px 0 0;
+  transition: height 0.3s ease;
+}
+
+.sf-timeline-bar-label {
+  font-size: 9px;
+  color: #8E8E93;
+  margin-top: 4px;
+  white-space: nowrap;
+}
+
+/* ─── 分组统计 ─── */
+.sf-token-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+  gap: 16px;
+}
+
+.sf-token-summary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sf-token-summary-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sf-token-summary-row-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sf-token-summary-label {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.sf-token-summary-tokens {
+  font-size: 13px;
+  font-weight: 600;
+  color: #1D1D1F;
+}
+
+.sf-token-summary-row-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: #8E8E93;
+  flex-wrap: wrap;
+}
+
+.sf-token-summary-pct {
+  margin-left: auto;
+  color: #007AFF;
+  font-weight: 600;
+}
+
+.sf-token-mono {
+  font-family: var(--sf-font-mono);
+  font-size: 12px;
+}
+
+/* ─── 活动流 ─── */
+.sf-activity-feed {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sf-activity-feed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.sf-activity-feed-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sf-activity-feed-title h3 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.sf-activity-feed-count {
+  font-size: 12px;
+  color: #8E8E93;
+}
+
+.sf-activity-live-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  background: rgba(255, 59, 48, 0.1);
+  color: #FF3B30;
+  border-radius: var(--sf-radius-xs);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.sf-activity-live-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #FF3B30;
+  animation: sf-live-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes sf-live-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.sf-activity-feed-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.sf-activity-live-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #6E6E73;
+}
+
+/* ─── 事件类型过滤器 ─── */
+.sf-activity-filter-bar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.sf-activity-filter-chip {
+  padding: 4px 10px;
+  border: 1px solid;
+  border-radius: var(--sf-radius-xl);
+  background: transparent;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.sf-activity-filter-chip:hover:not(.active) {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+.sf-activity-filter-chip.active {
+  color: #FFFFFF !important;
+}
+
+/* ─── 活动列表 ─── */
+.sf-activity-list {
+  max-height: 600px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: #FFFFFF;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-xl);
+  padding: 8px;
+}
+
+.sf-activity-row {
+  padding: 8px 12px;
+  border-left: 3px solid;
+  border-radius: var(--sf-radius-small);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.sf-activity-row:hover {
+  background: #F5F5F7;
+}
+
+.sf-activity-row.expanded {
+  background: #F5F5F7;
+}
+
+.sf-activity-row-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+}
+
+.sf-activity-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sf-activity-title {
+  flex: 1;
+  font-weight: 500;
+  color: #1D1D1F;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sf-activity-tokens,
+.sf-activity-duration {
+  font-size: 11px;
+  color: #8E8E93;
+  flex-shrink: 0;
+}
+
+.sf-activity-status.error {
+  color: #FF3B30;
+  font-weight: 700;
+}
+
+.sf-activity-status.warn {
+  color: #FF9500;
+  font-weight: 700;
+}
+
+.sf-activity-time {
+  font-size: 10px;
+  color: #AEAEB2;
+  flex-shrink: 0;
+  min-width: 60px;
+  text-align: right;
+}
+
+.sf-activity-arrow {
+  font-size: 10px;
+  color: #8E8E93;
+  transition: transform 0.2s ease;
+  flex-shrink: 0;
+}
+
+.sf-activity-arrow.expanded {
+  transform: rotate(90deg);
+}
+
+/* ─── 活动详情 ─── */
+.sf-activity-detail {
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: #FFFFFF;
+  border-radius: var(--sf-radius-small);
+  border: 1px solid #D2D2D7;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 11px;
+}
+
+.sf-activity-detail-row {
+  display: flex;
+  gap: 8px;
+}
+
+.sf-activity-detail-label {
+  color: #8E8E93;
+  min-width: 50px;
+}
+
+/* ─── 空状态 ─── */
+.sf-activity-empty {
+  padding: 40px 20px;
+  text-align: center;
+  color: #8E8E93;
+  font-size: 13px;
+}
+
+.sf-activity-empty-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+}
+
+.sf-activity-empty-hint {
+  font-size: 11px;
+  color: #AEAEB2;
+  margin-top: 4px;
+}
+
+/* ─── MiniBar ─── */
+.sf-minibar {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sf-minibar-track {
+  flex: 1;
+  background: #F5F5F7;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.sf-minibar-fill {
+  border-radius: 3px;
+  transition: width 0.3s ease;
+}
+
+.sf-minibar-pct {
+  font-size: 11px;
+  font-weight: 600;
+  min-width: 40px;
+  text-align: right;
+}
+
+/* ─── 响应式 ─── */
+@media (max-width: 768px) {
+  .sf-monitor-view {
+    padding: 16px;
+  }
+
+  .sf-stat-cards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sf-token-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sf-token-total-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .sf-activity-feed-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

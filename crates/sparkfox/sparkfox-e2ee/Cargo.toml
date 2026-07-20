@@ -1,0 +1,25 @@
+[package]
+name = "sparkfox-e2ee"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "SparkFox E2EE (Double Ratchet)"
+
+[dependencies]
+sparkfox-core = { path = "../sparkfox-core" }
+# 注意：原 spec 计划基于 ratchetx2 0.3，但其 API（ring::agreement::EphemeralPrivateKey
+# 无法从原始字节构造）与测试接口（X25519KeyPair 暴露 secret_key() -> &[u8; 32]）不兼容，
+# 且 ratchetx2 不提供 AEAD 加解密与乱序消息缓存。因此改用 x25519-dalek + aes-gcm
+# 直接实现 Double Ratchet（功能等价、依赖更轻：无需 tonic/ring）。
+x25519-dalek = "2"
+aes-gcm = { workspace = true }
+sha2 = { workspace = true }
+hmac = { workspace = true }
+getrandom = { workspace = true }
+serde = { workspace = true }
+log = "0.4"
+env_logger = "0.11"
+
+[dev-dependencies]
+sparkfox-e2ee = { path = "." }

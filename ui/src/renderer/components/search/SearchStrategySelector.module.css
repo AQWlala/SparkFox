@@ -1,0 +1,223 @@
+/* SearchStrategySelector.module.css
+ *
+ * 检索策略选择器样式 / Search strategy selector styles
+ *
+ * 设计目标：
+ *  - compact 模式：贴合 SendBox 输入框的小 pill，不抢用户注意力
+ *  - full 模式：RadioGroup 横排，每项含 icon + label + description，宽松布局使用
+ *
+ * 主题变量统一使用 Arco 的 --color-* / --primary-* 系列，跟随明暗主题自动切换。
+ */
+
+/* ─── 共用变量 ─── */
+.wrapper,
+.fullWrapper,
+.compactTrigger {
+  --sss-accent: rgb(var(--primary-6));
+  --sss-accent-soft: color-mix(in srgb, var(--sss-accent) 10%, var(--color-bg-popup));
+  --sss-accent-line: color-mix(in srgb, var(--sss-accent) 24%, var(--color-border-2));
+  --sss-radius-pill: 999px;
+  --sss-radius-medium: 8px;
+}
+
+/* ─── 紧凑模式：小图标下拉 pill（紧贴输入框） ─── */
+.compactTrigger {
+  align-items: center;
+  background: color-mix(in srgb, var(--color-fill-1) 80%, transparent);
+  border: 1px solid var(--color-border-2);
+  border-radius: var(--sss-radius-pill);
+  color: var(--color-text-2);
+  cursor: pointer;
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 500;
+  gap: 4px;
+  height: 24px;
+  line-height: 1;
+  outline: 0;
+  padding: 0 8px;
+  transition:
+    background-color 150ms ease,
+    border-color 150ms ease,
+    color 150ms ease,
+    box-shadow 150ms ease;
+  white-space: nowrap;
+}
+
+.compactTrigger:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--sss-accent) 8%, var(--color-fill-1));
+  border-color: var(--sss-accent-line);
+  color: var(--sss-accent);
+}
+
+.compactTrigger:focus-visible {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--sss-accent) 35%, transparent);
+}
+
+.compactTrigger:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.compactIcon {
+  align-items: center;
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+}
+
+.compactLabel {
+  font-size: 11px;
+  letter-spacing: 0.02em;
+  max-width: 80px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.compactArrow {
+  color: var(--color-text-3);
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+/* ─── 下拉菜单项 ─── */
+.menuItem {
+  align-items: center;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 18px minmax(0, 1fr) auto auto;
+  min-width: 220px;
+  padding: 4px 0;
+}
+
+.menuItemIcon {
+  align-items: center;
+  color: var(--color-text-2);
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+}
+
+.menuItemActive .menuItemIcon {
+  color: var(--sss-accent);
+}
+
+.menuItemText {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.menuItemLabel {
+  color: var(--color-text-1);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 18px;
+}
+
+.menuItemActive .menuItemLabel {
+  color: var(--sss-accent);
+}
+
+.menuItemDesc {
+  color: var(--color-text-3);
+  font-size: 11px;
+  line-height: 15px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.menuItemCheck {
+  color: var(--sss-accent);
+  font-size: 13px;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.menuItemBadge {
+  background: color-mix(in srgb, var(--sss-accent) 14%, transparent);
+  border-radius: 4px;
+  color: var(--sss-accent);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  padding: 2px 4px;
+}
+
+/* ─── 完整模式：RadioGroup 包装 ─── */
+.fullWrapper {
+  display: block;
+  width: 100%;
+}
+
+.fullGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 100%;
+}
+
+/* 覆盖 Arco RadioGroup button 模式的内边距，使每项能放下 icon + label + description */
+.fullGroup :global(.arco-radio-button) {
+  align-items: center;
+  display: inline-flex;
+  padding: 6px 12px;
+}
+
+.fullOption {
+  align-items: center;
+  display: inline-flex;
+  gap: 6px;
+  line-height: 1.2;
+}
+
+.fullOptionIcon {
+  align-items: center;
+  color: var(--color-text-2);
+  display: inline-flex;
+  flex-shrink: 0;
+  justify-content: center;
+}
+
+.fullOptionLabel {
+  color: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+.fullOptionDesc {
+  color: var(--color-text-3);
+  font-size: 11px;
+  font-weight: 400;
+  margin-left: 2px;
+}
+
+.fullOptionBadge {
+  background: color-mix(in srgb, var(--sss-accent) 14%, transparent);
+  border-radius: 4px;
+  color: var(--sss-accent);
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  margin-left: 4px;
+  padding: 2px 4px;
+}
+
+/* ─── 暗色主题适配 ─── */
+:global([data-theme='dark']) .wrapper,
+:global([data-theme='dark']) .fullWrapper,
+:global([data-theme='dark']) .compactTrigger {
+  --sss-accent: var(--aou-6);
+}
+
+/* ─── 减少动画偏好 ─── */
+@media (prefers-reduced-motion: reduce) {
+  .compactTrigger {
+    transition: none;
+  }
+}

@@ -1,0 +1,52 @@
+[package]
+name = "sparkfox-be-knowledge"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+sparkfox-be-common.workspace = true
+sparkfox-be-db.workspace = true
+sparkfox-be-api-types.workspace = true
+sparkfox-be-realtime.workspace = true
+sparkfox-be-auth.workspace = true
+sparkfox-be-net.workspace = true
+sparkfox-sh-redact.workspace = true
+hex.workspace = true
+sha2.workspace = true
+axum.workspace = true
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+async-trait.workspace = true
+tracing.workspace = true
+walkdir.workspace = true
+similar.workspace = true
+zip.workspace = true
+reqwest.workspace = true
+url.workspace = true
+chrono.workspace = true
+futures-util.workspace = true
+htmd.workspace = true
+base64.workspace = true
+
+[target.'cfg(unix)'.dependencies]
+libc.workspace = true
+
+[target.'cfg(windows)'.dependencies]
+# NTFS junctions mount knowledge bases into workspaces without requiring
+# the SeCreateSymbolicLink privilege (same rationale as sparkfox-be-extension).
+junction = "1"
+windows-sys = { version = "0.61", features = [
+    "Win32_Foundation",
+    "Win32_Security",
+    "Win32_Security_Authorization",
+    "Win32_System_Memory",
+    "Win32_System_Pipes",
+    "Win32_System_Threading",
+] }
+
+[dev-dependencies]
+tempfile.workspace = true
+wiremock.workspace = true
+tower = { workspace = true, features = ["util"] }
+http-body-util.workspace = true

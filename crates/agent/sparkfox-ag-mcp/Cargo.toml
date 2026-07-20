@@ -1,0 +1,27 @@
+[package]
+name = "sparkfox-ag-mcp"
+description = "MCP (Model Context Protocol) client implementation for Nomi"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+sparkfox-ag-types.workspace    = true
+sparkfox-ag-protocol.workspace = true
+sparkfox-ag-tools.workspace    = true
+sparkfox-ag-config.workspace   = true
+
+tracing.workspace     = true
+tokio.workspace       = true
+serde.workspace       = true
+serde_json.workspace  = true
+async-trait.workspace = true
+thiserror.workspace   = true
+reqwest.workspace     = true
+futures.workspace     = true
+sha2.workspace        = true
+
+
+[features]
+test-utils = []

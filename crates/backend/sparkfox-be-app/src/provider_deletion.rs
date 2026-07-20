@@ -1,0 +1,535 @@
+//! App-layer aggregation of every subsystem's provider-in-use scan.
+//!
+//! `sparkfox-be-app` is the only layer that sees the companion, public-agent, IDMM
+//! and Agent Execution subsystems at once, so the cross-subsystem
+//! [`ProviderDeletionCoordinator`](sparkfox_be_system::provider_deletion::ProviderDeletionCoordinator)
+//! is implemented here and injected into `ProviderService` (see
+//! `router::state::build_system_state`). Deletion then refuses an in-use provider
+//! (409 `PROVIDER_IN_USE`). SQLite owns deletion-time hard guards and soft
+//! reference cleanup atomically; this coordinator exists only for friendly,
+//! labeled product errors.
+
+use std::sync::Arc;
+
+use sparkfox_be_common::{AppError, ProviderId, ProviderUsage, ProviderUsageFeature};
+use sparkfox_be_db::{
+    IAgentExecutionRepository, IAgentExecutionTemplateRepository,
+    IClientPreferenceRepository, IConversationRepository,
+};
+use sparkfox_be_idmm::sidecar::PREF_BACKUP_PROVIDER;
+use sparkfox_be_system::provider_deletion::ProviderDeletionCoordinator;
+
+/// Aggregates every subsystem's provider-in-use scan behind the single
+/// `ProviderDeletionCoordinator` hook `ProviderService::delete` calls.
+pub struct AppProviderDeletionCoordinator {
+    pub companion: Arc<sparkfox_be_companion::CompanionService>,
+    pub public_agent: Arc<sparkfox_be_public_agent::PublicAgentService>,
+    pub client_prefs: Arc<dyn IClientPreferenceRepository>,
+    pub execution_repo: Arc<dyn IAgentExecutionRepository>,
+    pub execution_template_repo: Arc<dyn IAgentExecutionTemplateRepository>,
+    pub conversation_repo: Arc<dyn IConversationRepository>,
+}
+
+#[async_trait::async_trait]
+impl ProviderDeletionCoordinator for AppProviderDeletionCoordinator {
+    async fn usages(&self, provider_id: &str) -> Result<Vec<ProviderUsage>, AppError> {
+        ProviderId::parse(provider_id)
+            .map_err(|error| AppError::BadRequest(format!("invalid provider_id: {error}")))?;
+
+        let mut out = Vec::new();
+        out.extend(self.companion.providers_in_use(provider_id).await);
+        out.extend(self.public_agent.providers_in_use(provider_id).await);
+
+        // 智能决策 (smart decision): v1 covers ONLY the global backup model
+        // (`idmm_backup_provider_id`). Per-conversation watch `bypass_model` is out
+        // of scope — no cross-user session-enumeration repo exists (see plan
+        // constraint); component B backstops it.
+        let rows = self
+            .client_prefs
+            .get_by_keys(&[PREF_BACKUP_PROVIDER])
+            .await
+            .map_err(|e| AppError::Internal(format!("read idmm backup pref: {e}")))?;
+        if rows
+            .iter()
+            .any(|r| r.key == PREF_BACKUP_PROVIDER && r.value == provider_id)
+        {
+            out.push(ProviderUsage {
+                feature: ProviderUsageFeature::SmartDecision,
+                label: "智能决策·备份模型".into(),
+                target_id: None,
+            });
+        }
+
+        // The top-level Conversation model is its current lead and therefore a
+        // hard provider binding. Collaborator-only pool entries remain soft
+        // references and are removed only after this guard passes.
+        let conversations = self
+            .conversation_repo
+            .list_conversations_using_model_provider(provider_id)
+            .await
+            .map_err(|e| AppError::Internal(format!("scan Conversation models: {e}")))?;
+        for (id, name) in conversations {
+            out.push(ProviderUsage {
+                feature: ProviderUsageFeature::Conversation,
+                label: name,
+                target_id: Some(id.to_string()),
+            });
+        }
+
+        // Current Agent Execution participants remain live provider bindings
+        // even after completed/failed settlement: retry and adopt can reopen
+        // those aggregates. Only cancelled or tombstoned executions are
+        // permanently inert and therefore stop blocking provider deletion.
+        let executions = self
+            .execution_repo
+            .list_reopenable_provider_usages(provider_id)
+            .await
+            .map_err(|e| AppError::Internal(format!("scan Agent Executions: {e}")))?;
+        for (id, goal) in executions {
+            out.push(ProviderUsage {
+                feature: ProviderUsageFeature::AgentExecution,
+                label: goal,
+                target_id: Some(id),
+            });
+        }
+        let templates = self
+            .execution_template_repo
+            .list_templates_using_provider(provider_id)
+            .await
+            .map_err(|e| AppError::Internal(format!("scan Agent Execution templates: {e}")))?;
+        for (id, name) in templates {
+            out.push(ProviderUsage {
+                feature: ProviderUsageFeature::AgentExecution,
+                label: name,
+                target_id: Some(id),
+            });
+        }
+        Ok(out)
+    }
+
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use sparkfox_be_common::{
+        AdaptationPolicy, AgentExecutionEventKind, AgentExecutionStatus, DecisionPolicy,
+        DelegationPolicy, PlanGate, ProviderUsageFeature,
+    };
+    use sparkfox_be_db::{
+        IAgentExecutionRepository, IAgentExecutionTemplateRepository,
+        IClientPreferenceRepository, SqliteAgentExecutionRepository,
+        SqliteAgentExecutionTemplateRepository, SqliteClientPreferenceRepository,
+        init_database_memory,
+    };
+    use std::sync::Arc;
+
+    /// Minimal completer so `CompanionService::start` needs no live provider — the
+    /// deletion-guard tests never trigger a distillation call.
+    struct NoopCompleter;
+
+    #[async_trait::async_trait]
+    impl sparkfox_be_companion::learner::CompanionCompleter for NoopCompleter {
+        async fn complete(
+            &self,
+            _provider_id: &str,
+            _model: &str,
+            _system: &str,
+            _user: &str,
+            _max_tokens: u32,
+        ) -> Result<String, sparkfox_be_common::AppError> {
+            Ok("{}".into())
+        }
+    }
+
+    /// Build a real coordinator over an in-memory DB + tempdir-backed companion /
+    /// public-agent services — mirrors the app's `build_system_state` construction
+    /// (minus the live provider completer). Returns the `Database` so its in-memory
+    /// pool outlives the coordinator.
+    async fn coordinator(
+        dir: &std::path::Path,
+    ) -> (AppProviderDeletionCoordinator, Arc<sparkfox_be_db::Database>) {
+        let db = Arc::new(init_database_memory().await.unwrap());
+        let installation_owner = sparkfox_be_db::installation_owner_id(db.pool()).await.unwrap();
+        for provider_id in [
+            "prov_0190f5fe-7c00-7a00-8000-000000000021",
+            "prov_0190f5fe-7c00-7a00-8000-000000000022",
+            "prov_0190f5fe-7c00-7a00-8000-000000000023",
+            "prov_0190f5fe-7c00-7a00-8000-000000000024",
+            "prov_0190f5fe-7c00-7a00-8000-000000000025",
+            "prov_0190f5fe-7c00-7a00-8000-000000000026",
+        ] {
+            sparkfox_be_db::sqlx::query(
+                "INSERT INTO providers (\
+                    id, platform, name, base_url, api_key_encrypted, models, enabled, \
+                    capabilities, created_at, updated_at\
+                 ) VALUES (?, 'openai', ?, 'https://example.invalid', 'encrypted', \
+                           '[]', 1, '[]', 1, 1)",
+            )
+            .bind(provider_id)
+            .bind(provider_id)
+            .execute(db.pool())
+            .await
+            .unwrap();
+        }
+        let companion = sparkfox_be_companion::CompanionService::start(
+            dir,
+            Arc::new(sparkfox_be_realtime::BroadcastEventBus::new(16)),
+            &installation_owner,
+            Arc::new(NoopCompleter),
+            Arc::new(sparkfox_be_extension::skill_service::resolve_skill_paths(dir, dir)),
+        )
+        .await
+        .unwrap();
+        let public_agent = sparkfox_be_public_agent::PublicAgentService::start(dir);
+        let client_prefs: Arc<dyn IClientPreferenceRepository> =
+            Arc::new(SqliteClientPreferenceRepository::new(db.pool().clone()));
+        let execution_repo: Arc<dyn IAgentExecutionRepository> =
+            Arc::new(SqliteAgentExecutionRepository::new(db.pool().clone()));
+        let execution_template_repo: Arc<dyn IAgentExecutionTemplateRepository> =
+            Arc::new(SqliteAgentExecutionTemplateRepository::new(db.pool().clone()));
+        let conversation_repo: Arc<dyn IConversationRepository> =
+            Arc::new(sparkfox_be_db::SqliteConversationRepository::new(db.pool().clone()));
+        (
+            AppProviderDeletionCoordinator {
+                companion,
+                public_agent,
+                client_prefs,
+                execution_repo,
+                execution_template_repo,
+                conversation_repo,
+            },
+            db,
+        )
+    }
+
+    #[tokio::test]
+    async fn aggregates_idmm_backup_usage() {
+        let dir = tempfile::tempdir().unwrap();
+        let (coord, _db) = coordinator(dir.path()).await;
+        coord
+            .client_prefs
+            .upsert_batch(&[(sparkfox_be_idmm::sidecar::PREF_BACKUP_PROVIDER, "prov_0190f5fe-7c00-7a00-8000-000000000026")])
+            .await
+            .unwrap();
+        let usages = coord.usages("prov_0190f5fe-7c00-7a00-8000-000000000026").await.unwrap();
+        assert!(
+            usages
+                .iter()
+                .any(|u| matches!(u.feature, ProviderUsageFeature::SmartDecision)),
+            "global idmm backup provider should surface as a SmartDecision usage"
+        );
+        assert!(coord.usages("prov_0190f5fe-7c00-7a00-8000-000000000027").await.unwrap().is_empty());
+    }
+
+    #[tokio::test]
+    async fn usages_rejects_empty_provider_id() {
+        let dir = tempfile::tempdir().unwrap();
+        let (coord, _db) = coordinator(dir.path()).await;
+        coord
+            .client_prefs
+            .upsert_batch(&[(sparkfox_be_idmm::sidecar::PREF_BACKUP_PROVIDER, "prov_0190f5fe-7c00-7a00-8000-000000000026")])
+            .await
+            .unwrap();
+        assert!(matches!(coord.usages("").await, Err(AppError::BadRequest(_))));
+    }
+
+    #[tokio::test]
+    async fn aggregates_reopenable_agent_execution_usage() {
+        let dir = tempfile::tempdir().unwrap();
+        let (coord, db) = coordinator(dir.path()).await;
+        let installation_owner = sparkfox_be_db::installation_owner_id(db.pool()).await.unwrap();
+        let execution = coord
+            .execution_repo
+            .create_execution_with_participants(
+                &installation_owner,
+                &sparkfox_be_db::CreateAgentExecutionParams {
+                    goal: "正在使用受保护模型".into(),
+                    status: AgentExecutionStatus::Paused,
+                    plan_gate: PlanGate::Automatic,
+                    adaptation_policy: AdaptationPolicy::Fixed,
+                    decision_policy: DecisionPolicy::Automatic,
+                    delegation_policy: DelegationPolicy::Automatic,
+                    max_parallel: 1,
+                    work_dir: None,
+                    lead_conversation_id: None,
+                    initial_plan_input: r#"{"mode":"automatic"}"#.to_owned(),
+                },
+                &[sparkfox_be_db::NewAgentExecutionParticipant {
+                    id: "participant_provider_guard".into(),
+                    source_agent_id: "nomi".into(),
+                    preset_id: None,
+                    preset_revision: None,
+                    preset_snapshot: None,
+                    provider_id: Some("prov_0190f5fe-7c00-7a00-8000-000000000022".into()),
+                    model: Some("model_in_use".into()),
+                    role: None,
+                    capability: None,
+                    constraints: None,
+                    description: None,
+                    system_prompt: None,
+                    enabled_skills: "[]".into(),
+                    disabled_builtin_skills: "[]".into(),
+                    sort_order: 0,
+                }],
+                &sparkfox_be_db::NewAgentExecutionEvent {
+                    event_type: AgentExecutionEventKind::Created,
+                    step_id: None,
+                    attempt_id: None,
+                    actor: sparkfox_be_common::AgentExecutionActor::user(&installation_owner),
+                    payload: "{}".into(),
+                },
+            )
+            .await
+            .unwrap();
+
+        let usages = coord.usages("prov_0190f5fe-7c00-7a00-8000-000000000022").await.unwrap();
+        assert_eq!(usages.len(), 1);
+        assert_eq!(usages[0].feature, ProviderUsageFeature::AgentExecution);
+        assert_eq!(usages[0].label, "正在使用受保护模型");
+        assert_eq!(usages[0].target_id.as_deref(), Some(execution.id.as_str()));
+
+        sqlx::query("UPDATE agent_executions SET status = 'running' WHERE id = ?")
+            .bind(&execution.id)
+            .execute(db.pool())
+            .await
+            .unwrap();
+        sqlx::query("UPDATE agent_executions SET status = 'completed' WHERE id = ?")
+            .bind(&execution.id)
+            .execute(db.pool())
+            .await
+            .unwrap();
+        assert_eq!(
+            coord.usages("prov_0190f5fe-7c00-7a00-8000-000000000022").await.unwrap().len(),
+            1,
+            "a completed execution can be reopened by retry/adopt and must retain its provider binding"
+        );
+
+        sqlx::query("UPDATE agent_executions SET status = 'running' WHERE id = ?")
+            .bind(&execution.id)
+            .execute(db.pool())
+            .await
+            .unwrap();
+        sqlx::query("UPDATE agent_executions SET status = 'cancelled' WHERE id = ?")
+            .bind(&execution.id)
+            .execute(db.pool())
+            .await
+            .unwrap();
+        assert!(
+            coord.usages("prov_0190f5fe-7c00-7a00-8000-000000000022").await.unwrap().is_empty(),
+            "a cancelled execution can never reopen and must not retain a live provider binding"
+        );
+    }
+
+    #[tokio::test]
+    async fn aggregates_saved_agent_execution_template_usage() {
+        let dir = tempfile::tempdir().unwrap();
+        let (coord, db) = coordinator(dir.path()).await;
+        let installation_owner = sparkfox_be_db::installation_owner_id(db.pool()).await.unwrap();
+        let template = coord
+            .execution_template_repo
+            .create_template(
+                &installation_owner,
+                &sparkfox_be_db::CreateAgentExecutionTemplateParams {
+                    name: "长期协作方案".to_owned(),
+                    description: None,
+                    max_parallel: Some(2),
+                    work_dir: None,
+                    context: None,
+                    participants: vec![sparkfox_be_db::NewAgentExecutionTemplateParticipant {
+                        source_agent_id: "nomi".to_owned(),
+                        preset_id: Some("preset_template".to_owned()),
+                        preset_revision: Some(1),
+                        preset_snapshot: Some(
+                            r#"{"preset_id":"preset_template","preset_revision":1,"preset_name":"Template","target":"execution_step","resolved_model":{"provider_id":"prov_0190f5fe-7c00-7a00-8000-000000000024","model":"snapshot_model","required":true}}"#
+                                .to_owned(),
+                        ),
+                        provider_id: Some("prov_0190f5fe-7c00-7a00-8000-000000000025".to_owned()),
+                        model: Some("model_template".to_owned()),
+                        role: None,
+                        capability: None,
+                        constraints: None,
+                        description: None,
+                        system_prompt: None,
+                        enabled_skills: "[]".to_owned(),
+                        disabled_builtin_skills: "[]".to_owned(),
+                        sort_order: 0,
+                    }],
+                },
+            )
+            .await
+            .unwrap();
+
+        let usages = coord.usages("prov_0190f5fe-7c00-7a00-8000-000000000025").await.unwrap();
+        assert_eq!(usages.len(), 1);
+        assert_eq!(usages[0].feature, ProviderUsageFeature::AgentExecution);
+        assert_eq!(usages[0].label, "长期协作方案");
+        assert_eq!(
+            usages[0].target_id.as_deref(),
+            Some(template.template.id.as_str())
+        );
+        assert!(
+            coord
+                .usages("prov_0190f5fe-7c00-7a00-8000-000000000024")
+                .await
+                .unwrap()
+                .is_empty(),
+            "the frozen preset snapshot is audit data; the concrete participant row is the only live provider binding"
+        );
+    }
+
+    #[tokio::test]
+    async fn provider_delete_atomically_strips_failover_queue_entry() {
+        use sparkfox_be_conversation::model_failover::{
+            get_global_failover_config, set_global_failover_config,
+        };
+        let dir = tempfile::tempdir().unwrap();
+        let (coord, db) = coordinator(dir.path()).await;
+        let mut cfg = get_global_failover_config(&coord.client_prefs).await;
+        cfg.queue = vec![
+            sparkfox_be_common::ProviderWithModel {
+                provider_id: "prov_0190f5fe-7c00-7a00-8000-000000000026".into(),
+                model: "m".into(),
+                use_model: None,
+            },
+            sparkfox_be_common::ProviderWithModel {
+                provider_id: "prov_0190f5fe-7c00-7a00-8000-000000000023".into(),
+                model: "m2".into(),
+                use_model: None,
+            },
+        ];
+        set_global_failover_config(&coord.client_prefs, &cfg)
+            .await
+            .unwrap();
+
+        sparkfox_be_db::sqlx::query("DELETE FROM providers WHERE id = 'prov_0190f5fe-7c00-7a00-8000-000000000026'")
+            .execute(db.pool())
+            .await
+            .unwrap();
+        let after = get_global_failover_config(&coord.client_prefs).await;
+        assert_eq!(after.queue.len(), 1);
+        assert_eq!(after.queue[0].provider_id, "prov_0190f5fe-7c00-7a00-8000-000000000023");
+    }
+
+    #[tokio::test]
+    async fn active_conversation_lead_is_a_hard_provider_binding() {
+        use sparkfox_be_db::{IConversationRepository, SqliteConversationRepository, models::ConversationRow};
+
+        let dir = tempfile::tempdir().unwrap();
+        let (coord, db) = coordinator(dir.path()).await;
+        let installation_owner = sparkfox_be_db::installation_owner_id(db.pool()).await.unwrap();
+        let conversation_repo = SqliteConversationRepository::new(db.pool().clone());
+        let now = sparkfox_be_common::now_ms();
+        let conversation_id = conversation_repo
+            .create(&ConversationRow {
+                id: sparkfox_be_common::ConversationId::new().into_string(),
+                user_id: installation_owner,
+                name: "受保护主会话".into(),
+                r#type: "nomi".into(),
+                extra: "{}".into(),
+                delegation_policy: "automatic".into(),
+                execution_model_pool: None,
+                decision_policy: "automatic".into(),
+                execution_template_id: None,
+                model: Some(
+                    serde_json::json!({
+                        "provider_id": "prov_0190f5fe-7c00-7a00-8000-000000000021",
+                        "model": "catalog-name",
+                        "use_model": "effective-name"
+                    })
+                    .to_string(),
+                ),
+                status: Some("pending".into()),
+                source: Some("nomifun".into()),
+                channel_chat_id: None,
+                pinned: false,
+                pinned_at: None,
+                cron_job_id: None,
+                preset_id: None,
+                preset_revision: None,
+                preset_snapshot: None,
+                created_at: now,
+                updated_at: now,
+            })
+            .await
+            .unwrap();
+
+        let usages = coord.usages("prov_0190f5fe-7c00-7a00-8000-000000000021").await.unwrap();
+        assert_eq!(usages.len(), 1);
+        assert_eq!(usages[0].feature, ProviderUsageFeature::Conversation);
+        assert_eq!(usages[0].label, "受保护主会话");
+        assert_eq!(usages[0].target_id, Some(conversation_id.to_string()));
+    }
+
+    #[tokio::test]
+    async fn provider_delete_atomically_strips_persisted_conversation_execution_pool() {
+        use sparkfox_be_db::{IConversationRepository, SqliteConversationRepository, models::ConversationRow};
+
+        let dir = tempfile::tempdir().unwrap();
+        let (_coord, db) = coordinator(dir.path()).await;
+        let installation_owner = sparkfox_be_db::installation_owner_id(db.pool()).await.unwrap();
+        let conversation_repo = SqliteConversationRepository::new(db.pool().clone());
+        let now = sparkfox_be_common::now_ms();
+        let conversation_id = conversation_repo
+            .create(&ConversationRow {
+                id: sparkfox_be_common::ConversationId::new().into_string(),
+                user_id: installation_owner,
+                name: "cleanup target".into(),
+                r#type: "nomi".into(),
+                extra: serde_json::json!({
+                    "workspace": "/keep"
+                })
+                .to_string(),
+                delegation_policy: "automatic".into(),
+                execution_model_pool: Some(serde_json::json!({
+                    "mode": "range",
+                    "models": [
+                        { "provider_id": "prov_0190f5fe-7c00-7a00-8000-000000000026", "model": "gone" },
+                        { "provider_id": "prov_0190f5fe-7c00-7a00-8000-000000000023", "model": "live" }
+                    ]
+                }).to_string()),
+                decision_policy: "automatic".into(),
+                execution_template_id: None,
+                model: Some(
+                    serde_json::json!({
+                        "provider_id": "prov_0190f5fe-7c00-7a00-8000-000000000023",
+                        "model": "live"
+                    })
+                    .to_string(),
+                ),
+                status: Some("pending".into()),
+                source: Some("nomifun".into()),
+                channel_chat_id: None,
+                pinned: false,
+                pinned_at: None,
+                cron_job_id: None,
+                preset_id: None,
+                preset_revision: None,
+                preset_snapshot: None,
+                created_at: now,
+                updated_at: now,
+            })
+            .await
+            .unwrap();
+
+        sparkfox_be_db::sqlx::query("DELETE FROM providers WHERE id = 'prov_0190f5fe-7c00-7a00-8000-000000000026'")
+            .execute(db.pool())
+            .await
+            .unwrap();
+
+        let cleaned = conversation_repo.get(&conversation_id).await.unwrap().unwrap();
+        let extra: serde_json::Value = serde_json::from_str(&cleaned.extra).unwrap();
+        assert_eq!(extra["workspace"], "/keep");
+        let model_pool: serde_json::Value = serde_json::from_str(
+            cleaned.execution_model_pool.as_deref().unwrap(),
+        )
+        .unwrap();
+        assert_eq!(
+            model_pool,
+            serde_json::json!({
+                "mode": "range",
+                "models": [{ "provider_id": "prov_0190f5fe-7c00-7a00-8000-000000000023", "model": "live" }]
+            })
+        );
+    }
+}

@@ -1,0 +1,16 @@
+[package]
+name = "sparkfox-crdt"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "SparkFox CRDT sync layer (automerge-rs)"
+
+[dependencies]
+sparkfox-core = { path = "../sparkfox-core" }
+automerge = "0.10"
+log = "0.4"
+env_logger = "0.11"
+
+[dev-dependencies]
+sparkfox-crdt = { path = "." }

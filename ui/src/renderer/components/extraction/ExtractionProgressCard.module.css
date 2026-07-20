@@ -1,0 +1,80 @@
+/* ExtractionProgressCard 样式 —— U-05 修复：SAG 5 状态机联动卡片
+ *
+ * 设计目标：替代 KnowledgeDetailPage 中原有的「假进度条」，让进度条与后端真实
+ * status 字段联动；同时在 EXTRACTING 阶段露出 event_count / entity_count 计数。
+ */
+
+.card {
+  background: var(--color-bg-2);
+  border: 1px solid var(--color-border-2);
+  border-radius: 12px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.statusIcon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.statusLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-1);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.percent {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--color-text-3);
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
+}
+
+.countsRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  font-size: 12px;
+  color: var(--color-text-2);
+  line-height: 18px;
+}
+
+.countItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.countValue {
+  font-weight: 600;
+  color: var(--color-text-1);
+  font-variant-numeric: tabular-nums;
+}
+
+.completedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgb(var(--success-6));
+}

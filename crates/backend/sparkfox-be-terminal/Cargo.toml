@@ -1,0 +1,30 @@
+[package]
+name = "sparkfox-be-terminal"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+sparkfox-be-common.workspace = true
+sparkfox-be-db.workspace = true
+sparkfox-be-api-types.workspace = true
+sparkfox-be-realtime.workspace = true
+sparkfox-be-auth.workspace = true
+sparkfox-be-runtime.workspace = true
+sparkfox-be-knowledge.workspace = true
+sparkfox-be-file.workspace = true
+axum.workspace = true
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+dashmap.workspace = true
+async-trait.workspace = true
+portable-pty.workspace = true
+base64.workspace = true
+libc.workspace = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util", "macros", "rt-multi-thread"] }
+tempfile.workspace = true
+reqwest.workspace = true

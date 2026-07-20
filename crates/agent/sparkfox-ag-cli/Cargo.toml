@@ -1,0 +1,31 @@
+[package]
+name = "sparkfox-ag-cli"
+description = "CLI binary for Nomi — a multi-provider AI agent with tool execution and delegation"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+keywords = ["ai", "agent", "cli", "llm", "anthropic"]
+categories = ["command-line-utilities"]
+
+[[bin]]
+name = "nomi"
+path = "src/main.rs"
+
+[dependencies]
+sparkfox-ag-agent = { workspace = true, features = ["computer-use"] }
+sparkfox-ag-compact.workspace  = true
+sparkfox-ag-config.workspace   = true
+sparkfox-ag-memory.workspace   = true
+sparkfox-ag-providers.workspace = true
+sparkfox-ag-tools.workspace    = true
+sparkfox-ag-mcp.workspace      = true
+sparkfox-ag-protocol.workspace = true
+sparkfox-ag-skills.workspace   = true
+sparkfox-sh-process-runtime.workspace = true
+
+tokio.workspace              = true
+anyhow.workspace             = true
+clap.workspace               = true
+tracing.workspace            = true
+tracing-subscriber.workspace = true

@@ -1,0 +1,76 @@
+//! Agent runtime lifecycle, per-conversation runtime registration, and skill management.
+pub(crate) mod runtime_state;
+pub mod runtime_handle;
+// P3-K2: rendering page-fetch backend for knowledge URL sources. Gated behind
+// `browser-use` — the ONE bridge from the (agent-layer) browser engine into the
+// knowledge `PageFetcher` trait, keeping the knowledge crate engine-free (②).
+#[cfg(feature = "browser-use")]
+pub mod browser_fetcher;
+pub mod capability;
+pub mod cc_switch;
+pub mod factory;
+pub(crate) mod idle_scanner;
+pub mod knowledge_completer;
+pub mod knowledge_retrieval;
+pub mod knowledge_writeback;
+pub mod manager;
+pub(crate) mod persistence;
+pub mod protocol;
+pub mod registry;
+pub mod routes;
+pub(crate) mod services;
+pub mod session;
+pub mod runtime_registry;
+pub mod terminal_title_completer;
+pub mod types;
+
+// ── Agent-layer re-exports (the seam) ──────────────────────────────────────
+// Backend crates reach the agent (nomi-*) layer ONLY through sparkfox-be-ai-agent.
+// When the agent layer is later extracted into its own repo, these re-exports
+// become the single integration surface (see docs/specs/agent-extraction-checklist.md).
+pub use sparkfox_ag_agent::companion_tools::CompanionMemorySink;
+pub use sparkfox_ag_agent::companion_tools::{CompanionSkillSink, SkillListing};
+pub use sparkfox_ag_agent::cron_tools::{CronJobSummary, CronSink};
+pub use sparkfox_ag_agent::requirement_tools::RequirementSink;
+pub use sparkfox_ag_config;
+pub use sparkfox_ag_types;
+
+pub use runtime_state::AgentRuntimeState;
+#[cfg(any(test, feature = "test-support"))]
+pub use runtime_handle::MockAgentRuntime;
+pub use runtime_handle::{AgentRuntimeControl, AgentRuntimeHandle};
+pub use capability::skill_manager::{
+    AcpSkillManager, SkillDefinition, SkillIndex, build_skills_index_text, build_system_instructions,
+    build_system_instructions_with_skills_index, detect_skill_load_request, prepare_first_message,
+    prepare_first_message_with_skills_index,
+};
+pub use factory::provider_config::{
+    one_shot_completion, resolve_provider_config, streaming_completion, streaming_completion_kinded,
+    streaming_completion_text_or_reasoning, user_message, DeltaKind,
+};
+pub use factory::{
+    AgentFactoryDeps, CompanionPromptProvider, PublicAgentProvider, PublicAgentRuntime,
+    build_agent_factory,
+};
+pub use idle_scanner::start_idle_scanner;
+#[cfg(feature = "browser-use")]
+pub use browser_fetcher::BrowserFetcher;
+pub use knowledge_completer::LiveKnowledgeCompleter;
+pub use knowledge_completer::resolve_default_model;
+pub use knowledge_retrieval::LiveKnowledgeRetrievalSink;
+pub use knowledge_writeback::LiveKnowledgeWritebackSink;
+pub use terminal_title_completer::LiveTerminalTitleCompleter;
+pub use sparkfox_be_api_types::{
+    AcpBuildExtra, AcpModelInfo, NomiBuildExtra, OpenClawBuildExtra, OpenClawGatewayConfig, RemoteBuildExtra,
+    SlashCommandItem,
+};
+pub use persistence::AcpSessionSyncService;
+pub use protocol::events::{
+    AcpPermissionEventData, AcpPermissionOptionKind, AcpToolCallKind, AgentStreamEvent, FinishEventData, TurnStopReason,
+};
+pub use protocol::send_error::AgentSendError;
+pub use registry::{AgentRegistry, UnavailableReason};
+pub use routes::{AgentRouterState, RemoteAgentRouterState, agent_routes, remote_agent_routes};
+pub use services::AgentService;
+pub use services::RemoteAgentService;
+pub use runtime_registry::{AgentRuntimeRegistry, InMemoryAgentRuntimeRegistry};

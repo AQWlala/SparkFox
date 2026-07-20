@@ -1,0 +1,33 @@
+[package]
+name = "sparkfox-embedding"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "SparkFox embedding + reranker (candle-transformers)"
+
+[dependencies]
+sparkfox-core = { path = "../sparkfox-core" }
+sparkfox-store = { path = "../sparkfox-store" }
+rusqlite = { workspace = true }
+candle-core = "0.8"
+candle-nn = "0.8"
+candle-transformers = "0.8"
+tokenizers = "0.21"
+hf-hub = "0.4"
+serde = { workspace = true }
+serde_json = { workspace = true }
+log = "0.4"
+env_logger = "0.11"
+sha2 = { workspace = true }
+hex = { workspace = true }
+dirs-next = "2.0"
+tokio = { workspace = true }
+
+[dev-dependencies]
+sparkfox-embedding = { path = "." }
+sparkfox-store = { path = "../sparkfox-store" }
+tempfile = "3.10"
+hex = { workspace = true }
+sha2 = { workspace = true }
+rusqlite = { workspace = true }

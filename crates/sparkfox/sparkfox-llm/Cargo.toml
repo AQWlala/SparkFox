@@ -1,0 +1,27 @@
+[package]
+name = "sparkfox-llm"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "SparkFox LLM provider abstraction"
+
+[dependencies]
+sparkfox-core = { path = "../sparkfox-core" }
+# Task 7.2.2: 审计日志包装器 AuditedProvider 依赖 sparkfox-security
+sparkfox-security = { path = "../sparkfox-security" }
+async-trait = { workspace = true }
+serde_json = { workspace = true }
+serde = { workspace = true }
+futures = { workspace = true }
+jsonrepair = "0.1"
+# Task 7.2: stream.rs 基于 tokio mpsc channel
+tokio = { workspace = true }
+# Sub-Step 10.1.2: OpenAIProvider 真实 HTTP 调用
+reqwest = { workspace = true }
+
+[dev-dependencies]
+rusqlite = { workspace = true }
+# Sub-Step 10.1.2: OpenAIProvider 单元测试 mock 服务
+wiremock = { workspace = true }
+tokio-test = { workspace = true }

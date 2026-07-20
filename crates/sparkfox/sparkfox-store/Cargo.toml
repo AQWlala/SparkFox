@@ -1,0 +1,32 @@
+[package]
+name = "sparkfox-store"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "SparkFox SQLite + sqlite-vec store"
+
+[dependencies]
+sparkfox-core = { path = "../sparkfox-core" }
+# 【A-03 P0 修复】vector_insert 需要 MemoryLayer 枚举（layer.vector_table_name()）来
+# 动态选择 vec_l0 / vec_l3_event / vec_l3_entity / vec_l3_event_entity 等表。
+# 依赖链：sparkfox-store → sparkfox-memory → sparkfox-core（无循环）。
+sparkfox-memory = { path = "../sparkfox-memory" }
+# 【P-03/P-04 P0 修复】SAG schema 6 表 DDL 定义在 sparkfox-knowledge::schema 中，
+# sparkfox-store::schema::migrate_knowledge_schema 引用 ALL_SAG_DDL 常量执行迁移。
+# 依赖链：sparkfox-store → sparkfox-knowledge → sparkfox-security/sparkfox-core（无循环）。
+sparkfox-knowledge = { path = "../sparkfox-knowledge" }
+rusqlite = { version = "0.32", features = ["bundled", "load_extension"] }
+log = "0.4"
+dirs-next = "2.0"
+# NOTE: hnswlib-rs 0.10 暂未加入。
+# 原因：hnswlib-rs 0.10 → off64 0.9 → std::os::unix::FileExt 在 Windows 编译失败
+#       （off64 无 feature flag 可禁用 file.rs，hnswlib-rs 也无 feature 可禁用 off64）。
+# 当前 HnswIndex 为内存 HashMap + 暴力 cosine 占位实现（见 src/vector_index/hnsw.rs）。
+# 待 hnswlib-rs 修复 Windows 兼容后，恢复依赖并在 hnsw.rs 切换为真实 HNSW 实现。
+
+[dev-dependencies]
+tempfile = "3.10"
+sparkfox-store = { path = "." }
+# 集成测试（tests/poc4_perf.rs）需直接引用 MemoryLayer 枚举构造 vector_insert 参数
+sparkfox-memory = { path = "../sparkfox-memory" }

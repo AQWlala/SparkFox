@@ -1,0 +1,126 @@
+# Sub-Step 10.7.1 — 实体抽取配置（extract.yaml）
+#
+# 与 `src/schema.rs::ENTITY_TYPES` 和 `INSERT_DEFAULT_ENTITY_TYPES` 三方对齐。
+# 11 种默认实体类型 + 兜底（其他）；颜色参考 Arco Design 调色板；图标使用 @icon-park/react 图标名。
+#
+# 字段说明：
+#   id                   实体类型 ID（与 entity_type 表 id 一致）
+#   type                 实体类型英文枚举（PERSON / LOCATION / ... / OTHER）
+#   name                 中文显示名
+#   color                十六进制颜色（前端图谱节点配色，参考 Arco Design 调色板）
+#   icon                 @icon-park/react 图标名（与前端风格一致）
+#   weight               抽取权重（用于实体抽取排序，默认 1.0）
+#   similarity_threshold 相似度阈值（用于实体归一化/去重，默认 0.8）
+#   description          简要描述（识别范围说明）
+#   is_default           是否为默认实体类型（11 种内置均为 true）
+
+entity_types:
+  - id: default_person
+    type: PERSON
+    name: 人名
+    color: '#F53F3F'
+    icon: user
+    weight: 1.0
+    similarity_threshold: 0.8
+    description: 人物名称，包括真实人物、虚构角色、历史人物等
+    is_default: true
+
+  - id: default_location
+    type: LOCATION
+    name: 地名
+    color: '#14C9C9'
+    icon: location
+    weight: 1.0
+    similarity_threshold: 0.8
+    description: 地理位置，包括国家、城市、区域、地标等
+    is_default: true
+
+  - id: default_organization
+    type: ORGANIZATION
+    name: 机构
+    color: '#165DFF'
+    icon: building-four
+    weight: 1.0
+    similarity_threshold: 0.8
+    description: 组织机构，包括公司、政府、学校、团队等
+    is_default: true
+
+  - id: default_time
+    type: TIME
+    name: 时间
+    color: '#FF7D00'
+    icon: time
+    weight: 1.0
+    similarity_threshold: 0.8
+    description: 时间表达，包括日期、时刻、时间段、节日等
+    is_default: true
+
+  - id: default_number
+    type: NUMBER
+    name: 数字
+    color: '#00B42A'
+    icon: number
+    weight: 1.0
+    similarity_threshold: 0.8
+    description: 数值量词，包括数量、金额、百分比、计量等
+    is_default: true
+
+  - id: default_event
+    type: EVENT
+    name: 事件
+    color: '#FFB400'
+    icon: doc-detail
+    weight: 1.0
+    similarity_threshold: 0.8
+    description: 事件活动，包括历史事件、会议、事故、庆典等
+    is_default: true
+
+  - id: default_object
+    type: OBJECT
+    name: 物品
+    color: '#722ED1'
+    icon: box
+    weight: 1.0
+    similarity_threshold: 0.8
+    description: 物品实物，包括产品、设备、工具、文物等
+    is_default: true
+
+  - id: default_concept
+    type: CONCEPT
+    name: 概念
+    color: '#00AFB7'
+    icon: bulb
+    weight: 1.0
+    similarity_threshold: 0.8
+    description: 抽象概念，包括理论、思想、术语、技术等
+    is_default: true
+
+  - id: default_law
+    type: LAW
+    name: 法律
+    color: '#F77EB9'
+    icon: law
+    weight: 1.0
+    similarity_threshold: 0.8
+    description: 法律法规，包括法律条文、法规、条约、判例等
+    is_default: true
+
+  - id: default_disease
+    type: DISEASE
+    name: 疾病
+    color: '#F7BA1E'
+    icon: medical-mark
+    weight: 1.0
+    similarity_threshold: 0.8
+    description: 疾病症状，包括疾病名、症状、综合征等
+    is_default: true
+
+  - id: default_other
+    type: OTHER
+    name: 其他
+    color: '#86909C'
+    icon: more-four
+    weight: 1.0
+    similarity_threshold: 0.8
+    description: 兜底类型，无法归入上述 10 类的实体
+    is_default: true

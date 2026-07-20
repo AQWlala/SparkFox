@@ -1,0 +1,15 @@
+[package]
+name = "sparkfox-agent"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "SparkFox agent engine"
+
+[dependencies]
+sparkfox-core = { path = "../sparkfox-core" }
+serde = { workspace = true }
+chrono = { workspace = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }

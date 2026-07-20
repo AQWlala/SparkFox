@@ -1,0 +1,55 @@
+[package]
+name = "sparkfox-knowledge"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "SparkFox knowledge base RAG engine (chunking / vector recall / FTS5 / RRF / citation)"
+
+[dependencies]
+# S-03 P0 修复：prompt 注入防御工具函数（v1.0.0 仅 re-export，v1.1.0 SAG 流程引用）
+sparkfox-security = { path = "../sparkfox-security" }
+sparkfox-core = { path = "../sparkfox-core" }
+# Task 9.2：E2EE 同步集成 — CRDT 多设备冲突合并 + 端到端加密
+sparkfox-crdt = { path = "../sparkfox-crdt" }
+sparkfox-e2ee = { path = "../sparkfox-e2ee" }
+# Sub-Step 10.2.2: LlmEventProcessor 需要 LlmProvider trait + repair_json
+sparkfox-llm = { path = "../sparkfox-llm" }
+# rusqlite：FTS5 全文检索 + chunks 表（bundled 特性含 FTS5 编译）
+rusqlite = { workspace = true }
+# 序列化（Citation / Document 元数据）
+serde = { workspace = true }
+serde_json = { workspace = true }
+# Sub-Step 10.7.1：extract.yaml 实体类型配置解析
+serde_yaml = { workspace = true }
+# Sub-Step 10.4.1：NFKC 归一化（全角→半角、繁简兼容性处理等）
+unicode-normalization = "0.1"
+# Sub-Step 10.6.1：jieba 降级 NER（R-06 决策：LLM 失败时降级到 jieba + 规则匹配）
+jieba-rs = "0.7"
+# 正则规则匹配（时间 / 数字识别）
+regex = { workspace = true }
+# 日志
+log = "0.4"
+env_logger = "0.11"
+# Sub-Step 10.5.1：SearchStrategy trait 需 #[async_trait] 支持 dyn compatibility
+# （Box<dyn SearchStrategy> 要求 trait object-safe；原生 async fn in trait 不支持 dyn）
+async-trait = { workspace = true }
+
+# 注意：sparkfox-knowledge 不直接依赖 sparkfox-store / sparkfox-embedding，
+# 因为 sparkfox-store 已依赖 sparkfox-knowledge（用于 ALL_SAG_DDL），
+# 反向依赖会形成循环：sparkfox-knowledge → sparkfox-store → sparkfox-knowledge。
+# 因此 RAG 引擎通过本地定义的 Embedder / VectorStore trait 解耦具体后端，
+# 在 dev-dependencies / 集成测试中再桥接 sparkfox-store::Store 与 sparkfox-embedding::BgeEmbedder。
+
+[dev-dependencies]
+# 集成测试需要 sparkfox-store / sparkfox-embedding 的具体实现
+# dev-deps 不参与 lib 编译，不会形成循环依赖
+sparkfox-store = { path = "../sparkfox-store" }
+sparkfox-embedding = { path = "../sparkfox-embedding" }
+sparkfox-memory = { path = "../sparkfox-memory" }
+sparkfox-knowledge = { path = "." }
+# Sub-Step 10.2.2: 测试中 MockLlmProvider impl LlmProvider 需要 #[async_trait] 宏
+# （LlmProvider trait 在 sparkfox-llm 中用 #[async_trait] 定义，impl 时也需用宏）
+async-trait = { workspace = true }
+tokio = { workspace = true }
+tempfile = "3"

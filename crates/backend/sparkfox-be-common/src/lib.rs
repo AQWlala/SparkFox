@@ -1,0 +1,75 @@
+//! Shared primitives: error types, enums, ID generation, crypto, timestamps, and pagination.
+pub mod channel;
+pub mod constants;
+pub mod agent_execution;
+
+mod case_convert;
+mod crypto;
+pub mod dir_config;
+mod enums;
+mod error;
+mod execution_authority;
+pub mod factory_reset;
+mod fsname;
+mod hooks;
+mod id;
+mod scoped_auth;
+mod pagination;
+pub mod provider_usage;
+mod timestamp;
+mod types;
+pub mod vision_registry;
+
+pub use case_convert::{camel_to_snake, normalize_keys_to_snake_case};
+pub use agent_execution::{
+    AdaptationPolicy, AgentExecutionActor, AgentExecutionActorType, AgentExecutionEventKind,
+    AgentExecutionReceipt, AgentExecutionStatus, AgentStepMode, AgentToolPolicy, ConversationExecutionRelation, DecisionPolicy,
+    DelegationPolicy, ExecutionAttemptStatus, ExecutionStepKind, ExecutionStepStatus,
+    ParticipantAssignmentSource, PlanGate, StepFailurePolicy, UnknownAgentExecutionValue,
+    MAX_AGENT_DELEGATION_DEPTH, MAX_AGENT_EXECUTION_MODELS,
+    MAX_AGENT_EXECUTION_PARALLELISM, MAX_AGENT_EXECUTION_PARTICIPANTS,
+    MAX_AGENT_EXECUTION_STEPS,
+};
+pub use sparkfox_ag_types::agent::{
+    AgentDelegationTask, ParallelDelegationRequest, ParallelDelegationStrategy,
+    apply_agent_role_context,
+};
+pub use crypto::{decrypt_string, encrypt_string};
+pub use enums::{
+    AgentKillReason, AgentType, ConversationSource, ConversationStatus, FileChangeOperation, McpServerStatus,
+    McpSource, MessagePosition, MessageStatus, MessageType, PreviewContentType, ProtocolType, RemoteAgentAuthType,
+    RemoteAgentProtocol, RemoteAgentStatus,
+};
+pub use error::{AppError, ErrorChain, workspace_path_has_edge_whitespace_segment};
+pub use execution_authority::ExecutionAuthority;
+pub use fsname::sanitize_dir_segment;
+pub use hooks::{OnConversationDelete, OnTerminalDelete, RequirementCreator};
+pub use id::{
+    AgentExecutionAttemptId, AgentExecutionEventId, AgentExecutionId,
+    AgentExecutionParticipantId, AgentExecutionStepId, AgentExecutionTemplateId,
+    AgentExecutionTemplateParticipantId, AgentId, AttachmentId, ChannelId, ChannelSessionId,
+    ChannelUserId, CompanionId, CompanionLearnRunId, CompanionMemoryId, CompanionSessionWindowId,
+    CompanionSuggestionId, CompanionEvolutionFeedbackId, ConnectorCredentialId, ConversationArtifactId,
+    ConversationExecutionLinkId, ConversationId, CreationTaskId, CronJobId, CronJobRunId,
+    EntityId, FigureId, IdPrefixError, IdmmInterventionId, KnowledgeBaseId, KnowledgeBindingId,
+    MAX_ID_PREFIX_LEN, McpServerId, MessageId, PrefixedIdError, PresetId, PresetTagId, ProviderId,
+    PublicAgentAuditEntryId, PublicAgentId, RemoteAgentId, RequirementId, TerminalId,
+    UUID_STRING_LEN, UuidV7Error, UserId, WebhookId, WorkshopAssetId, WorkshopCanvasId,
+    WorkshopEdgeId, WorkshopNodeId, generate_id, generate_prefixed_id, validate_id_prefix,
+    validate_uuidv7,
+    validate_prefixed_id,
+};
+pub use scoped_auth::{
+    LOOPBACK_CAPABILITY_RENEW_PATH, LOOPBACK_CAPABILITY_RENEWAL_MARGIN_SECS,
+    LOOPBACK_CAPABILITY_REVOKE_PATH, LOOPBACK_CAPABILITY_TTL_SECS,
+    LOOPBACK_CAPABILITY_VERSION, LoopbackCapabilityAccess,
+    LoopbackCapabilityClaims, LoopbackCapabilityError, LoopbackCapabilityIssuer,
+    LoopbackCapabilityLease, LoopbackCapabilityLeaseSet,
+    LoopbackCapabilityRenewalRequest,
+    LoopbackSessionBinding, LoopbackSessionKind, unix_time_secs,
+};
+pub use pagination::PaginatedResult;
+pub use provider_usage::{ProviderInUseDetails, ProviderUsage, ProviderUsageFeature};
+pub use timestamp::{TimestampMs, now_ms};
+pub use types::{CommandSpec, Confirmation, ConfirmationOption, EnvVar, ProviderWithModel};
+pub use vision_registry::VisionUnsupportedRegistry;

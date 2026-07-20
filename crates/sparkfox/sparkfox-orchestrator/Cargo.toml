@@ -1,0 +1,18 @@
+[package]
+name = "sparkfox-orchestrator"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "SparkFox DAG orchestration (RFC-002)"
+
+[dependencies]
+sparkfox-core = { path = "../sparkfox-core" }
+sparkfox-agent = { path = "../sparkfox-agent" }
+petgraph = "0.6"
+tokio = { workspace = true }
+serde = { workspace = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }
+tokio = { workspace = true }

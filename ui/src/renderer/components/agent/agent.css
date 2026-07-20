@@ -1,0 +1,1131 @@
+/**
+ * @license
+ * Copyright 2026 SparkFox Contributors — AGPL-3.0-only
+ *
+ * SparkFox agent.css — Agent 菜单系统样式
+ *
+ * 来源：OpenAkita styles.css Agent 相关 class + Apple 主题适配
+ *
+ * Apple 主题：
+ * - SF Pro 字体
+ * - 圆角 8px（卡片）/ 6px（按钮）
+ * - 系统蓝 #007AFF
+ * - 系统灰 #8E8E93
+ * - 浅灰背景 #F5F5F7
+ * - 边框 #D2D2D7
+ */
+
+/* ─── Agent 管理主页面 ─── */
+
+.sf-agent-manager-view {
+  padding: 20px 24px;
+  height: 100%;
+  overflow: auto;
+  font-family: var(--sf-font-family);
+  color: #1D1D1F;
+  background: #FFFFFF;
+}
+
+.sf-agent-manager-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #D2D2D7;
+}
+
+.sf-agent-manager-title {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+}
+
+.sf-agent-manager-title h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.3px;
+}
+
+.sf-agent-manager-count {
+  font-size: 13px;
+  color: #8E8E93;
+}
+
+.sf-agent-manager-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* ─── Agent 列表面板 ─── */
+
+.sf-agent-list-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.sf-agent-list-toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.sf-agent-search-input {
+  flex: 1;
+  padding: 8px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-small);
+  background: #F5F5F7;
+  color: #1D1D1F;
+  outline: none;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.sf-agent-search-input:focus {
+  border-color: #007AFF;
+  background: #FFFFFF;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.1);
+}
+
+.sf-agent-search-input::placeholder {
+  color: #AEAEB2;
+}
+
+.sf-agent-toolbar-btn {
+  padding: 8px 12px;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-small);
+  background: #FFFFFF;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  transition: background 0.15s ease;
+}
+
+.sf-agent-toolbar-btn:hover,
+.sf-agent-toolbar-btn.active {
+  background: #F5F5F7;
+}
+
+/* ─── Agent 分类栏 ─── */
+
+.sf-agent-category-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 8px 0;
+}
+
+.sf-agent-category-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  font-family: inherit;
+  font-size: 13px;
+  border: 1px solid #D2D2D7;
+  border-radius: 999px;
+  background: #FFFFFF;
+  color: #6E6E73;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.sf-agent-category-pill:hover {
+  background: #F5F5F7;
+}
+
+.sf-agent-category-pill.active {
+  background: #007AFF;
+  color: #FFFFFF;
+  border-color: #007AFF;
+}
+
+.sf-agent-category-pill-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.sf-agent-category-pill-count {
+  font-size: 11px;
+  opacity: 0.7;
+  padding: 0 6px;
+  background: rgba(0, 0, 0, 0.08);
+  border-radius: 999px;
+}
+
+.sf-agent-category-pill.active .sf-agent-category-pill-count {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.sf-agent-category-add {
+  color: #007AFF;
+  border-color: rgba(0, 122, 255, 0.33);
+  background: rgba(0, 122, 255, 0.04);
+}
+
+.sf-agent-category-add-form {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 8px;
+  border: 1px dashed #007AFF;
+  border-radius: 999px;
+  background: rgba(0, 122, 255, 0.04);
+}
+
+.sf-agent-category-add-form input[type='text'] {
+  width: 100px;
+  padding: 4px 8px;
+  font-family: inherit;
+  font-size: 12px;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-xs);
+  outline: none;
+}
+
+.sf-agent-category-add-form input[type='color'] {
+  width: 28px;
+  height: 28px;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-xs);
+  cursor: pointer;
+  padding: 2px;
+}
+
+.sf-agent-category-add-form button {
+  padding: 4px 10px;
+  font-family: inherit;
+  font-size: 12px;
+  border: none;
+  border-radius: var(--sf-radius-xs);
+  cursor: pointer;
+}
+
+.sf-agent-category-add-form button:first-of-type {
+  background: #007AFF;
+  color: #FFFFFF;
+}
+
+.sf-agent-category-add-form button:last-of-type {
+  background: #E5E5EA;
+  color: #6E6E73;
+}
+
+/* ─── Agent 列表 ─── */
+
+.sf-agent-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sf-agent-list-empty {
+  padding: 48px 16px;
+  text-align: center;
+  color: #8E8E93;
+}
+
+.sf-agent-list-empty-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+.sf-agent-list-empty-text {
+  font-size: 14px;
+}
+
+.sf-agent-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-md);
+  background: #FFFFFF;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+  transition: all 0.15s ease;
+}
+
+.sf-agent-card:hover {
+  border-color: #007AFF;
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.1);
+}
+
+.sf-agent-card.selected {
+  border-color: #007AFF;
+  background: rgba(0, 122, 255, 0.04);
+}
+
+.sf-agent-card.batch-selected {
+  border-color: #34C759;
+  background: rgba(52, 199, 89, 0.04);
+}
+
+.sf-agent-card-check {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #34C759;
+  color: #FFFFFF;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sf-agent-card-icon {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--sf-radius-medium);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sf-agent-card-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.sf-agent-card-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1D1D1F;
+  margin-bottom: 2px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sf-agent-card-hidden-tag {
+  font-size: 11px;
+}
+
+.sf-agent-card-desc {
+  font-size: 12px;
+  color: #6E6E73;
+  margin-bottom: 6px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sf-agent-card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 8px;
+  font-size: 11px;
+  color: #8E8E93;
+}
+
+.sf-agent-card-cat {
+  padding: 2px 8px;
+  border-radius: var(--sf-radius-xs);
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.sf-agent-card-stat {
+  font-size: 11px;
+  color: #8E8E93;
+}
+
+.sf-agent-card-type-badge {
+  flex: none;
+  padding: 3px 8px;
+  font-size: 10px;
+  font-weight: 500;
+  color: #8E8E93;
+  background: #F5F5F7;
+  border-radius: var(--sf-radius-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* ─── Agent 编辑器抽屉 ─── */
+
+.sf-agent-editor-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 4px 0;
+}
+
+.sf-agent-editor-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sf-agent-editor-row-inline {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sf-agent-editor-label {
+  font-size: 13px;
+  font-weight: 500;
+  color: #1D1D1F;
+  display: flex;
+  align-items: center;
+}
+
+.sf-agent-editor-icon-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sf-agent-editor-icon-btn {
+  width: 48px;
+  height: 48px;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-md);
+  background: #F5F5F7;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.sf-agent-editor-icon-btn:hover {
+  border-color: #007AFF;
+}
+
+.sf-agent-editor-color {
+  width: 36px;
+  height: 36px;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-small);
+  cursor: pointer;
+  padding: 2px;
+  flex: none;
+}
+
+.sf-agent-editor-icon-input {
+  flex: 1;
+  padding: 8px 12px;
+  font-family: var(--sf-font-mono);
+  font-size: 12px;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-small);
+  outline: none;
+  background: #F5F5F7;
+}
+
+.sf-agent-editor-icon-input:focus {
+  border-color: #007AFF;
+  background: #FFFFFF;
+}
+
+/* 身份文件标签页 */
+.sf-agent-editor-identity-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.sf-agent-editor-identity-tab {
+  padding: 6px 12px;
+  font-family: var(--sf-font-mono);
+  font-size: 11px;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-small);
+  background: #F5F5F7;
+  color: #6E6E73;
+  cursor: pointer;
+}
+
+.sf-agent-editor-identity-tab.active {
+  background: #007AFF;
+  color: #FFFFFF;
+  border-color: #007AFF;
+}
+
+/* 记忆统计 */
+.sf-agent-editor-memory-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.sf-agent-editor-memory-stat {
+  padding: 12px;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-md);
+  background: #F5F5F7;
+  text-align: center;
+}
+
+.sf-agent-editor-memory-stat-label {
+  font-size: 11px;
+  color: #8E8E93;
+  margin-bottom: 4px;
+}
+
+.sf-agent-editor-memory-stat-value {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1D1D1F;
+}
+
+/* ─── Agent 图标选择器 ─── */
+
+.sf-agent-icon-picker {
+  background: #FFFFFF;
+  border-radius: var(--sf-radius-xl);
+  padding: 16px;
+  max-width: 420px;
+  box-shadow: var(--sf-shadow-lg);
+}
+
+.sf-agent-icon-picker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #D2D2D7;
+}
+
+.sf-agent-icon-picker-preview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sf-agent-icon-picker-preview-name {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.sf-agent-icon-picker-preview-hint {
+  font-size: 11px;
+  color: #8E8E93;
+}
+
+.sf-agent-icon-picker-close {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background: #F5F5F7;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.sf-agent-icon-picker-close:hover {
+  background: #E5E5EA;
+}
+
+.sf-agent-icon-picker-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  flex-wrap: wrap;
+}
+
+.sf-agent-icon-picker-tab {
+  padding: 4px 10px;
+  font-family: inherit;
+  font-size: 12px;
+  border: 1px solid #D2D2D7;
+  border-radius: 999px;
+  background: #FFFFFF;
+  color: #6E6E73;
+  cursor: pointer;
+}
+
+.sf-agent-icon-picker-tab.active {
+  background: #007AFF;
+  color: #FFFFFF;
+  border-color: #007AFF;
+}
+
+.sf-agent-icon-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 4px;
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.sf-agent-icon-picker-cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border: 1px solid transparent;
+  border-radius: var(--sf-radius-small);
+  background: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.1s ease;
+}
+
+.sf-agent-icon-picker-cell:hover {
+  background: #F5F5F7;
+}
+
+.sf-agent-icon-picker-cell.selected {
+  border-color: #007AFF;
+  background: rgba(0, 122, 255, 0.1);
+}
+
+.sf-agent-icon-picker-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+}
+
+/* ─── Agent 商店页面 ─── */
+
+.sf-agent-store-view {
+  padding: 20px 24px;
+  height: 100%;
+  overflow: auto;
+  font-family: var(--sf-font-family);
+  color: #1D1D1F;
+  background: #FFFFFF;
+}
+
+.sf-agent-store-header {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #D2D2D7;
+}
+
+.sf-agent-store-title h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.sf-agent-store-total {
+  font-size: 13px;
+  color: #8E8E93;
+}
+
+.sf-agent-store-toolbar {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sf-agent-store-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+}
+
+.sf-agent-store-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-medium);
+  background: #FFFFFF;
+  transition: all 0.15s ease;
+}
+
+.sf-agent-store-card:hover {
+  border-color: #007AFF;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.1);
+}
+
+.sf-agent-store-card.featured {
+  border-color: #FF9500;
+  background: linear-gradient(180deg, rgba(255, 149, 0, 0.03), #FFFFFF 40%);
+}
+
+.sf-agent-store-card-featured {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 2px 8px;
+  font-size: 10px;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: #FF9500;
+  border-radius: 999px;
+}
+
+.sf-agent-store-card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sf-agent-store-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.sf-agent-store-card-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1D1D1F;
+}
+
+.sf-agent-store-card-author {
+  font-size: 11px;
+  color: #8E8E93;
+}
+
+.sf-agent-store-card-desc {
+  font-size: 12px;
+  color: #6E6E73;
+  line-height: 1.5;
+  min-height: 36px;
+}
+
+.sf-agent-store-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.sf-agent-store-card-tag {
+  padding: 2px 8px;
+  font-size: 10px;
+  color: #007AFF;
+  background: rgba(0, 122, 255, 0.1);
+  border-radius: var(--sf-radius-xs);
+}
+
+.sf-agent-store-card-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  font-size: 11px;
+  color: #8E8E93;
+  padding: 8px 0;
+  border-top: 1px solid #E5E5EA;
+  border-bottom: 1px solid #E5E5EA;
+}
+
+.sf-agent-store-empty {
+  padding: 48px 16px;
+  text-align: center;
+  color: #8E8E93;
+}
+
+.sf-agent-store-empty-icon {
+  font-size: 48px;
+  margin-bottom: 8px;
+}
+
+/* ─── Agent 仪表盘 ─── */
+
+.sf-agent-dashboard-view {
+  padding: 20px 24px;
+  height: 100%;
+  overflow: auto;
+  font-family: var(--sf-font-family);
+  color: #1D1D1F;
+  background: #FFFFFF;
+}
+
+.sf-agent-dashboard-header h1 {
+  margin: 0 0 20px;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.sf-agent-dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+/* ============================================================================
+   Agent 系统设置 / Settings 公共样式
+   ============================================================================ */
+
+.sf-agent-system-section {
+  background: #FFFFFF;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-xl);
+  padding: 20px 24px;
+  margin-bottom: 16px;
+  box-shadow: var(--sf-shadow-sm);
+}
+
+.sf-agent-system-section-title {
+  margin: 0 0 4px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #1D1D1F;
+  letter-spacing: -0.2px;
+}
+
+.sf-agent-system-section-desc {
+  margin: 0 0 16px;
+  font-size: 12px;
+  color: #8E8E93;
+}
+
+.sf-agent-system-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sf-agent-system-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 32px;
+}
+
+.sf-agent-system-row-switch {
+  flex-wrap: wrap;
+}
+
+.sf-agent-system-label {
+  flex-shrink: 0;
+  width: 140px;
+  font-size: 13px;
+  color: #1D1D1F;
+  font-weight: 500;
+}
+
+.sf-agent-system-hint {
+  font-size: 12px;
+  color: #8E8E93;
+}
+
+/* ─── 图标选择器 ─── */
+
+.sf-agent-system-icon-picker {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.sf-agent-system-icon-btn {
+  width: 32px;
+  height: 32px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #F5F5F7;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-md);
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.15s ease;
+  padding: 0;
+}
+
+.sf-agent-system-icon-btn:hover {
+  background: #E8E8ED;
+  border-color: #C7C7CC;
+}
+
+.sf-agent-system-icon-btn.active {
+  background: rgba(0, 122, 255, 0.1);
+  border-color: #007AFF;
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.15);
+}
+
+/* ─── 颜色选择器 ─── */
+
+.sf-agent-system-color-picker {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sf-agent-system-color-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  padding: 0;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.08);
+}
+
+.sf-agent-system-color-btn:hover {
+  transform: scale(1.1);
+}
+
+.sf-agent-system-color-btn.active {
+  border-color: #1D1D1F;
+  box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px rgba(0, 122, 255, 0.3);
+}
+
+/* ─── Settings 快捷键列表 ─── */
+
+.sf-settings-shortcut-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sf-settings-shortcut-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #F5F5F7;
+  border-radius: var(--sf-radius-md);
+  transition: background 0.15s ease;
+}
+
+.sf-settings-shortcut-row:hover {
+  background: #EDEDF0;
+}
+
+.sf-settings-shortcut-info {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sf-settings-shortcut-label {
+  font-size: 13px;
+  color: #1D1D1F;
+  min-width: 160px;
+}
+
+.sf-settings-shortcut-keys {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  background: #FFFFFF;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-xs);
+  font-family: var(--sf-font-family);
+  font-size: 12px;
+  color: #1D1D1F;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+  min-width: 32px;
+  justify-content: center;
+}
+
+/* ─── Settings 导入文本域 ─── */
+
+.sf-settings-import-textarea {
+  flex: 1;
+  min-width: 0;
+  min-height: 72px;
+  padding: 8px 12px;
+  background: #F5F5F7;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-md);
+  font-family: var(--sf-font-family);
+  font-size: 12px;
+  color: #1D1D1F;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sf-settings-import-textarea:focus {
+  border-color: #007AFF;
+  box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.12);
+  background: #FFFFFF;
+}
+
+.sf-settings-import-textarea::placeholder {
+  color: #AEAEB2;
+}
+
+/* ─── Settings 数据操作按钮组 ─── */
+
+.sf-settings-data-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* ─── Settings 关于 ─── */
+
+.sf-settings-about {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.sf-settings-about-row {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  padding: 8px 0;
+  border-bottom: 1px solid #E8E8ED;
+}
+
+.sf-settings-about-row:last-child {
+  border-bottom: none;
+}
+
+.sf-settings-about-label {
+  flex-shrink: 0;
+  width: 100px;
+  font-size: 12px;
+  color: #8E8E93;
+}
+
+.sf-settings-about-value {
+  font-size: 13px;
+  color: #1D1D1F;
+  font-weight: 500;
+}
+
+.sf-agent-dashboard-stat-card {
+  padding: 16px;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-medium);
+  background: #F5F5F7;
+}
+
+.sf-agent-dashboard-stat-label {
+  font-size: 11px;
+  color: #8E8E93;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+
+.sf-agent-dashboard-stat-value {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1D1D1F;
+}
+
+.sf-agent-dashboard-current h2,
+.sf-agent-dashboard-list h2 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 12px;
+}
+
+.sf-agent-dashboard-current-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  border: 1px solid #007AFF;
+  border-radius: var(--sf-radius-medium);
+  background: rgba(0, 122, 255, 0.04);
+  margin-bottom: 24px;
+}
+
+.sf-agent-dashboard-current-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--sf-radius-xl);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+
+.sf-agent-dashboard-current-info {
+  flex: 1;
+}
+
+.sf-agent-dashboard-current-name {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.sf-agent-dashboard-current-desc {
+  font-size: 13px;
+  color: #6E6E73;
+  margin-bottom: 8px;
+}
+
+.sf-agent-dashboard-current-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  font-size: 11px;
+  color: #8E8E93;
+}
+
+.sf-agent-dashboard-list-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 8px;
+}
+
+.sf-agent-dashboard-list-card {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-md);
+  background: #FFFFFF;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  width: 100%;
+}
+
+.sf-agent-dashboard-list-card:hover {
+  border-color: #007AFF;
+}
+
+.sf-agent-dashboard-list-card.active {
+  border-color: #007AFF;
+  background: rgba(0, 122, 255, 0.04);
+}
+
+.sf-agent-dashboard-list-card-name {
+  flex: 1;
+  font-size: 13px;
+  font-weight: 500;
+  color: #1D1D1F;
+}
+
+.sf-agent-dashboard-list-card-active {
+  color: #007AFF;
+  font-size: 14px;
+}
+
+/* ─── 响应式 ─── */
+
+@media (max-width: 768px) {
+  .sf-agent-dashboard-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .sf-agent-icon-picker-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}

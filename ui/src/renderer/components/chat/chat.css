@@ -1,0 +1,355 @@
+/**
+ * @license
+ * Copyright 2026 SparkFox Contributors — AGPL-3.0-only
+ *
+ * SparkFox 对话样式（基于 BaiLongma styles.css 提取 + Apple 主题适配）
+ *
+ * 保留 BaiLongma 特性：
+ * - 消息气泡圆角 + 阴影
+ * - 流式光标动画
+ * - 用户/AI 消息左右分栏
+ * - 频道标签徽章
+ *
+ * 改造点：
+ * - 用 SparkFox CSS 变量（--sf-*）替代 BaiLongma 全局变量（--bg0/--ink）
+ * - 用 Apple 系统蓝（#007AFF）替代 BaiLongma phosphor 绿
+ * - 用 macOS 圆角（10px/16px）替代 BaiLongma 默认圆角
+ */
+
+/* ─── SparkFox CSS 变量别名（兼容 sparkfox-apple.css 的 --sf-color-* 命名） ─── */
+:root {
+  --sf-bg-primary: var(--sf-color-bg, #ffffff);
+  --sf-bg-secondary: var(--sf-color-bg-secondary, #f5f5f7);
+  --sf-text-primary: var(--sf-color-text, #1d1d1f);
+  --sf-border: var(--sf-color-border, #d2d2d7);
+}
+
+/* ─── 对话容器 ─── */
+
+.sparkfox-chat {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--sf-bg-primary, #ffffff);
+  color: var(--sf-text-primary, #1d1d1f);
+  font-family: var(--sf-font-family);
+}
+
+[data-theme='dark'] .sparkfox-chat {
+  background: var(--sf-bg-primary, #1c1c1e);
+  color: var(--sf-text-primary, #f5f5f7);
+}
+
+/* ─── 消息列表 ─── */
+
+.sparkfox-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px 24px;
+  scroll-behavior: smooth;
+}
+
+.sparkfox-chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sparkfox-chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sparkfox-chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 3px;
+}
+
+[data-theme='dark'] .sparkfox-chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ─── 消息行 ─── */
+
+.sparkfox-msg-row {
+  display: flex;
+  margin-bottom: 16px;
+  animation: sf-msg-in 0.3s ease-out;
+}
+
+@keyframes sf-msg-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sparkfox-msg-row.role-user {
+  justify-content: flex-end;
+}
+
+.sparkfox-msg-row.role-assistant,
+.sparkfox-msg-row.role-system {
+  justify-content: flex-start;
+}
+
+/* ─── 消息气泡 ─── */
+
+.sparkfox-msg-bubble {
+  max-width: 70%;
+  padding: 10px 14px;
+  border-radius: var(--sf-radius-large);
+  font-size: 14px;
+  line-height: 1.6;
+  word-wrap: break-word;
+  position: relative;
+  box-shadow: var(--sf-shadow-sm);
+}
+
+.sparkfox-msg-row.role-user .sparkfox-msg-bubble {
+  background: #007AFF;
+  color: #ffffff;
+  border-bottom-right-radius: 4px;
+}
+
+.sparkfox-msg-row.role-assistant .sparkfox-msg-bubble,
+.sparkfox-msg-row.role-system .sparkfox-msg-bubble {
+  background: var(--sf-bg-secondary, #f5f5f7);
+  color: var(--sf-text-primary, #1d1d1f);
+  border-bottom-left-radius: 4px;
+}
+
+[data-theme='dark'] .sparkfox-msg-row.role-assistant .sparkfox-msg-bubble,
+[data-theme='dark'] .sparkfox-msg-row.role-system .sparkfox-msg-bubble {
+  background: var(--sf-bg-secondary, #2c2c2e);
+  color: var(--sf-text-primary, #f5f5f7);
+}
+
+/* ─── 流式光标动画 ─── */
+
+.sparkfox-msg-bubble.is-streaming::after {
+  content: '▍';
+  display: inline-block;
+  margin-left: 2px;
+  color: #007AFF;
+  animation: sf-cursor-blink 1s steps(2, start) infinite;
+}
+
+@keyframes sf-cursor-blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* ─── 频道标签 ─── */
+
+.sparkfox-msg-label {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+
+.sparkfox-msg-row.role-assistant .sparkfox-msg-label,
+.sparkfox-msg-row.role-system .sparkfox-msg-label {
+  color: rgba(0, 0, 0, 0.45);
+}
+
+[data-theme='dark'] .sparkfox-msg-row.role-assistant .sparkfox-msg-label,
+[data-theme='dark'] .sparkfox-msg-row.role-system .sparkfox-msg-label {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+/* ─── 附件预览 ─── */
+
+.sparkfox-msg-attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.sparkfox-msg-attachment-img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: var(--sf-radius-md);
+  background: rgba(0, 0, 0, 0.05);
+}
+
+/* ─── ThoughtStream 插槽（P0-模块 F 接入点） ─── */
+
+.sparkfox-thought-slot {
+  margin-bottom: 8px;
+  padding: 8px 12px;
+  background: rgba(0, 122, 255, 0.05);
+  border-left: 3px solid #007AFF;
+  border-radius: var(--sf-radius-small);
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.55);
+}
+
+[data-theme='dark'] .sparkfox-thought-slot {
+  background: rgba(10, 132, 255, 0.08);
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ─── 输入区 ─── */
+
+.sparkfox-chat-input-area {
+  border-top: 1px solid var(--sf-border, rgba(0, 0, 0, 0.08));
+  padding: 12px 24px 16px;
+  background: var(--sf-bg-primary, #ffffff);
+}
+
+[data-theme='dark'] .sparkfox-chat-input-area {
+  border-top-color: var(--sf-border, rgba(255, 255, 255, 0.08));
+  background: var(--sf-bg-primary, #1c1c1e);
+}
+
+.sparkfox-chat-input-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  background: var(--sf-bg-secondary, #f5f5f7);
+  border-radius: var(--sf-radius-large);
+  padding: 8px 12px;
+  border: 1px solid transparent;
+  transition: border-color 0.2s ease;
+}
+
+.sparkfox-chat-input-wrapper:focus-within {
+  border-color: #007AFF;
+  background: var(--sf-bg-primary, #ffffff);
+}
+
+[data-theme='dark'] .sparkfox-chat-input-wrapper {
+  background: var(--sf-bg-secondary, #2c2c2e);
+}
+
+[data-theme='dark'] .sparkfox-chat-input-wrapper:focus-within {
+  background: var(--sf-bg-primary, #1c1c1e);
+}
+
+.sparkfox-chat-input {
+  flex: 1;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 1.5;
+  resize: none;
+  outline: none;
+  min-height: 24px;
+  max-height: 160px;
+  overflow-y: auto;
+}
+
+.sparkfox-chat-input::placeholder {
+  color: rgba(0, 0, 0, 0.35);
+}
+
+[data-theme='dark'] .sparkfox-chat-input::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.sparkfox-chat-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ─── 发送按钮 ─── */
+
+.sparkfox-send-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background: #007AFF;
+  color: #ffffff;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, transform 0.1s ease;
+  flex-shrink: 0;
+}
+
+.sparkfox-send-btn:hover:not(:disabled) {
+  background: #0066D6;
+}
+
+.sparkfox-send-btn:active:not(:disabled) {
+  transform: scale(0.95);
+}
+
+.sparkfox-send-btn:disabled {
+  background: rgba(0, 122, 255, 0.3);
+  cursor: not-allowed;
+}
+
+/* ─── 附件预览栏（输入区上方） ─── */
+
+.sparkfox-attachment-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.sparkfox-attachment-item {
+  position: relative;
+  width: 64px;
+  height: 64px;
+}
+
+.sparkfox-attachment-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: var(--sf-radius-md);
+}
+
+.sparkfox-attachment-remove {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  line-height: 1;
+}
+
+/* ─── 空状态 ─── */
+
+.sparkfox-chat-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: rgba(0, 0, 0, 0.35);
+  gap: 8px;
+}
+
+[data-theme='dark'] .sparkfox-chat-empty {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.sparkfox-chat-empty-icon {
+  font-size: 48px;
+}
+
+.sparkfox-chat-empty-text {
+  font-size: 14px;
+}

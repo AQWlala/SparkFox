@@ -1,0 +1,36 @@
+[package]
+name = "sparkfox-ag-skills"
+description = "Skills system for Nomi: named prompt snippets with tool execution, permissions, hooks, and MCP integration"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+sparkfox-ag-types.workspace   = true
+sparkfox-ag-config.workspace  = true
+sparkfox-ag-mcp.workspace     = true
+
+tracing.workspace      = true
+serde.workspace        = true
+serde_json.workspace   = true
+serde_yaml.workspace   = true
+tokio.workspace        = true
+futures.workspace      = true
+async-trait.workspace  = true
+thiserror.workspace    = true
+glob.workspace         = true
+dirs.workspace         = true
+regex.workspace        = true
+notify.workspace       = true
+unicode-width.workspace = true
+
+[target.'cfg(unix)'.dependencies]
+libc.workspace = true
+
+
+[dev-dependencies]
+sparkfox-ag-mcp = { workspace = true, features = ["test-utils"] }
+tempfile.workspace   = true
+rstest.workspace     = true
+serial_test.workspace = true

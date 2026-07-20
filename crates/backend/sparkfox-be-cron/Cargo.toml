@@ -1,0 +1,34 @@
+[package]
+name = "sparkfox-be-cron"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+sparkfox-be-common.workspace = true
+sparkfox-be-db.workspace = true
+sparkfox-be-api-types.workspace = true
+sparkfox-be-realtime.workspace = true
+sparkfox-be-conversation.workspace = true
+sparkfox-be-preset.workspace = true
+sparkfox-be-ai-agent.workspace = true
+sparkfox-be-auth.workspace = true
+axum.workspace = true
+cron.workspace = true
+chrono.workspace = true
+chrono-tz.workspace = true
+tokio.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+thiserror.workspace = true
+tracing.workspace = true
+dashmap.workspace = true
+async-trait.workspace = true
+base64.workspace = true
+
+[dev-dependencies]
+tokio = { workspace = true, features = ["test-util"] }
+tempfile.workspace = true
+sqlx.workspace = true
+# Enable the `AgentRuntimeHandle::Mock` variant so tests can build fake Agents
+# through the trait-object escape hatch without spawning real CLI processes.
+sparkfox-be-ai-agent = { workspace = true, features = ["test-support"] }

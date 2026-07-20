@@ -1,0 +1,148 @@
+[package]
+name = "sparkfox-be-app"
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "nomicore"
+path = "src/main.rs"
+
+[features]
+default = ["telegram", "lark", "dingtalk", "weixin", "wecom", "discord", "matrix", "mattermost", "slack", "twitch", "nostr", "qqbot"]
+telegram = ["sparkfox-be-channel/telegram"]
+lark = ["sparkfox-be-channel/lark"]
+dingtalk = ["sparkfox-be-channel/dingtalk"]
+weixin = ["sparkfox-be-channel/weixin"]
+wecom = ["sparkfox-be-channel/wecom"]
+discord = ["sparkfox-be-channel/discord"]
+matrix = ["sparkfox-be-channel/matrix"]
+mattermost = ["sparkfox-be-channel/mattermost"]
+slack = ["sparkfox-be-channel/slack"]
+twitch = ["sparkfox-be-channel/twitch"]
+nostr = ["sparkfox-be-channel/nostr"]
+qqbot = ["sparkfox-be-channel/qqbot"]
+# Desktop control tools (desktop host enables this; web/server hosts do not).
+# Also pulls the discrete-tool MCP bridge (`mcp-computer-stdio`) deps so codex/
+# ACP sessions get the same computer-use; web/headless builds omit them entirely.
+computer-use = [
+    "sparkfox-be-ai-agent/computer-use",
+    "sparkfox-be-gateway/computer-use",
+    "dep:sparkfox-ag-computer",
+    "dep:sparkfox-ag-config",
+    "dep:sparkfox-ag-tools",
+    "dep:sparkfox-ag-types",
+]
+# Browser-automation tools (desktop host enables this; web/server hosts do not).
+# Also pulls the discrete-tool MCP bridge (`mcp-browser-stdio`) deps so codex/
+# ACP sessions get the same browser-use; web/headless builds omit them entirely
+# (no self-hosted-CDP / Chromium stack). Mirrors how `computer-use` pulls
+# sparkfox-ag-computer/-config/-tools/-types for mcp-computer-stdio.
+# P3-GW1: also forwards to `sparkfox-be-gateway/browser-use` so the Platform Gateway
+# exposes the per-companion `sparkfox_ag_browser_*` tools (route A). Web/headless builds
+# omit the feature → the gateway registers no browser tools.
+browser-use = [
+    "sparkfox-be-ai-agent/browser-use",
+    "sparkfox-be-gateway/browser-use",
+    "dep:sparkfox-ag-browser",
+    "dep:sparkfox-ag-browser-engine",
+    "dep:sparkfox-ag-config",
+    "dep:sparkfox-ag-tools",
+    "dep:sparkfox-ag-types",
+]
+
+[dependencies]
+sparkfox-be-common.workspace = true
+sparkfox-be-assets.workspace = true
+sparkfox-be-db.workspace = true
+sparkfox-be-api-types.workspace = true
+sparkfox-be-realtime.workspace = true
+sparkfox-be-auth.workspace = true
+sparkfox-be-system.workspace = true
+sparkfox-be-file.workspace = true
+sparkfox-be-office.workspace = true
+sparkfox-be-shell.workspace = true
+sparkfox-be-ai-agent.workspace = true
+sparkfox-be-mcp.workspace = true
+sparkfox-be-conversation.workspace = true
+sparkfox-be-extension.workspace = true
+sparkfox-be-channel.workspace = true
+sparkfox-be-cron.workspace = true
+sparkfox-be-requirement.workspace = true
+sparkfox-be-idmm.workspace = true
+sparkfox-be-knowledge.workspace = true
+sparkfox-be-agent-execution.workspace = true
+sparkfox-be-companion.workspace = true
+sparkfox-be-public-agent.workspace = true
+sparkfox-be-workshop.workspace = true
+sparkfox-be-creation.workspace = true
+sparkfox-be-gateway.workspace = true
+sparkfox-be-public.workspace = true
+sparkfox-be-webhook.workspace = true
+# P3-X2: per-pet browser-use credential secret CRUD endpoints (web feature mounts routes).
+sparkfox-be-secret = { workspace = true, features = ["web"] }
+sparkfox-be-terminal.workspace = true
+sparkfox-be-preset.workspace = true
+sparkfox-be-runtime.workspace = true
+sparkfox-be-net.workspace = true
+axum.workspace = true
+dirs.workspace = true
+# OS-level advisory lock for the exclusive per-data-dir server lock
+# (bootstrap/server_lock.rs) — same dep sparkfox-be-db's migrate lock uses.
+fs2.workspace = true
+tokio.workspace = true
+tower.workspace = true
+tower-http.workspace = true
+tracing.workspace = true
+tracing-appender.workspace = true
+tracing-subscriber.workspace = true
+clap.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+sha2.workspace = true
+uuid.workspace = true
+reqwest.workspace = true
+rmcp = { version = "1.5", features = ["server", "transport-io", "schemars"] }
+anyhow.workspace = true
+async-trait.workspace = true
+# Network-interface enumeration for desktop LAN-IP detection (WebUI remote access).
+if-addrs = "0.13"
+
+# Computer-use discrete-tool MCP bridge (`mcp-computer-stdio`) — facade over
+# ComputerTool. Optional; only the `computer-use` feature pulls the native
+# screen/input/UI-Automation stack, so web/headless builds stay lean.
+sparkfox-ag-computer = { workspace = true, optional = true }
+# Browser-use discrete-tool MCP bridge (`mcp-browser-stdio`) — facade over
+# BrowserTool. Optional; only the `browser-use` feature pulls the self-hosted-CDP
+# browser engine + Chromium, so web/headless builds stay lean. Shares the
+# optional sparkfox-ag-config/-tools/-types deps with computer-use.
+sparkfox-ag-browser = { workspace = true, optional = true }
+# Phase 2b: the "log into my browser" settings action drives a headful engine
+# directly (create_engine + capture_storage_state + storage_state vault), so the
+# login persists into the shared profile/vault. Only the browser-use feature pulls it.
+sparkfox-ag-browser-engine = { workspace = true, optional = true }
+sparkfox-ag-config = { workspace = true, optional = true }
+sparkfox-ag-tools = { workspace = true, optional = true }
+sparkfox-ag-types = { workspace = true, optional = true }
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = ["Win32_Storage_FileSystem"] }
+
+[dev-dependencies]
+sparkfox-be-api-types.workspace = true
+sparkfox-be-realtime.workspace = true
+clap.workspace = true
+reqwest.workspace = true
+sqlx.workspace = true
+# Enable the `AgentRuntimeHandle::Mock` variant so tests can build fake Agents
+# through the trait-object escape hatch without spawning real CLI processes.
+sparkfox-be-ai-agent = { workspace = true, features = ["test-support"] }
+async-trait.workspace = true
+base64.workspace = true
+git2.workspace = true
+http-body-util.workspace = true
+rust_xlsxwriter.workspace = true
+tempfile = "3"
+tower = { workspace = true, features = ["util"] }
+tokio-tungstenite.workspace = true
+futures-util.workspace = true
+wiremock = "0.6"

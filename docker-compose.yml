@@ -1,0 +1,71 @@
+# Headless WebUI deployment.
+#
+#   docker compose up -d --build
+#   # then open http://<server-ip>:8787. The FIRST reachable browser creates
+#   # the initial admin unless you pre-seed NOMIFUN_ADMIN_PASSWORD below.
+#
+# `restart: unless-stopped` makes it start on boot — installing the service IS
+# enabling the WebUI. Pre-seed the admin or complete setup on a trusted network
+# before exposing the port broadly; add TLS (the optional caddy service below)
+# for anything internet-facing.
+
+services:
+  nomifun:
+    build:
+      context: .
+      args:
+        # Every network source can be overridden via env / a local `.env`.
+        # The image args are useful with a Docker Hub proxy; the package args
+        # cover Bun, Debian apt, and Cargo independently. For example:
+        #   APT_MIRROR=http://mirrors.aliyun.com \
+        #   CARGO_REGISTRY_MIRROR=https://rsproxy.cn/index/ docker compose build
+        BUN_IMAGE: ${BUN_IMAGE:-oven/bun:1}
+        RUST_IMAGE: ${RUST_IMAGE:-rust:1-slim-bookworm}
+        RUNTIME_IMAGE: ${RUNTIME_IMAGE:-debian:bookworm-slim}
+        BUN_REGISTRY: ${BUN_REGISTRY:-}
+        APT_MIRROR: ${APT_MIRROR:-}
+        CARGO_REGISTRY_MIRROR: ${CARGO_REGISTRY_MIRROR:-}
+    image: nomifun-web:local
+    restart: unless-stopped
+    ports:
+      - "8787:8787" # LAN / VPN / localhost. Finish setup or pre-seed admin first.
+    volumes:
+      - nomifun-data:/data # SQLite db, logs, bun runtime cache, agent state.
+    environment:
+      # Pre-seed the admin to CLOSE the open first-run claim window (recommended
+      # before exposing the port on an untrusted network). Set the value in a
+      # local `.env` file or your shell, e.g.:
+      #   NOMIFUN_ADMIN_USERNAME=admin
+      #   NOMIFUN_ADMIN_PASSWORD=change-me-to-something-strong
+      # The bare (value-less) entries below pass a var through ONLY when it is
+      # set — leaving it unset keeps the interactive first-run claim. Do NOT set
+      # NOMIFUN_ADMIN_PASSWORD to an empty string: an empty password is rejected
+      # and the container would fail to boot.
+      - NOMIFUN_ADMIN_USERNAME
+      - NOMIFUN_ADMIN_PASSWORD
+      # Set NOMIFUN_HTTPS=true (e.g. when fronted by the caddy service below) so
+      # the session cookie gets the Secure flag.
+      - NOMIFUN_HTTPS
+
+  # --- Optional: TLS + reverse proxy for internet exposure --------------------
+  # To use it: (1) edit Caddyfile with your domain, (2) set NOMIFUN_HTTPS=true
+  # in the nomifun environment above, (3) replace the nomifun `ports:` block
+  # with `expose: ["8787"]` so only Caddy is published, (4) uncomment below.
+  #
+  # caddy:
+  #   image: caddy:2
+  #   restart: unless-stopped
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   volumes:
+  #     - ./Caddyfile:/etc/caddy/Caddyfile:ro
+  #     - caddy-data:/data
+  #     - caddy-config:/config
+  #   depends_on:
+  #     - nomifun
+
+volumes:
+  nomifun-data:
+  # caddy-data:
+  # caddy-config:

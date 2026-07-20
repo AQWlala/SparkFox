@@ -1,0 +1,21 @@
+[package]
+name = "sparkfox-parser"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "SparkFox multi-format document parser"
+
+[dependencies]
+sparkfox-core = { path = "../sparkfox-core" }
+lopdf = "0.34"
+docx-rs = "0.4"
+calamine = "0.26"
+quick-xml = "0.36"
+serde = { workspace = true }
+log = "0.4"
+env_logger = "0.11"
+
+[dev-dependencies]
+sparkfox-parser = { path = "." }
+tempfile = "3.10"

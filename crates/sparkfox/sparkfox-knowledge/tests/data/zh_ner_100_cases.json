@@ -1,0 +1,816 @@
+[
+  {
+    "id": 1,
+    "text": "张三昨天去了北京出差",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "张三"},
+      {"entity_type": "TIME", "text": "昨天"},
+      {"entity_type": "LOCATION", "text": "北京"}
+    ]
+  },
+  {
+    "id": 2,
+    "text": "李四在上海工作",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "李四"},
+      {"entity_type": "LOCATION", "text": "上海"}
+    ]
+  },
+  {
+    "id": 3,
+    "text": "王五的哥哥是赵六",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "王五"},
+      {"entity_type": "PERSON", "text": "赵六"}
+    ]
+  },
+  {
+    "id": 4,
+    "text": "钱七今天请假了",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "钱七"},
+      {"entity_type": "TIME", "text": "今天"}
+    ]
+  },
+  {
+    "id": 5,
+    "text": "孙八和周九一起吃饭",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "孙八"},
+      {"entity_type": "PERSON", "text": "周九"},
+      {"entity_type": "EVENT", "text": "吃饭"}
+    ]
+  },
+  {
+    "id": 6,
+    "text": "吴十昨天回到了杭州",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "吴十"},
+      {"entity_type": "TIME", "text": "昨天"},
+      {"entity_type": "LOCATION", "text": "杭州"}
+    ]
+  },
+  {
+    "id": 7,
+    "text": "李白是唐代著名诗人",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "李白"},
+      {"entity_type": "TIME", "text": "唐代"}
+    ]
+  },
+  {
+    "id": 8,
+    "text": "杜甫创作了春望",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "杜甫"},
+      {"entity_type": "EVENT", "text": "创作"}
+    ]
+  },
+  {
+    "id": 9,
+    "text": "诸葛亮是三国时期名臣",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "诸葛亮"},
+      {"entity_type": "TIME", "text": "三国时期"}
+    ]
+  },
+  {
+    "id": 10,
+    "text": "孙悟空大闹天宫",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "孙悟空"},
+      {"entity_type": "EVENT", "text": "大闹天宫"}
+    ]
+  },
+  {
+    "id": 11,
+    "text": "林黛玉在荣国府葬花",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "林黛玉"},
+      {"entity_type": "LOCATION", "text": "荣国府"},
+      {"entity_type": "EVENT", "text": "葬花"}
+    ]
+  },
+  {
+    "id": 12,
+    "text": "马云创立了阿里巴巴",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "马云"},
+      {"entity_type": "ORGANIZATION", "text": "阿里巴巴"},
+      {"entity_type": "EVENT", "text": "创立"}
+    ]
+  },
+  {
+    "id": 13,
+    "text": "任正非创办华为",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "任正非"},
+      {"entity_type": "ORGANIZATION", "text": "华为"},
+      {"entity_type": "EVENT", "text": "创办"}
+    ]
+  },
+  {
+    "id": 14,
+    "text": "张三和李四在腾讯工作",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "张三"},
+      {"entity_type": "PERSON", "text": "李四"},
+      {"entity_type": "ORGANIZATION", "text": "腾讯"}
+    ]
+  },
+  {
+    "id": 15,
+    "text": "陈八去广州出差 3 天",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "陈八"},
+      {"entity_type": "LOCATION", "text": "广州"},
+      {"entity_type": "NUMBER", "text": "3 天"}
+    ]
+  },
+  {
+    "id": 16,
+    "text": "周博士发表了一篇论文",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "周博士"},
+      {"entity_type": "EVENT", "text": "发表"}
+    ]
+  },
+  {
+    "id": 17,
+    "text": "王老师下周要来北京",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "王老师"},
+      {"entity_type": "TIME", "text": "下周"},
+      {"entity_type": "LOCATION", "text": "北京"}
+    ]
+  },
+  {
+    "id": 18,
+    "text": "老李昨天买了一本书",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "老李"},
+      {"entity_type": "TIME", "text": "昨天"}
+    ]
+  },
+  {
+    "id": 19,
+    "text": "鲁迅原名周树人",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "鲁迅"},
+      {"entity_type": "PERSON", "text": "周树人"}
+    ]
+  },
+  {
+    "id": 20,
+    "text": "周恩来出席了万隆会议",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "周恩来"},
+      {"entity_type": "EVENT", "text": "万隆会议"}
+    ]
+  },
+  {
+    "id": 21,
+    "text": "钱学森回国效力",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "钱学森"},
+      {"entity_type": "EVENT", "text": "回国效力"}
+    ]
+  },
+  {
+    "id": 22,
+    "text": "邓小平推动改革开放",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "邓小平"},
+      {"entity_type": "EVENT", "text": "改革开放"}
+    ]
+  },
+  {
+    "id": 23,
+    "text": "老舍创作了骆驼祥子",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "老舍"},
+      {"entity_type": "EVENT", "text": "创作"}
+    ]
+  },
+  {
+    "id": 24,
+    "text": "张三 18 岁上大学",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "张三"},
+      {"entity_type": "NUMBER", "text": "18 岁"},
+      {"entity_type": "EVENT", "text": "上大学"}
+    ]
+  },
+  {
+    "id": 25,
+    "text": "王五昨天花了 500 元",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "王五"},
+      {"entity_type": "TIME", "text": "昨天"},
+      {"entity_type": "NUMBER", "text": "500 元"}
+    ]
+  },
+  {
+    "id": 26,
+    "text": "陈六明天去故宫参观",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "陈六"},
+      {"entity_type": "TIME", "text": "明天"},
+      {"entity_type": "LOCATION", "text": "故宫"},
+      {"entity_type": "EVENT", "text": "参观"}
+    ]
+  },
+  {
+    "id": 27,
+    "text": "赵云是三国时期蜀汉将领",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "赵云"},
+      {"entity_type": "TIME", "text": "三国时期"},
+      {"entity_type": "ORGANIZATION", "text": "蜀汉"}
+    ]
+  },
+  {
+    "id": 28,
+    "text": "王熙凤管理荣国府",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "王熙凤"},
+      {"entity_type": "LOCATION", "text": "荣国府"},
+      {"entity_type": "EVENT", "text": "管理"}
+    ]
+  },
+  {
+    "id": 29,
+    "text": "诸葛亮七擒孟获",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "诸葛亮"},
+      {"entity_type": "PERSON", "text": "孟获"},
+      {"entity_type": "EVENT", "text": "七擒孟获"}
+    ]
+  },
+  {
+    "id": 30,
+    "text": "李白昨天写了一首诗",
+    "expected_entities": [
+      {"entity_type": "PERSON", "text": "李白"},
+      {"entity_type": "TIME", "text": "昨天"}
+    ]
+  },
+  {
+    "id": 31,
+    "text": "北京是中国的首都",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "北京"},
+      {"entity_type": "LOCATION", "text": "中国"}
+    ]
+  },
+  {
+    "id": 32,
+    "text": "上海外滩夜景迷人",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "上海"},
+      {"entity_type": "LOCATION", "text": "外滩"}
+    ]
+  },
+  {
+    "id": 33,
+    "text": "广州塔高 600 米",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "广州塔"},
+      {"entity_type": "NUMBER", "text": "600 米"}
+    ]
+  },
+  {
+    "id": 34,
+    "text": "深圳是改革开放的前沿",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "深圳"},
+      {"entity_type": "EVENT", "text": "改革开放"}
+    ]
+  },
+  {
+    "id": 35,
+    "text": "杭州西湖风景如画",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "杭州"},
+      {"entity_type": "LOCATION", "text": "西湖"}
+    ]
+  },
+  {
+    "id": 36,
+    "text": "长江是中国第一大河",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "长江"},
+      {"entity_type": "LOCATION", "text": "中国"}
+    ]
+  },
+  {
+    "id": 37,
+    "text": "黄河流经 9 个省",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "黄河"},
+      {"entity_type": "NUMBER", "text": "9 个"}
+    ]
+  },
+  {
+    "id": 38,
+    "text": "泰山位于山东省",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "泰山"},
+      {"entity_type": "LOCATION", "text": "山东省"}
+    ]
+  },
+  {
+    "id": 39,
+    "text": "天安门广场在北京",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "天安门广场"},
+      {"entity_type": "LOCATION", "text": "北京"}
+    ]
+  },
+  {
+    "id": 40,
+    "text": "故宫博物院每年接待游客",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "故宫博物院"},
+      {"entity_type": "TIME", "text": "每年"},
+      {"entity_type": "EVENT", "text": "接待游客"}
+    ]
+  },
+  {
+    "id": 41,
+    "text": "中国有 14 亿人口",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "中国"},
+      {"entity_type": "NUMBER", "text": "14 亿"}
+    ]
+  },
+  {
+    "id": 42,
+    "text": "美国位于北美洲",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "美国"},
+      {"entity_type": "LOCATION", "text": "北美洲"}
+    ]
+  },
+  {
+    "id": 43,
+    "text": "日本首都东京",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "日本"},
+      {"entity_type": "LOCATION", "text": "东京"}
+    ]
+  },
+  {
+    "id": 44,
+    "text": "浙江省经济发展迅速",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "浙江省"},
+      {"entity_type": "EVENT", "text": "经济发展"}
+    ]
+  },
+  {
+    "id": 45,
+    "text": "广东省位于南部",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "广东省"}
+    ]
+  },
+  {
+    "id": 46,
+    "text": "长城被列入世界文化遗产",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "长城"},
+      {"entity_type": "EVENT", "text": "列入"}
+    ]
+  },
+  {
+    "id": 47,
+    "text": "黄山风景秀丽",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "黄山"}
+    ]
+  },
+  {
+    "id": 48,
+    "text": "北京冬奥会于 2022 年举办",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "北京"},
+      {"entity_type": "EVENT", "text": "冬奥会"},
+      {"entity_type": "TIME", "text": "2022 年"}
+    ]
+  },
+  {
+    "id": 49,
+    "text": "香港回归祖国",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "香港"},
+      {"entity_type": "EVENT", "text": "回归"}
+    ]
+  },
+  {
+    "id": 50,
+    "text": "澳门 1999 年回归",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "澳门"},
+      {"entity_type": "TIME", "text": "1999 年"},
+      {"entity_type": "EVENT", "text": "回归"}
+    ]
+  },
+  {
+    "id": 51,
+    "text": "三亚是中国最南端的城市",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "三亚"},
+      {"entity_type": "LOCATION", "text": "中国"}
+    ]
+  },
+  {
+    "id": 52,
+    "text": "西安兵马俑吸引全球游客",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "西安"},
+      {"entity_type": "LOCATION", "text": "兵马俑"},
+      {"entity_type": "EVENT", "text": "吸引"}
+    ]
+  },
+  {
+    "id": 53,
+    "text": "成都熊猫基地吸引游客",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "成都"},
+      {"entity_type": "LOCATION", "text": "熊猫基地"},
+      {"entity_type": "EVENT", "text": "吸引游客"}
+    ]
+  },
+  {
+    "id": 54,
+    "text": "重庆火锅出名",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "重庆"}
+    ]
+  },
+  {
+    "id": 55,
+    "text": "桂林山水甲天下",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "桂林"},
+      {"entity_type": "LOCATION", "text": "山水"}
+    ]
+  },
+  {
+    "id": 56,
+    "text": "苏州园林美如画",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "苏州"},
+      {"entity_type": "LOCATION", "text": "园林"}
+    ]
+  },
+  {
+    "id": 57,
+    "text": "厦门鼓浪屿是旅游胜地",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "厦门"},
+      {"entity_type": "LOCATION", "text": "鼓浪屿"}
+    ]
+  },
+  {
+    "id": 58,
+    "text": "青岛啤酒节每年举办",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "青岛"},
+      {"entity_type": "EVENT", "text": "啤酒节"},
+      {"entity_type": "TIME", "text": "每年"}
+    ]
+  },
+  {
+    "id": 59,
+    "text": "大连港口繁忙",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "大连"},
+      {"entity_type": "LOCATION", "text": "港口"}
+    ]
+  },
+  {
+    "id": 60,
+    "text": "西藏布达拉宫历史悠久",
+    "expected_entities": [
+      {"entity_type": "LOCATION", "text": "西藏"},
+      {"entity_type": "LOCATION", "text": "布达拉宫"}
+    ]
+  },
+  {
+    "id": 61,
+    "text": "腾讯公司总部在深圳",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "腾讯"},
+      {"entity_type": "LOCATION", "text": "深圳"}
+    ]
+  },
+  {
+    "id": 62,
+    "text": "阿里巴巴集团在杭州",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "阿里巴巴"},
+      {"entity_type": "LOCATION", "text": "杭州"}
+    ]
+  },
+  {
+    "id": 63,
+    "text": "字节跳动是抖音的母公司",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "字节跳动"},
+      {"entity_type": "ORGANIZATION", "text": "抖音"}
+    ]
+  },
+  {
+    "id": 64,
+    "text": "华为是通信巨头",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "华为"}
+    ]
+  },
+  {
+    "id": 65,
+    "text": "清华大学创立于 1911 年",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "清华大学"},
+      {"entity_type": "TIME", "text": "1911 年"},
+      {"entity_type": "EVENT", "text": "创立"}
+    ]
+  },
+  {
+    "id": 66,
+    "text": "北京大学是名校",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "北京大学"},
+      {"entity_type": "LOCATION", "text": "北京"}
+    ]
+  },
+  {
+    "id": 67,
+    "text": "复旦大学位于上海",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "复旦大学"},
+      {"entity_type": "LOCATION", "text": "上海"}
+    ]
+  },
+  {
+    "id": 68,
+    "text": "国务院发布新政策",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "国务院"},
+      {"entity_type": "EVENT", "text": "发布"}
+    ]
+  },
+  {
+    "id": 69,
+    "text": "财政部公布预算",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "财政部"},
+      {"entity_type": "EVENT", "text": "公布"}
+    ]
+  },
+  {
+    "id": 70,
+    "text": "联合国通过决议",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "联合国"},
+      {"entity_type": "EVENT", "text": "通过"}
+    ]
+  },
+  {
+    "id": 71,
+    "text": "世卫组织发布警告",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "世卫组织"},
+      {"entity_type": "EVENT", "text": "发布警告"}
+    ]
+  },
+  {
+    "id": 72,
+    "text": "中国科学院研究成果丰硕",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "中国科学院"},
+      {"entity_type": "LOCATION", "text": "中国"},
+      {"entity_type": "EVENT", "text": "研究"}
+    ]
+  },
+  {
+    "id": 73,
+    "text": "国家发改委调控经济",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "国家发改委"},
+      {"entity_type": "EVENT", "text": "调控"}
+    ]
+  },
+  {
+    "id": 74,
+    "text": "中国银行提供服务",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "中国银行"},
+      {"entity_type": "LOCATION", "text": "中国"}
+    ]
+  },
+  {
+    "id": 75,
+    "text": "上海交通大学历史悠久",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "上海交通大学"},
+      {"entity_type": "LOCATION", "text": "上海"}
+    ]
+  },
+  {
+    "id": 76,
+    "text": "百度公司推出文心一言",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "百度"},
+      {"entity_type": "ORGANIZATION", "text": "文心一言"},
+      {"entity_type": "EVENT", "text": "推出"}
+    ]
+  },
+  {
+    "id": 77,
+    "text": "京东集团有 30 万员工",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "京东集团"},
+      {"entity_type": "NUMBER", "text": "30 万"}
+    ]
+  },
+  {
+    "id": 78,
+    "text": "美团收购摩拜",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "美团"},
+      {"entity_type": "ORGANIZATION", "text": "摩拜"},
+      {"entity_type": "EVENT", "text": "收购"}
+    ]
+  },
+  {
+    "id": 79,
+    "text": "小米公司市值 1000 亿",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "小米公司"},
+      {"entity_type": "NUMBER", "text": "1000 亿"}
+    ]
+  },
+  {
+    "id": 80,
+    "text": "网易公司位于广州",
+    "expected_entities": [
+      {"entity_type": "ORGANIZATION", "text": "网易公司"},
+      {"entity_type": "LOCATION", "text": "广州"}
+    ]
+  },
+  {
+    "id": 81,
+    "text": "2026年7月20日是周一",
+    "expected_entities": [
+      {"entity_type": "TIME", "text": "2026年7月20日"}
+    ]
+  },
+  {
+    "id": 82,
+    "text": "昨天北京下了一场大雨",
+    "expected_entities": [
+      {"entity_type": "TIME", "text": "昨天"},
+      {"entity_type": "LOCATION", "text": "北京"}
+    ]
+  },
+  {
+    "id": 83,
+    "text": "明天下午开会",
+    "expected_entities": [
+      {"entity_type": "TIME", "text": "明天"},
+      {"entity_type": "EVENT", "text": "开会"}
+    ]
+  },
+  {
+    "id": 84,
+    "text": "后天我要去旅行",
+    "expected_entities": [
+      {"entity_type": "TIME", "text": "后天"},
+      {"entity_type": "EVENT", "text": "旅行"}
+    ]
+  },
+  {
+    "id": 85,
+    "text": "去年冬天很冷",
+    "expected_entities": [
+      {"entity_type": "TIME", "text": "去年"}
+    ]
+  },
+  {
+    "id": 86,
+    "text": "今年春节热闹",
+    "expected_entities": [
+      {"entity_type": "TIME", "text": "今年"},
+      {"entity_type": "EVENT", "text": "春节"}
+    ]
+  },
+  {
+    "id": 87,
+    "text": "明年会有新机遇",
+    "expected_entities": [
+      {"entity_type": "TIME", "text": "明年"}
+    ]
+  },
+  {
+    "id": 88,
+    "text": "2026-07-20，张三在北京参加发布会",
+    "expected_entities": [
+      {"entity_type": "TIME", "text": "2026-07-20"},
+      {"entity_type": "PERSON", "text": "张三"},
+      {"entity_type": "LOCATION", "text": "北京"},
+      {"entity_type": "EVENT", "text": "发布会"}
+    ]
+  },
+  {
+    "id": 89,
+    "text": "现在开始计时",
+    "expected_entities": [
+      {"entity_type": "TIME", "text": "现在"},
+      {"entity_type": "EVENT", "text": "计时"}
+    ]
+  },
+  {
+    "id": 90,
+    "text": "刚才那个人走了",
+    "expected_entities": [
+      {"entity_type": "TIME", "text": "刚才"}
+    ]
+  },
+  {
+    "id": 91,
+    "text": "商品售价 999 元",
+    "expected_entities": [
+      {"entity_type": "NUMBER", "text": "999 元"}
+    ]
+  },
+  {
+    "id": 92,
+    "text": "全班 50 名同学",
+    "expected_entities": [
+      {"entity_type": "NUMBER", "text": "50 名"}
+    ]
+  },
+  {
+    "id": 93,
+    "text": "折扣是 50%",
+    "expected_entities": [
+      {"entity_type": "NUMBER", "text": "50%"}
+    ]
+  },
+  {
+    "id": 94,
+    "text": "他今年 18 岁",
+    "expected_entities": [
+      {"entity_type": "NUMBER", "text": "18 岁"},
+      {"entity_type": "TIME", "text": "今年"}
+    ]
+  },
+  {
+    "id": 95,
+    "text": "跑步 3 公里",
+    "expected_entities": [
+      {"entity_type": "NUMBER", "text": "3 公里"}
+    ]
+  },
+  {
+    "id": 96,
+    "text": "体重 70 公斤",
+    "expected_entities": [
+      {"entity_type": "NUMBER", "text": "70 公斤"}
+    ]
+  },
+  {
+    "id": 97,
+    "text": "完成了 100% 的任务",
+    "expected_entities": [
+      {"entity_type": "NUMBER", "text": "100%"}
+    ]
+  },
+  {
+    "id": 98,
+    "text": "总共 9999 个订单",
+    "expected_entities": [
+      {"entity_type": "NUMBER", "text": "9999 个"}
+    ]
+  },
+  {
+    "id": 99,
+    "text": "文件大小 2.5 MB",
+    "expected_entities": [
+      {"entity_type": "NUMBER", "text": "2.5"}
+    ]
+  },
+  {
+    "id": 100,
+    "text": "心跳每分钟 60 次，血压 120，体温 36.5 度",
+    "expected_entities": [
+      {"entity_type": "TIME", "text": "每分钟"},
+      {"entity_type": "NUMBER", "text": "60 次"},
+      {"entity_type": "NUMBER", "text": "120"},
+      {"entity_type": "NUMBER", "text": "36.5 度"}
+    ]
+  }
+]

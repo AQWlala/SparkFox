@@ -1,0 +1,19 @@
+[package]
+name = "sparkfox-hotspot"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "SparkFox hotspot tracking (BaiLongma clean-room)"
+
+[dependencies]
+sparkfox-core = { path = "../sparkfox-core" }
+# 4 平台 fetcher trait 异步接口
+async-trait = { workspace = true }
+# HotspotItem 序列化契约（透传给前端）
+serde = { workspace = true }
+# HotspotItem.published_at 字段类型
+chrono = { workspace = true }
+# init() 日志
+log = "0.4"
+env_logger = "0.11"

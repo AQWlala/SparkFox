@@ -1,0 +1,654 @@
+/**
+ * SparkFox Hotspot — Apple 主题样式
+ *
+ * 来源：BaiLongma styles.css（清洁室重写，仅保留 Apple 浅色系）
+ * 颜色：系统蓝 #007AFF / 紫 #5856D6 / 橙 #FF9500 / 绿 #34C759 / 红 #FF3B30
+ * 字体：SF Pro / -apple-system
+ */
+
+.hotspot-view {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+  padding: 20px 24px 0;
+  background: #F5F5F7;
+  color: #1D1D1F;
+  font-family: var(--sf-font-family);
+  overflow: hidden;
+}
+
+/* ── 顶部工具栏 ─────────────────────────────────────── */
+.hotspot-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #D2D2D7;
+  flex-shrink: 0;
+}
+
+.hotspot-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hotspot-title {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #1D1D1F;
+}
+
+.hotspot-meta {
+  font-size: 12px;
+  color: #8E8E93;
+  font-family: var(--sf-font-mono);
+}
+
+.hotspot-meta .hotspot-meta-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  margin-right: 6px;
+  vertical-align: middle;
+  background: #34C759;
+  box-shadow: 0 0 6px rgba(52, 199, 89, 0.6);
+}
+
+.hotspot-meta.stale .hotspot-meta-dot {
+  background: #FF9500;
+  box-shadow: 0 0 6px rgba(255, 149, 0, 0.6);
+}
+
+.hotspot-meta.loading .hotspot-meta-dot {
+  background: #8E8E93;
+  animation: hotspot-blink 1.2s ease-in-out infinite;
+}
+
+.hotspot-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hotspot-clock {
+  font-family: var(--sf-font-mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: #1D1D1F;
+  background: #FFFFFF;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-md);
+  padding: 6px 12px;
+  letter-spacing: 0.04em;
+  min-width: 96px;
+  text-align: center;
+}
+
+/* ── 主体区域 ─────────────────────────────────────── */
+.hotspot-body {
+  display: grid;
+  grid-template-columns: 1fr 380px;
+  gap: 16px;
+  flex: 1;
+  min-height: 0;
+  padding: 16px 0;
+  overflow: hidden;
+}
+
+/* ── 左：4 平台热榜列表 ─────────────────────────────── */
+.hotspot-platforms {
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  border-radius: var(--sf-radius-xl);
+  border: 1px solid #D2D2D7;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.hotspot-platforms .arco-tabs {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hotspot-platforms .arco-tabs-header {
+  border-bottom: 1px solid #E5E5EA;
+  flex-shrink: 0;
+}
+
+.hotspot-platforms .arco-tabs-content {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.hotspot-platforms .arco-tabs-tab-pane {
+  height: 100%;
+  overflow-y: auto;
+  padding: 8px 0;
+}
+
+.hotspot-tab-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+}
+
+.hotspot-tab-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.hotspot-tab-count {
+  font-size: 11px;
+  color: #8E8E93;
+  font-family: var(--sf-font-mono);
+  margin-left: 4px;
+}
+
+/* ── 热点条目 ─────────────────────────────────────── */
+.hotspot-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  border-bottom: 1px solid #f2f2f7;
+}
+
+.hotspot-item:hover {
+  background: #F5F5F7;
+}
+
+.hotspot-item.selected {
+  background: rgba(0, 122, 255, 0.08);
+}
+
+.hotspot-item:last-child {
+  border-bottom: none;
+}
+
+/* 数据流5：发送到对话按钮 */
+.hotspot-send-chat-btn {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+  color: #8E8E93;
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+  font-size: 14px;
+}
+
+.hotspot-send-chat-btn:hover {
+  background: rgba(0, 122, 255, 0.12);
+  color: #007AFF;
+}
+
+.hotspot-send-chat-btn:active {
+  background: rgba(0, 122, 255, 0.2);
+}
+
+.hotspot-rank {
+  width: 26px;
+  text-align: center;
+  font-family: var(--sf-font-mono);
+  font-size: 14px;
+  font-weight: 600;
+  color: #8E8E93;
+  flex-shrink: 0;
+}
+
+.hotspot-item:nth-child(1) .hotspot-rank {
+  color: #FF3B30;
+}
+
+.hotspot-item:nth-child(2) .hotspot-rank {
+  color: #FF9500;
+}
+
+.hotspot-item:nth-child(3) .hotspot-rank {
+  color: #FFCC00;
+}
+
+.hotspot-content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.hotspot-title-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #1D1D1F;
+  line-height: 1.4;
+}
+
+.hotspot-tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: var(--sf-radius-xs);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.hotspot-tag.hot {
+  background: rgba(255, 59, 48, 0.12);
+  color: #FF3B30;
+}
+
+.hotspot-tag.recommend {
+  background: rgba(0, 122, 255, 0.12);
+  color: #007AFF;
+}
+
+.hotspot-tag.new {
+  background: rgba(52, 199, 89, 0.12);
+  color: #34C759;
+}
+
+.hotspot-tag.refute {
+  background: rgba(255, 149, 0, 0.12);
+  color: #FF9500;
+}
+
+.hotspot-tag.activity {
+  background: rgba(88, 86, 214, 0.12);
+  color: #5856D6;
+}
+
+.hotspot-title-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.hotspot-new-badge {
+  font-size: 10px;
+  color: #FF3B30;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.hotspot-meta-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: #8E8E93;
+  font-family: var(--sf-font-mono);
+}
+
+.hotspot-heat {
+  color: #FF3B30;
+}
+
+.hotspot-trend {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.hotspot-trend.up {
+  color: #FF3B30;
+}
+
+.hotspot-trend.down {
+  color: #34C759;
+}
+
+.hotspot-trend.same {
+  color: #8E8E93;
+}
+
+.hotspot-source {
+  margin-left: auto;
+  color: #C7C7CC;
+}
+
+/* ── 右：实时事件流 ─────────────────────────────────── */
+.hotspot-feed {
+  display: flex;
+  flex-direction: column;
+  background: #FFFFFF;
+  border-radius: var(--sf-radius-xl);
+  border: 1px solid #D2D2D7;
+  overflow: hidden;
+  min-height: 0;
+}
+
+.hotspot-feed-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #E5E5EA;
+  flex-shrink: 0;
+}
+
+.hotspot-feed-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1D1D1F;
+}
+
+.hotspot-feed-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hotspot-feed-body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  padding: 16px;
+}
+
+.hotspot-feed-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 14px;
+  background: #F5F5F7;
+  border-radius: var(--sf-radius-medium);
+  border-left: 3px solid #007AFF;
+  animation: hotspot-feed-in 0.4s ease-out;
+}
+
+@keyframes hotspot-feed-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hotspot-feed-card-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: #8E8E93;
+  font-family: var(--sf-font-mono);
+}
+
+.hotspot-feed-time {
+  font-weight: 500;
+}
+
+.hotspot-feed-cat {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--sf-radius-medium);
+  font-size: 11px;
+  font-weight: 500;
+  color: #FFFFFF;
+  letter-spacing: 0.02em;
+}
+
+.hotspot-feed-loc {
+  margin-left: auto;
+  color: #8E8E93;
+}
+
+.hotspot-feed-card-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1D1D1F;
+  line-height: 1.4;
+}
+
+.hotspot-feed-card-desc {
+  font-size: 13px;
+  color: #6E6E73;
+  line-height: 1.5;
+}
+
+.hotspot-feed-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  color: #8E8E93;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.hotspot-feed-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 10px 16px;
+  border-top: 1px solid #E5E5EA;
+  flex-shrink: 0;
+}
+
+.hotspot-feed-pager-text {
+  font-size: 11px;
+  color: #8E8E93;
+  font-family: var(--sf-font-mono);
+  min-width: 60px;
+  text-align: center;
+}
+
+/* ── 底部跑马灯 ─────────────────────────────────────── */
+.hotspot-ticker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 16px;
+  background: #1D1D1F;
+  color: #F5F5F7;
+  border-radius: var(--sf-radius-md);
+  flex-shrink: 0;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.hotspot-ticker-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  background: #FF3B30;
+  color: #FFFFFF;
+  border-radius: var(--sf-radius-medium);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.hotspot-ticker-label::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  background: #FFFFFF;
+  border-radius: 50%;
+  animation: hotspot-blink 1.2s ease-in-out infinite;
+}
+
+@keyframes hotspot-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.hotspot-ticker-track {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+  height: 20px;
+}
+
+.hotspot-ticker-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 32px;
+  white-space: nowrap;
+  animation: hotspot-ticker-scroll 40s linear infinite;
+  font-size: 12px;
+  font-family: var(--sf-font-mono);
+}
+
+@keyframes hotspot-ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.hotspot-ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hotspot-ticker-time {
+  color: #8E8E93;
+}
+
+/* ── 演示注入面板 ─────────────────────────────────── */
+.hotspot-demo {
+  margin-bottom: 16px;
+  padding: 12px 16px;
+  background: rgba(0, 122, 255, 0.06);
+  border: 1px dashed rgba(0, 122, 255, 0.4);
+  border-radius: var(--sf-radius-medium);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+.hotspot-demo-label {
+  font-size: 12px;
+  color: #007AFF;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.hotspot-demo-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.hotspot-demo-result {
+  font-size: 11px;
+  color: #8E8E93;
+  font-family: var(--sf-font-mono);
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hotspot-demo-result.match {
+  color: #FF3B30;
+}
+
+/* ── 上下文预览（折叠） ─────────────────────────────── */
+.hotspot-context-preview {
+  margin-top: 12px;
+  padding: 10px 12px;
+  background: #F5F5F7;
+  border-radius: var(--sf-radius-md);
+  font-size: 11px;
+  font-family: var(--sf-font-mono);
+  color: #6E6E73;
+  max-height: 120px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  border: 1px solid #E5E5EA;
+}
+
+/* ── 空状态 ─────────────────────────────────────── */
+.hotspot-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 8px;
+  color: #8E8E93;
+  font-size: 13px;
+  padding: 24px;
+  text-align: center;
+}
+
+.hotspot-empty-icon {
+  font-size: 32px;
+  opacity: 0.4;
+}
+
+/* ── 响应式 ─────────────────────────────────────── */
+@media (max-width: 960px) {
+  .hotspot-body {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+  }
+
+  .hotspot-feed {
+    max-height: 320px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hotspot-view {
+    padding: 12px 12px 0;
+  }
+
+  .hotspot-toolbar {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .hotspot-title {
+    font-size: 16px;
+  }
+
+  .hotspot-clock {
+    font-size: 12px;
+    padding: 4px 8px;
+    min-width: 80px;
+  }
+}

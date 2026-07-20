@@ -1,0 +1,23 @@
+sparkfox-knowledge
+Copyright 2026 SparkFox Contributors (AGPL-3.0-or-later)
+
+This product includes software and design concepts derived from:
+
+1. SAG (SQL-Retrieval Augmented Generation with Query-Time Dynamic Hyperedges)
+   - Repository: SAG-Benchmark (local clone at d:\xin kaifa\SAG-Benchmark)
+   - License: MIT License (Copyright (c) 2026 Zleap Team) — verified 2026-07-19
+   - Paper: arXiv:2606.15971
+   - Use: 5-table schema design (renamed), 4 retrieval strategies (reimplemented in Rust),
+     MULTI 8-step pipeline (reimplemented with Chinese adaptation)
+   - Note: Schema field-level mapping does not constitute classical clean-room rewrite.
+     Prompt templates and few-shot examples are independently authored in Chinese.
+
+2. NomiFun (Apache-2.0)
+   - Use: Knowledge base UI components (extended, not rewritten)
+
+3. OpenAkita MDRM
+   - Use: Multi-hop traversal algorithm (clean-room rewrite in Rust)
+
+All prompt templates, few-shot examples, entity normalization logic, and Chinese NER
+adaptations are independently authored by SparkFox Contributors and licensed under
+AGPL-3.0-or-later.

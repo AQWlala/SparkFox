@@ -1,0 +1,487 @@
+/**
+ * @license
+ * Copyright 2026 SparkFox Contributors — AGPL-3.0-only
+ *
+ * SparkFox MemoryView 样式 — Apple 主题
+ *
+ * 设计参考：macOS 系统应用 + Apple HIG
+ * - 圆角：12px（卡片）/ 8px（按钮/输入）/ 6px（小标签）
+ * - 系统色：蓝 #007AFF / 紫 #5856D6 / 橙 #FF9500 / 绿 #34C759 / 红 #FF3B30 / 粉 #FF2D55 / 灰 #8E8E93
+ * - 字体：SF Pro / -apple-system
+ * - 背景：#F5F5F7 / 边框 #D2D2D7
+ */
+
+/* ============================================================================
+   主容器
+   ============================================================================ */
+.sf-memory-view {
+  padding: 24px 32px 48px;
+  font-family: var(--sf-font-family);
+  color: #1D1D1F;
+  background: var(--sf-color-bg-secondary, #F5F5F7);
+  min-height: 100%;
+}
+
+.sf-memory-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 16px;
+}
+
+.sf-memory-title h1 {
+  margin: 0;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #1D1D1F;
+}
+
+.sf-memory-title p {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #6E6E73;
+}
+
+.sf-memory-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.sf-memory-actions .arco-btn {
+  border-radius: var(--sf-radius-md);
+}
+
+.sf-memory-view-mode-toggle .arco-btn {
+  border-radius: var(--sf-radius-md) 0 0 var(--sf-radius-md);
+}
+.sf-memory-view-mode-toggle .arco-btn:last-child {
+  border-radius: 0 var(--sf-radius-md) var(--sf-radius-md) 0;
+}
+
+/* ============================================================================
+   统计卡片
+   ============================================================================ */
+.sf-memory-stat-grid {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(6, 1fr);
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.sf-memory-stat-card {
+  background: #FFFFFF;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-xl);
+  padding: 14px 16px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.sf-memory-stat-card:hover {
+  border-color: #007AFF;
+  box-shadow: 0 2px 8px rgba(0, 122, 255, 0.08);
+  transform: translateY(-1px);
+}
+
+.sf-memory-stat-card.is-active {
+  border-color: #007AFF;
+  box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+}
+
+.sf-memory-stat-overview {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sf-memory-stat-overview-title {
+  font-size: 12px;
+  color: #6E6E73;
+  font-weight: 500;
+}
+
+.sf-memory-stat-overview-value {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #1D1D1F;
+  font-variant-numeric: tabular-nums;
+  margin: 4px 0;
+}
+
+.sf-memory-stat-overview-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: #6E6E73;
+  font-variant-numeric: tabular-nums;
+}
+
+.sf-memory-stat-layer {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sf-memory-stat-layer-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sf-memory-stat-layer-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sf-memory-stat-layer-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #6E6E73;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sf-memory-stat-layer-count {
+  font-size: 24px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}
+
+.sf-memory-stat-layer-desc {
+  font-size: 10px;
+  color: #AEAEB2;
+  line-height: 1.3;
+}
+
+/* ============================================================================
+   列表面板
+   ============================================================================ */
+.sf-memory-list-panel {
+  background: #FFFFFF;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-xl);
+  overflow: hidden;
+}
+
+.sf-memory-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border-bottom: 1px solid #E5E5EA;
+  background: #F5F5F7;
+  flex-wrap: wrap;
+}
+
+.sf-memory-search {
+  width: 240px;
+}
+
+.sf-memory-search .arco-input {
+  border-radius: var(--sf-radius-md);
+}
+
+.sf-memory-filter,
+.sf-memory-sort {
+  width: 130px;
+}
+
+.sf-memory-toolbar-spacer {
+  flex: 1;
+}
+
+.sf-memory-selected-count {
+  font-size: 12px;
+  color: #007AFF;
+  font-weight: 500;
+}
+
+/* ============================================================================
+   记忆列表行
+   ============================================================================ */
+.sf-memory-list {
+  display: flex;
+  flex-direction: column;
+  max-height: 720px;
+  overflow-y: auto;
+}
+
+.sf-memory-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid #F2F2F7;
+  cursor: pointer;
+  transition: background 0.1s ease;
+  border-left: 3px solid var(--sf-row-layer-color, transparent);
+}
+
+.sf-memory-row:hover {
+  background: #F5F5F7;
+}
+
+.sf-memory-row.is-selected {
+  background: rgba(0, 122, 255, 0.04);
+}
+
+.sf-memory-row-checkbox {
+  padding-top: 2px;
+}
+
+.sf-memory-row-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.sf-memory-row-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.sf-memory-row-layer {
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #FFFFFF;
+  border-radius: var(--sf-radius-xs);
+  letter-spacing: 0.02em;
+}
+
+.sf-memory-row-type {
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: 11px;
+  font-weight: 500;
+  border: 1px solid;
+  border-radius: var(--sf-radius-xs);
+  background: transparent;
+}
+
+.sf-memory-row-triple {
+  font-size: 12px;
+  color: #1D1D1F;
+  background: #F5F5F7;
+  padding: 2px 8px;
+  border-radius: var(--sf-radius-xs);
+}
+
+.sf-memory-row-predicate {
+  color: #6E6E73;
+  margin: 0 4px;
+  font-style: italic;
+}
+
+.sf-memory-row-priority,
+.sf-memory-row-scope {
+  font-size: 11px;
+  color: #6E6E73;
+  padding: 2px 6px;
+  background: #F5F5F7;
+  border-radius: var(--sf-radius-xs);
+}
+
+.sf-memory-row-content {
+  font-size: 13px;
+  line-height: 1.6;
+  color: #1D1D1F;
+  margin-bottom: 6px;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.sf-memory-row-tags {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.sf-memory-row-tags .arco-tag {
+  border-radius: var(--sf-radius-xs);
+  font-size: 11px;
+}
+
+.sf-memory-row-meta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  font-size: 11px;
+  color: #6E6E73;
+  font-variant-numeric: tabular-nums;
+}
+
+.sf-memory-row-expires {
+  color: #FF9500;
+}
+
+.sf-memory-row-reflected {
+  color: #FF2D55;
+  font-weight: 500;
+}
+
+.sf-memory-row-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.sf-memory-row:hover .sf-memory-row-actions {
+  opacity: 1;
+}
+
+.sf-memory-row-actions .arco-btn {
+  font-size: 11px;
+  padding: 0 8px;
+}
+
+/* ============================================================================
+   分页
+   ============================================================================ */
+.sf-memory-pagination {
+  padding: 12px 16px;
+  border-top: 1px solid #E5E5EA;
+  background: #F5F5F7;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ============================================================================
+   空状态
+   ============================================================================ */
+.sf-memory-empty {
+  padding: 48px 16px;
+  text-align: center;
+  color: #6E6E73;
+  font-size: 13px;
+}
+
+/* ============================================================================
+   图谱视图
+   ============================================================================ */
+.sf-memory-graph-view {
+  background: #FFFFFF;
+  border: 1px solid #D2D2D7;
+  border-radius: var(--sf-radius-xl);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.sf-memory-graph-svg {
+  background: #F5F5F7;
+  border-radius: var(--sf-radius-md);
+  border: 1px solid #F2F2F7;
+}
+
+.sf-memory-graph-edge {
+  stroke: #D2D2D7;
+  strokeWidth: 1;
+  opacity: 0.5;
+}
+
+.sf-memory-graph-node {
+  cursor: pointer;
+}
+
+.sf-memory-graph-label {
+  font-size: 10px;
+  pointer-events: none;
+  user-select: none;
+}
+
+.sf-memory-graph-legend {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  font-size: 11px;
+  color: #6E6E73;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.sf-memory-graph-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sf-memory-graph-legend-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.sf-memory-graph-legend-hint {
+  color: #AEAEB2;
+  font-style: italic;
+  margin-left: 8px;
+}
+
+/* ============================================================================
+   编辑抽屉
+   ============================================================================ */
+.sf-memory-editor-tags {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.sf-memory-editor-tags .arco-tag {
+  border-radius: var(--sf-radius-xs);
+}
+
+/* ============================================================================
+   响应式
+   ============================================================================ */
+@media (max-width: 1100px) {
+  .sf-memory-stat-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .sf-memory-stat-overview {
+    grid-column: span 3;
+  }
+}
+
+@media (max-width: 768px) {
+  .sf-memory-view {
+    padding: 16px;
+  }
+  .sf-memory-stat-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .sf-memory-stat-overview {
+    grid-column: span 2;
+  }
+  .sf-memory-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .sf-memory-search,
+  .sf-memory-filter,
+  .sf-memory-sort {
+    width: 100%;
+  }
+  .sf-memory-row-meta {
+    font-size: 10px;
+    gap: 8px;
+  }
+}

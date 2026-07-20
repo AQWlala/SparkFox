@@ -1,0 +1,26 @@
+[package]
+name = "sparkfox-be-auth"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+sparkfox-be-common.workspace = true
+sparkfox-be-db.workspace = true
+sparkfox-be-api-types.workspace = true
+jsonwebtoken = "9" # pinned: be-rs auth was written against v9 (workspace default is v10 for sparkfox-ag-providers)
+bcrypt.workspace = true
+tower.workspace = true
+dashmap.workspace = true
+axum.workspace = true
+serde.workspace = true
+thiserror.workspace = true
+tokio.workspace = true
+tracing.workspace = true
+getrandom.workspace = true
+base64.workspace = true
+sha2.workspace = true
+
+[dev-dependencies]
+serde_json.workspace = true
+http-body-util.workspace = true
+tower = { workspace = true, features = ["util"] }

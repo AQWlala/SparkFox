@@ -1,0 +1,983 @@
+use std::sync::Arc;
+
+use sparkfox_be_ai_agent::AgentRuntimeRegistry;
+use sparkfox_be_api_types::{
+    CreateConversationRequest, ListConversationsQuery, UpdateConversationRequest, WebSocketMessage,
+};
+use sparkfox_be_common::{AgentKillReason, AgentType, AppError, ConversationSource, ConversationStatus, TimestampMs};
+use sparkfox_be_conversation::ConversationService;
+use sparkfox_be_conversation::skill_resolver::SkillResolver;
+use sparkfox_be_db::{IProviderRepository, SqliteConversationRepository};
+use sparkfox_be_realtime::UserEventSink;
+use serde_json::json;
+use std::path::PathBuf;
+use std::sync::Mutex;
+
+// ── Test infrastructure ────────────────────────────────────────────
+
+struct TestBroadcaster {
+    events: Mutex<Vec<WebSocketMessage<serde_json::Value>>>,
+}
+
+impl TestBroadcaster {
+    fn new() -> Self {
+        Self {
+            events: Mutex::new(vec![]),
+        }
+    }
+
+    fn take_events(&self) -> Vec<WebSocketMessage<serde_json::Value>> {
+        std::mem::take(&mut self.events.lock().unwrap())
+    }
+}
+
+impl UserEventSink for TestBroadcaster {
+    fn send_to_user(&self, _user_id: &str, event: WebSocketMessage<serde_json::Value>) {
+        self.events.lock().unwrap().push(event);
+    }
+}
+
+struct NoopAgentRuntimeRegistry;
+
+#[async_trait::async_trait]
+impl AgentRuntimeRegistry for NoopAgentRuntimeRegistry {
+    fn get_runtime(&self, _: &str) -> Option<sparkfox_be_ai_agent::AgentRuntimeHandle> {
+        None
+    }
+    async fn get_or_create_runtime(
+        &self,
+        _: &str,
+        _: sparkfox_be_ai_agent::types::AgentRuntimeBuildOptions,
+    ) -> Result<sparkfox_be_ai_agent::AgentRuntimeHandle, AppError> {
+        Err(AppError::Internal("noop".into()))
+    }
+    fn terminate(&self, _: &str, _: Option<AgentKillReason>) -> Result<(), AppError> {
+        Ok(())
+    }
+    fn terminate_and_wait(
+        &self,
+        _: &str,
+        _: Option<AgentKillReason>,
+    ) -> std::pin::Pin<Box<dyn std::future::Future<Output = ()> + Send>> {
+        Box::pin(std::future::ready(()))
+    }
+    fn terminate_all(&self) {}
+    fn active_runtime_count(&self) -> usize {
+        0
+    }
+    fn collect_idle_runtimes(&self, _: TimestampMs) -> Vec<String> {
+        vec![]
+    }
+}
+
+struct EmptySkillResolver;
+
+#[async_trait::async_trait]
+impl SkillResolver for EmptySkillResolver {
+    async fn auto_inject_names(&self) -> Vec<String> {
+        Vec::new()
+    }
+
+    async fn resolve_skills(&self, _names: &[String]) -> Vec<sparkfox_be_extension::ResolvedAgentSkill> {
+        Vec::new()
+    }
+
+    async fn link_workspace_skills(
+        &self,
+        _workspace: &std::path::Path,
+        _rel_dirs: &[&str],
+        _skills: &[sparkfox_be_extension::ResolvedAgentSkill],
+    ) -> usize {
+        0
+    }
+}
+
+async fn setup() -> (ConversationService, Arc<TestBroadcaster>, Arc<dyn AgentRuntimeRegistry>) {
+    setup_with_workspace_root(std::env::temp_dir()).await
+}
+
+async fn setup_with_workspace_root(
+    workspace_root: PathBuf,
+) -> (ConversationService, Arc<TestBroadcaster>, Arc<dyn AgentRuntimeRegistry>) {
+    let db = init_database_memory().await.unwrap();
+    let repo = Arc::new(SqliteConversationRepository::new(db.pool().clone()));
+    let provider_repo = sparkfox_be_db::SqliteProviderRepository::new(db.pool().clone());
+    provider_repo.create(sparkfox_be_db::CreateProviderParams { id: Some("prov_0190f5fe-7c00-7a00-8000-000000000001"), platform: "openai", name: "test", base_url: "https://example.invalid", api_key_encrypted: "", models: "[\"m1\",\"gpt-4o\",\"claude-sonnet-4-20250514\"]", enabled: true, capabilities: "[]", context_limit: None, model_context_limits: None, model_protocols: None, model_descriptions: None, model_enabled: None, model_health: None, bedrock_config: None, is_full_url: false, sort_order: Some(0) }).await.unwrap();
+    let broadcaster = Arc::new(TestBroadcaster::new());
+    let agent_metadata_repo: Arc<dyn sparkfox_be_db::IAgentMetadataRepository> =
+        Arc::new(sparkfox_be_db::SqliteAgentMetadataRepository::new(db.pool().clone()));
+    let acp_session_repo: Arc<dyn sparkfox_be_db::IAcpSessionRepository> =
+        Arc::new(sparkfox_be_db::SqliteAcpSessionRepository::new(db.pool().clone()));
+    let runtime_registry: Arc<dyn AgentRuntimeRegistry> = Arc::new(NoopAgentRuntimeRegistry);
+    let svc = ConversationService::new(
+        Arc::<str>::from(USER_ID),
+        workspace_root,
+        broadcaster.clone(),
+        Arc::new(EmptySkillResolver),
+        runtime_registry.clone(),
+        repo,
+        agent_metadata_repo,
+        acp_session_repo,
+        Arc::new(sparkfox_be_conversation::NoExecutionConversationBoundary),
+    );
+    (svc, broadcaster, runtime_registry)
+}
+
+const USER_ID: &str = "user_0190f5fe-7c00-7a00-8000-000000000001";
+
+async fn init_database_memory() -> Result<sparkfox_be_db::Database, sparkfox_be_db::DbError> {
+    sparkfox_be_db::init_database_memory_with_owner(
+        sparkfox_be_common::UserId::parse(USER_ID.to_owned()).expect("canonical fixture owner"),
+    )
+    .await
+}
+
+fn make_create_req() -> CreateConversationRequest {
+    serde_json::from_value(json!({
+        "type": "acp",
+        "extra": { "workspace": "/home/user/project" }
+    }))
+    .unwrap()
+}
+
+fn make_auto_workspace_create_req() -> CreateConversationRequest {
+    serde_json::from_value(json!({
+        "type": "acp",
+        "extra": { "backend": "claude" }
+    }))
+    .unwrap()
+}
+
+// ── T1: Create conversation ────────────────────────────────────────
+
+#[tokio::test]
+async fn t1_1_create_with_defaults() {
+    let (svc, broadcaster, _runtime_registry) = setup().await;
+
+    let resp = svc.create(USER_ID, make_create_req()).await.unwrap();
+
+    assert!(sparkfox_be_common::ConversationId::parse(resp.id.clone()).is_ok());
+    assert_eq!(resp.r#type, AgentType::Acp);
+    assert_eq!(resp.status, ConversationStatus::Pending);
+    assert_eq!(resp.source, Some(ConversationSource::Nomifun));
+    assert!(!resp.pinned);
+    assert!(resp.pinned_at.is_none());
+    assert_eq!(resp.extra["workspace"], "/home/user/project");
+    assert!(resp.created_at > 0);
+    assert_eq!(resp.created_at, resp.modified_at);
+
+    // Non-nomi: top-level model is None.
+    assert!(resp.model.is_none(), "ACP response should not carry top-level model");
+
+    // WebSocket event
+    let events = broadcaster.take_events();
+    assert_eq!(events.len(), 1);
+    assert_eq!(events[0].name, "conversation.listChanged");
+    assert_eq!(events[0].data["action"], "created");
+    assert_eq!(events[0].data["conversation_id"], resp.id);
+    assert_eq!(events[0].data["source"], "nomifun");
+}
+
+#[tokio::test]
+async fn auto_workspace_is_isolated_across_fresh_databases() {
+    let root = std::env::temp_dir().join(format!(
+        "sparkfox-conv-reset-{}",
+        sparkfox_be_common::generate_prefixed_id("test")
+    ));
+    let _ = std::fs::remove_dir_all(&root);
+
+    let (svc1, _, _) = setup_with_workspace_root(root.clone()).await;
+    let first = svc1
+        .create(USER_ID, make_auto_workspace_create_req())
+        .await
+        .unwrap();
+    assert!(sparkfox_be_common::ConversationId::parse(first.id.clone()).is_ok());
+    let first_workspace = first.extra["workspace"].as_str().unwrap().to_owned();
+    std::fs::write(PathBuf::from(&first_workspace).join("old-session.txt"), "pollution").unwrap();
+
+    let (svc2, _, _) = setup_with_workspace_root(root.clone()).await;
+    let second = svc2
+        .create(USER_ID, make_auto_workspace_create_req())
+        .await
+        .unwrap();
+    assert!(sparkfox_be_common::ConversationId::parse(second.id.clone()).is_ok());
+    assert_ne!(second.id, first.id, "fresh databases must not reuse entity IDs");
+    let second_workspace = second.extra["workspace"].as_str().unwrap();
+
+    assert_ne!(
+        second_workspace, first_workspace,
+        "auto workspaces must remain isolated across fresh datasets"
+    );
+    assert!(
+        !PathBuf::from(second_workspace).join("old-session.txt").exists(),
+        "new temp workspace must not expose files from a prior deleted/reset conversation"
+    );
+
+    let _ = std::fs::remove_dir_all(root);
+}
+
+#[tokio::test]
+async fn delete_removes_managed_auto_workspace() {
+    let root = std::env::temp_dir().join(format!(
+        "sparkfox-conv-delete-{}",
+        sparkfox_be_common::generate_prefixed_id("test")
+    ));
+    let _ = std::fs::remove_dir_all(&root);
+
+    let (svc, _, _) = setup_with_workspace_root(root.clone()).await;
+    let conv = svc
+        .create(USER_ID, make_auto_workspace_create_req())
+        .await
+        .unwrap();
+    let workspace = PathBuf::from(conv.extra["workspace"].as_str().unwrap());
+    assert!(workspace.exists(), "precondition: auto workspace exists after create");
+
+    svc.delete(USER_ID, &conv.id.to_string()).await.unwrap();
+
+    assert!(
+        !workspace.exists(),
+        "deleting a conversation must remove its backend-managed temporary workspace"
+    );
+
+    let _ = std::fs::remove_dir_all(root);
+}
+
+#[tokio::test]
+async fn t1_2_create_each_agent_type() {
+    let (svc, _, _runtime_registry) = setup().await;
+
+    let types = vec![
+        ("acp", AgentType::Acp),
+        ("openclaw-gateway", AgentType::OpenclawGateway),
+        ("nanobot", AgentType::Nanobot),
+        ("remote", AgentType::Remote),
+        ("nomi", AgentType::Nomi),
+    ];
+
+    for (type_str, expected_type) in types {
+        let body = if type_str == "nomi" {
+            json!({
+                "type": type_str,
+                "model": { "provider_id": "prov_0190f5fe-7c00-7a00-8000-000000000001", "model": "m1" },
+                "extra": {}
+            })
+        } else {
+            json!({
+                "type": type_str,
+                "extra": {}
+            })
+        };
+        let req: CreateConversationRequest = serde_json::from_value(body).unwrap();
+        let resp = svc.create(USER_ID, req).await.unwrap();
+        assert_eq!(resp.r#type, expected_type, "Type mismatch for {type_str}");
+        if type_str == "nomi" {
+            assert!(resp.model.is_some(), "nomi should keep top-level model");
+        } else {
+            assert!(resp.model.is_none(), "{type_str} should have no top-level model");
+        }
+    }
+}
+
+#[tokio::test]
+async fn t1_3_create_with_optional_fields() {
+    let (svc, _, _runtime_registry) = setup().await;
+
+    let req: CreateConversationRequest = serde_json::from_value(json!({
+        "type": "acp",
+        "name": "Custom Name",
+        "source": "telegram",
+        "channel_chat_id": "user:123",
+        "extra": { "workspace": "/path" }
+    }))
+    .unwrap();
+    let resp = svc.create(USER_ID, req).await.unwrap();
+
+    assert_eq!(resp.name, "Custom Name");
+    assert_eq!(resp.source, Some(ConversationSource::Telegram));
+    assert_eq!(resp.channel_chat_id.as_deref(), Some("user:123"));
+}
+
+// ── T2: List conversations ─────────────────────────────────────────
+
+#[tokio::test]
+async fn t2_1_list_empty() {
+    let (svc, _, _runtime_registry) = setup().await;
+    let result = svc.list(USER_ID, ListConversationsQuery::default(), false).await.unwrap();
+    assert!(result.items.is_empty());
+    assert_eq!(result.total, 0);
+    assert!(!result.has_more);
+}
+
+#[tokio::test]
+async fn t2_2_list_basic() {
+    let (svc, _, _runtime_registry) = setup().await;
+    for _ in 0..3 {
+        svc.create(USER_ID, make_create_req()).await.unwrap();
+    }
+
+    let result = svc.list(USER_ID, ListConversationsQuery::default(), false).await.unwrap();
+    assert_eq!(result.items.len(), 3);
+    assert_eq!(result.total, 3);
+}
+
+#[tokio::test]
+async fn t2_3_cursor_pagination() {
+    let (svc, _, _runtime_registry) = setup().await;
+    for _ in 0..5 {
+        svc.create(USER_ID, make_create_req()).await.unwrap();
+    }
+
+    // First page: limit=2
+    let query = ListConversationsQuery {
+        limit: Some(2),
+        ..Default::default()
+    };
+    let page1 = svc.list(USER_ID, query, false).await.unwrap();
+    assert_eq!(page1.items.len(), 2);
+    assert!(page1.has_more);
+    assert_eq!(page1.total, 5);
+
+    // Second page: cursor = last ID from page 1
+    let cursor = page1.items.last().unwrap().id.clone();
+    let query2 = ListConversationsQuery {
+        cursor: Some(cursor.to_string()),
+        limit: Some(2),
+        ..Default::default()
+    };
+    let page2 = svc.list(USER_ID, query2, false).await.unwrap();
+    assert_eq!(page2.items.len(), 2);
+    assert!(page2.has_more);
+
+    // Third page
+    let cursor2 = page2.items.last().unwrap().id.clone();
+    let query3 = ListConversationsQuery {
+        cursor: Some(cursor2.to_string()),
+        limit: Some(2),
+        ..Default::default()
+    };
+    let page3 = svc.list(USER_ID, query3, false).await.unwrap();
+    assert_eq!(page3.items.len(), 1);
+    assert!(!page3.has_more);
+
+    // No overlap between pages
+    let all_ids: Vec<String> = page1
+        .items
+        .iter()
+        .chain(page2.items.iter())
+        .chain(page3.items.iter())
+        .map(|c| c.id.clone())
+        .collect();
+    let unique: std::collections::HashSet<&String> = all_ids.iter().collect();
+    assert_eq!(all_ids.len(), unique.len());
+}
+
+#[tokio::test]
+async fn t2_4_source_filter() {
+    let (svc, _, _runtime_registry) = setup().await;
+
+    // 2 nomifun + 1 telegram
+    svc.create(USER_ID, make_create_req()).await.unwrap();
+    svc.create(USER_ID, make_create_req()).await.unwrap();
+
+    let telegram_req: CreateConversationRequest = serde_json::from_value(json!({
+        "type": "acp",
+        "source": "telegram",
+        "extra": {}
+    }))
+    .unwrap();
+    svc.create(USER_ID, telegram_req).await.unwrap();
+
+    let query = ListConversationsQuery {
+        source: Some("telegram".into()),
+        ..Default::default()
+    };
+    let result = svc.list(USER_ID, query, false).await.unwrap();
+    assert_eq!(result.items.len(), 1);
+    assert_eq!(result.items[0].source, Some(ConversationSource::Telegram));
+}
+
+#[tokio::test]
+async fn t2_5_pinned_filter() {
+    let (svc, _, runtime_registry) = setup().await;
+
+    let conv = svc.create(USER_ID, make_create_req()).await.unwrap();
+    svc.create(USER_ID, make_create_req()).await.unwrap();
+
+    // Pin one
+    let pin_req: UpdateConversationRequest = serde_json::from_value(json!({ "pinned": true })).unwrap();
+    svc.update(USER_ID, &conv.id.to_string(), pin_req, &runtime_registry).await.unwrap();
+
+    let query = ListConversationsQuery {
+        pinned: Some(true),
+        ..Default::default()
+    };
+    let result = svc.list(USER_ID, query, false).await.unwrap();
+    assert_eq!(result.items.len(), 1);
+    assert!(result.items[0].pinned);
+}
+
+// ── T3: Get single conversation ────────────────────────────────────
+
+#[tokio::test]
+async fn t3_1_get_existing() {
+    let (svc, _, _runtime_registry) = setup().await;
+    let created = svc.create(USER_ID, make_create_req()).await.unwrap();
+
+    let fetched = svc.get(USER_ID, &created.id.to_string()).await.unwrap();
+    assert_eq!(fetched.id, created.id);
+    assert_eq!(fetched.r#type, created.r#type);
+    assert_eq!(fetched.name, created.name);
+    assert_eq!(fetched.status, created.status);
+}
+
+#[tokio::test]
+async fn t3_2_get_not_found() {
+    let (svc, _, _runtime_registry) = setup().await;
+    let missing = sparkfox_be_common::ConversationId::new();
+    let err = svc.get(USER_ID, missing.as_str()).await.unwrap_err();
+    assert!(matches!(err, sparkfox_be_common::AppError::NotFound(_)));
+}
+
+// ── T4: Update conversation ────────────────────────────────────────
+
+#[tokio::test]
+async fn t4_1_update_name() {
+    let (svc, broadcaster, runtime_registry) = setup().await;
+    let conv = svc.create(USER_ID, make_create_req()).await.unwrap();
+    broadcaster.take_events();
+
+    let req: UpdateConversationRequest = serde_json::from_value(json!({ "name": "New Name" })).unwrap();
+    let updated = svc.update(USER_ID, &conv.id.to_string(), req, &runtime_registry).await.unwrap();
+
+    assert_eq!(updated.name, "New Name");
+    assert!(updated.modified_at >= conv.modified_at);
+
+    let events = broadcaster.take_events();
+    assert_eq!(events.len(), 1);
+    assert_eq!(events[0].data["action"], "updated");
+}
+
+#[tokio::test]
+async fn t4_2_pin_conversation() {
+    let (svc, _, runtime_registry) = setup().await;
+    let conv = svc.create(USER_ID, make_create_req()).await.unwrap();
+
+    let req: UpdateConversationRequest = serde_json::from_value(json!({ "pinned": true })).unwrap();
+    let updated = svc.update(USER_ID, &conv.id.to_string(), req, &runtime_registry).await.unwrap();
+
+    assert!(updated.pinned);
+    assert!(updated.pinned_at.is_some());
+}
+
+#[tokio::test]
+async fn t4_3_unpin_clears_pinned_at() {
+    let (svc, _, runtime_registry) = setup().await;
+    let conv = svc.create(USER_ID, make_create_req()).await.unwrap();
+
+    // Pin
+    let pin: UpdateConversationRequest = serde_json::from_value(json!({ "pinned": true })).unwrap();
+    let pinned = svc.update(USER_ID, &conv.id.to_string(), pin, &runtime_registry).await.unwrap();
+    assert!(pinned.pinned_at.is_some());
+
+    // Unpin
+    let unpin: UpdateConversationRequest = serde_json::from_value(json!({ "pinned": false })).unwrap();
+    let unpinned = svc.update(USER_ID, &conv.id.to_string(), unpin, &runtime_registry).await.unwrap();
+    assert!(!unpinned.pinned);
+    assert!(unpinned.pinned_at.is_none());
+}
+
+#[tokio::test]
+async fn t4_4_extra_merge_preserves_existing_keys() {
+    let (svc, _, runtime_registry) = setup().await;
+
+    let req: CreateConversationRequest = serde_json::from_value(json!({
+        "type": "acp",
+        "extra": { "workspace": "/old", "contextFileName": "ctx.md" }
+    }))
+    .unwrap();
+    let conv = svc.create(USER_ID, req).await.unwrap();
+
+    // Update only workspace
+    let update_req: UpdateConversationRequest =
+        serde_json::from_value(json!({ "extra": { "workspace": "/new" } })).unwrap();
+    let updated = svc.update(USER_ID, &conv.id.to_string(), update_req, &runtime_registry).await.unwrap();
+
+    assert_eq!(updated.extra["workspace"], "/new");
+    assert_eq!(updated.extra["contextFileName"], "ctx.md");
+}
+
+#[tokio::test]
+async fn t4_5_update_model() {
+    let (svc, _, runtime_registry) = setup().await;
+
+    // Top-level model updates are only valid on nomi conversations
+    // (Task 8 enforces the nomi-only rule in update).
+    let create_req: CreateConversationRequest = serde_json::from_value(json!({
+        "type": "nomi",
+        "model": { "provider_id": "prov_0190f5fe-7c00-7a00-8000-000000000001", "model": "m1" },
+        "extra": {}
+    }))
+    .unwrap();
+    let conv = svc.create(USER_ID, create_req).await.unwrap();
+
+    let req: UpdateConversationRequest = serde_json::from_value(json!({
+        "model": { "provider_id": "prov_0190f5fe-7c00-7a00-8000-000000000001", "model": "new-model" }
+    }))
+    .unwrap();
+    let updated = svc.update(USER_ID, &conv.id.to_string(), req, &runtime_registry).await.unwrap();
+
+    let model = updated.model.unwrap();
+    assert_eq!(model.provider_id, "prov_0190f5fe-7c00-7a00-8000-000000000001");
+    assert_eq!(model.model, "new-model");
+}
+
+#[tokio::test]
+async fn t4_6_update_not_found() {
+    let (svc, _, runtime_registry) = setup().await;
+    let req: UpdateConversationRequest = serde_json::from_value(json!({ "name": "x" })).unwrap();
+    let missing = sparkfox_be_common::ConversationId::new();
+    let err = svc.update(USER_ID, missing.as_str(), req, &runtime_registry).await.unwrap_err();
+    assert!(matches!(err, sparkfox_be_common::AppError::NotFound(_)));
+}
+
+// ── T5: Delete conversation ────────────────────────────────────────
+
+#[tokio::test]
+async fn t5_1_delete_conversation() {
+    let (svc, broadcaster, _runtime_registry) = setup().await;
+    let conv = svc.create(USER_ID, make_create_req()).await.unwrap();
+    broadcaster.take_events();
+
+    svc.delete(USER_ID, &conv.id.to_string()).await.unwrap();
+
+    // Verify gone
+    let err = svc.get(USER_ID, &conv.id.to_string()).await.unwrap_err();
+    assert!(matches!(err, sparkfox_be_common::AppError::NotFound(_)));
+
+    // Verify broadcast
+    let events = broadcaster.take_events();
+    assert_eq!(events.len(), 1);
+    assert_eq!(events[0].data["action"], "deleted");
+    assert_eq!(events[0].data["conversation_id"], conv.id);
+}
+
+#[tokio::test]
+async fn t5_2_delete_then_get_returns_404() {
+    let (svc, _, _runtime_registry) = setup().await;
+    let conv = svc.create(USER_ID, make_create_req()).await.unwrap();
+
+    svc.delete(USER_ID, &conv.id.to_string()).await.unwrap();
+    let err = svc.get(USER_ID, &conv.id.to_string()).await.unwrap_err();
+    assert!(matches!(err, sparkfox_be_common::AppError::NotFound(_)));
+}
+
+#[tokio::test]
+async fn t5_3_delete_not_found() {
+    let (svc, _, _runtime_registry) = setup().await;
+    let missing = sparkfox_be_common::ConversationId::new();
+    let err = svc.delete(USER_ID, missing.as_str()).await.unwrap_err();
+    assert!(matches!(err, sparkfox_be_common::AppError::NotFound(_)));
+}
+
+// ── T11: WebSocket event verification ──────────────────────────────
+
+#[tokio::test]
+async fn t11_1_create_broadcasts_created() {
+    let (svc, broadcaster, _runtime_registry) = setup().await;
+    let resp = svc.create(USER_ID, make_create_req()).await.unwrap();
+
+    let events = broadcaster.take_events();
+    assert_eq!(events.len(), 1);
+    assert_eq!(events[0].name, "conversation.listChanged");
+    assert_eq!(events[0].data["action"], "created");
+    assert_eq!(events[0].data["conversation_id"], resp.id);
+}
+
+#[tokio::test]
+async fn t11_2_update_broadcasts_updated() {
+    let (svc, broadcaster, runtime_registry) = setup().await;
+    let conv = svc.create(USER_ID, make_create_req()).await.unwrap();
+    broadcaster.take_events();
+
+    let req: UpdateConversationRequest = serde_json::from_value(json!({ "name": "x" })).unwrap();
+    svc.update(USER_ID, &conv.id.to_string(), req, &runtime_registry).await.unwrap();
+
+    let events = broadcaster.take_events();
+    assert_eq!(events[0].data["action"], "updated");
+}
+
+#[tokio::test]
+async fn t11_3_delete_broadcasts_deleted() {
+    let (svc, broadcaster, _runtime_registry) = setup().await;
+    let conv = svc.create(USER_ID, make_create_req()).await.unwrap();
+    broadcaster.take_events();
+
+    svc.delete(USER_ID, &conv.id.to_string()).await.unwrap();
+
+    let events = broadcaster.take_events();
+    assert_eq!(events[0].data["action"], "deleted");
+}
+
+// ── T12: Boundary scenarios ────────────────────────────────────────
+
+#[tokio::test]
+async fn t12_1_long_name() {
+    let (svc, _, _runtime_registry) = setup().await;
+    let long_name = "x".repeat(1000);
+
+    let req: CreateConversationRequest = serde_json::from_value(json!({
+        "type": "acp",
+        "name": long_name,
+        "extra": {}
+    }))
+    .unwrap();
+    let resp = svc.create(USER_ID, req).await.unwrap();
+    assert_eq!(resp.name.len(), 1000);
+}
+
+#[tokio::test]
+async fn t12_2_large_extra_json() {
+    let (svc, _, _runtime_registry) = setup().await;
+
+    let large_extra = json!({
+        "workspace": "/project",
+        "nested": {
+            "deep": {
+                "array": [1, 2, 3, 4, 5],
+                "object": { "key": "value" }
+            }
+        },
+        "list": (0..100).collect::<Vec<_>>()
+    });
+
+    let req: CreateConversationRequest = serde_json::from_value(json!({
+        "type": "acp",
+        "extra": large_extra
+    }))
+    .unwrap();
+    let resp = svc.create(USER_ID, req).await.unwrap();
+
+    assert_eq!(resp.extra["workspace"], "/project");
+    assert_eq!(resp.extra["nested"]["deep"]["array"][2], 3);
+}
+
+#[tokio::test]
+async fn t12_3_concurrent_creates() {
+    let (svc, _, _runtime_registry) = setup().await;
+
+    let mut handles = vec![];
+    for _ in 0..10 {
+        let svc = svc.clone();
+        handles.push(tokio::spawn(async move {
+            svc.create(USER_ID, make_create_req()).await.unwrap()
+        }));
+    }
+
+    let mut ids = vec![];
+    for handle in handles {
+        let resp = handle.await.unwrap();
+        ids.push(resp.id);
+    }
+
+    // All IDs unique
+    let unique: std::collections::HashSet<&String> = ids.iter().collect();
+    assert_eq!(ids.len(), unique.len());
+}
+
+// ── Full lifecycle ─────────────────────────────────────────────────
+
+#[tokio::test]
+async fn full_lifecycle_create_get_update_delete() {
+    let (svc, broadcaster, runtime_registry) = setup().await;
+
+    // Create
+    let created = svc.create(USER_ID, make_create_req()).await.unwrap();
+    assert_eq!(created.status, ConversationStatus::Pending);
+
+    // Get
+    let fetched = svc.get(USER_ID, &created.id.to_string()).await.unwrap();
+    assert_eq!(fetched.id, created.id);
+
+    // Update
+    let update_req: UpdateConversationRequest = serde_json::from_value(json!({
+        "name": "Updated",
+        "pinned": true,
+        "extra": { "workspace": "/updated" }
+    }))
+    .unwrap();
+    let updated = svc.update(USER_ID, &created.id.to_string(), update_req, &runtime_registry).await.unwrap();
+    assert_eq!(updated.name, "Updated");
+    assert!(updated.pinned);
+    assert_eq!(updated.extra["workspace"], "/updated");
+
+    // Delete
+    svc.delete(USER_ID, &created.id.to_string()).await.unwrap();
+    assert!(svc.get(USER_ID, &created.id.to_string()).await.is_err());
+
+    // Verify all events: created + updated + deleted
+    let events = broadcaster.take_events();
+    assert_eq!(events.len(), 3);
+    assert_eq!(events[0].data["action"], "created");
+    assert_eq!(events[1].data["action"], "updated");
+    assert_eq!(events[2].data["action"], "deleted");
+}
+
+// ── Type-aware model rules ─────────────────────────────────────────
+
+#[tokio::test]
+async fn create_rejects_top_level_model_for_acp() {
+    let (svc, _, _runtime_registry) = setup().await;
+
+    let req: CreateConversationRequest = serde_json::from_value(json!({
+        "type": "acp",
+        "model": { "provider_id": "prov_0190f5fe-7c00-7a00-8000-000000000001", "model": "claude-sonnet-4-20250514" },
+        "extra": {}
+    }))
+    .unwrap();
+
+    let err = svc.create(USER_ID, req).await.unwrap_err();
+    match err {
+        AppError::BadRequest(msg) => {
+            assert!(msg.contains("model"), "error message should mention model: {msg}");
+            assert!(msg.contains("extra"), "error message should mention extra: {msg}");
+        }
+        other => panic!("expected BadRequest, got {other:?}"),
+    }
+}
+
+#[tokio::test]
+async fn create_rejects_top_level_model_for_remote() {
+    let (svc, _, _runtime_registry) = setup().await;
+
+    let req: CreateConversationRequest = serde_json::from_value(json!({
+        "type": "remote",
+        "model": { "provider_id": "prov_0190f5fe-7c00-7a00-8000-000000000001", "model": "m1" },
+        "extra": {}
+    }))
+    .unwrap();
+
+    assert!(matches!(svc.create(USER_ID, req).await, Err(AppError::BadRequest(_))));
+}
+
+#[tokio::test]
+async fn create_accepts_top_level_model_for_nomi() {
+    let (svc, _, _runtime_registry) = setup().await;
+
+    let req: CreateConversationRequest = serde_json::from_value(json!({
+        "type": "nomi",
+        "model": { "provider_id": "prov_0190f5fe-7c00-7a00-8000-000000000001", "model": "gpt-4o" },
+        "extra": {}
+    }))
+    .unwrap();
+
+    let resp = svc.create(USER_ID, req).await.unwrap();
+    assert_eq!(resp.r#type, AgentType::Nomi);
+    let model = resp.model.expect("nomi response should carry top-level model");
+    assert_eq!(model.provider_id, "prov_0190f5fe-7c00-7a00-8000-000000000001");
+    assert_eq!(model.model, "gpt-4o");
+}
+
+#[tokio::test]
+async fn create_nomi_strips_extra_model_field() {
+    let (svc, _, _runtime_registry) = setup().await;
+
+    let req: CreateConversationRequest = serde_json::from_value(json!({
+        "type": "nomi",
+        "model": { "provider_id": "prov_0190f5fe-7c00-7a00-8000-000000000001", "model": "gpt-4o" },
+        "extra": {
+            "workspace": "/home/user/project",
+            "model": "bogus-from-legacy-client"
+        }
+    }))
+    .unwrap();
+
+    let resp = svc.create(USER_ID, req).await.unwrap();
+    assert!(
+        !resp.extra.as_object().unwrap().contains_key("model"),
+        "nomi create must strip extra.model to avoid dual source of truth; got {:?}",
+        resp.extra
+    );
+    // Top-level model is still present and wins.
+    assert_eq!(resp.model.unwrap().model, "gpt-4o");
+}
+
+#[tokio::test]
+async fn update_rejects_top_level_model_for_acp() {
+    let (svc, _, runtime_registry) = setup().await;
+    let conv = svc.create(USER_ID, make_create_req()).await.unwrap();
+
+    let req: UpdateConversationRequest = serde_json::from_value(json!({
+        "model": { "provider_id": "prov_0190f5fe-7c00-7a00-8000-000000000001", "model": "claude-sonnet-4-20250514" }
+    }))
+    .unwrap();
+
+    let err = svc.update(USER_ID, &conv.id.to_string(), req, &runtime_registry).await.unwrap_err();
+    assert!(
+        matches!(err, AppError::BadRequest(_)),
+        "expected BadRequest, got {err:?}"
+    );
+}
+
+#[tokio::test]
+async fn update_accepts_top_level_model_for_nomi() {
+    let (svc, _, runtime_registry) = setup().await;
+
+    let create_req: CreateConversationRequest = serde_json::from_value(json!({
+        "type": "nomi",
+        "model": { "provider_id": "prov_0190f5fe-7c00-7a00-8000-000000000001", "model": "gpt-4o" },
+        "extra": {}
+    }))
+    .unwrap();
+    let conv = svc.create(USER_ID, create_req).await.unwrap();
+
+    let req: UpdateConversationRequest = serde_json::from_value(json!({
+        "model": { "provider_id": "prov_0190f5fe-7c00-7a00-8000-000000000001", "model": "gpt-4o-mini" }
+    }))
+    .unwrap();
+    let updated = svc.update(USER_ID, &conv.id.to_string(), req, &runtime_registry).await.unwrap();
+    assert_eq!(updated.model.unwrap().model, "gpt-4o-mini");
+}
+
+#[tokio::test]
+async fn update_non_nomi_extra_model_does_not_kill_task() {
+    // Verifies the explicit rule that `extra.model` changes for non-nomi
+    // do NOT trigger runtime_registry.kill. Since our `NoopAgentRuntimeRegistry::kill` is
+    // a no-op we can't assert the negative directly; we assert the update
+    // succeeds and the merged extra carries the new field, and that top-level
+    // model remains None.
+    let (svc, _, runtime_registry) = setup().await;
+    let conv = svc.create(USER_ID, make_create_req()).await.unwrap();
+
+    let req: UpdateConversationRequest = serde_json::from_value(json!({
+        "extra": { "current_model_id": "claude-opus-4" }
+    }))
+    .unwrap();
+    let updated = svc.update(USER_ID, &conv.id.to_string(), req, &runtime_registry).await.unwrap();
+    assert_eq!(updated.extra["current_model_id"], "claude-opus-4");
+    assert!(updated.model.is_none());
+}
+
+#[tokio::test]
+async fn update_nomi_strips_extra_model_from_patch() {
+    let (svc, _, runtime_registry) = setup().await;
+
+    let create_req: CreateConversationRequest = serde_json::from_value(json!({
+        "type": "nomi",
+        "model": { "provider_id": "prov_0190f5fe-7c00-7a00-8000-000000000001", "model": "gpt-4o" },
+        "extra": {}
+    }))
+    .unwrap();
+    let conv = svc.create(USER_ID, create_req).await.unwrap();
+
+    // Client mistakenly sends extra.model on an nomi PATCH. It should be
+    // silently stripped from the merged extra, not persisted.
+    let req: UpdateConversationRequest = serde_json::from_value(json!({
+        "extra": { "model": "legacy-value", "last_token_usage": { "total_tokens": 42 } }
+    }))
+    .unwrap();
+    let updated = svc.update(USER_ID, &conv.id.to_string(), req, &runtime_registry).await.unwrap();
+
+    assert!(
+        !updated.extra.as_object().unwrap().contains_key("model"),
+        "nomi PATCH must strip extra.model; got {:?}",
+        updated.extra
+    );
+    // Other extra keys from the patch are merged as usual.
+    assert_eq!(updated.extra["last_token_usage"]["total_tokens"], 42);
+    // Top-level model unchanged by the extra-only patch.
+    assert_eq!(updated.model.unwrap().model, "gpt-4o");
+}
+
+#[tokio::test]
+async fn create_acp_seeds_acp_session_runtime_from_extra() {
+    use sparkfox_be_db::SqliteAcpSessionRepository;
+
+    let db = init_database_memory().await.unwrap();
+    let repo = Arc::new(sparkfox_be_db::SqliteConversationRepository::new(db.pool().clone()));
+    let broadcaster = Arc::new(TestBroadcaster::new());
+    let agent_metadata_repo: Arc<dyn sparkfox_be_db::IAgentMetadataRepository> =
+        Arc::new(sparkfox_be_db::SqliteAgentMetadataRepository::new(db.pool().clone()));
+    let acp_session_repo: Arc<dyn sparkfox_be_db::IAcpSessionRepository> =
+        Arc::new(SqliteAcpSessionRepository::new(db.pool().clone()));
+    let runtime_registry: Arc<dyn AgentRuntimeRegistry> = Arc::new(NoopAgentRuntimeRegistry);
+    let svc = sparkfox_be_conversation::ConversationService::new(
+        Arc::<str>::from(USER_ID),
+        std::env::temp_dir(),
+        broadcaster.clone(),
+        Arc::new(EmptySkillResolver),
+        runtime_registry,
+        repo,
+        agent_metadata_repo,
+        acp_session_repo.clone(),
+        Arc::new(sparkfox_be_conversation::NoExecutionConversationBoundary),
+    );
+
+    let req: CreateConversationRequest = serde_json::from_value(json!({
+        "type": "acp",
+        "extra": {
+            "backend": "claude",
+            "current_mode_id": "bypassPermissions",
+            "current_model_id": "claude-opus-4"
+        }
+    }))
+    .unwrap();
+    let conv = svc.create(USER_ID, req).await.unwrap();
+
+    let runtime = acp_session_repo
+        .load_runtime_state(&conv.id)
+        .await
+        .unwrap()
+        .expect("acp_session runtime state should exist after create");
+    assert_eq!(
+        runtime.current_mode_id.as_deref(),
+        Some("bypassPermissions"),
+        "extra.current_mode_id must be seeded into acp_session on create"
+    );
+    assert_eq!(
+        runtime.current_model_id.as_deref(),
+        Some("claude-opus-4"),
+        "extra.current_model_id must be seeded into acp_session on create"
+    );
+}
+
+#[tokio::test]
+async fn create_acp_skips_seed_when_extra_has_empty_runtime_fields() {
+    use sparkfox_be_db::SqliteAcpSessionRepository;
+
+    let db = init_database_memory().await.unwrap();
+    let repo = Arc::new(sparkfox_be_db::SqliteConversationRepository::new(db.pool().clone()));
+    let broadcaster = Arc::new(TestBroadcaster::new());
+    let agent_metadata_repo: Arc<dyn sparkfox_be_db::IAgentMetadataRepository> =
+        Arc::new(sparkfox_be_db::SqliteAgentMetadataRepository::new(db.pool().clone()));
+    let acp_session_repo: Arc<dyn sparkfox_be_db::IAcpSessionRepository> =
+        Arc::new(SqliteAcpSessionRepository::new(db.pool().clone()));
+    let runtime_registry: Arc<dyn AgentRuntimeRegistry> = Arc::new(NoopAgentRuntimeRegistry);
+    let svc = sparkfox_be_conversation::ConversationService::new(
+        Arc::<str>::from(USER_ID),
+        std::env::temp_dir(),
+        broadcaster.clone(),
+        Arc::new(EmptySkillResolver),
+        runtime_registry,
+        repo,
+        agent_metadata_repo,
+        acp_session_repo.clone(),
+        Arc::new(sparkfox_be_conversation::NoExecutionConversationBoundary),
+    );
+
+    // Both fields present but empty — treated as absent, no save_runtime_state call.
+    let req: CreateConversationRequest = serde_json::from_value(json!({
+        "type": "acp",
+        "extra": { "backend": "claude", "current_mode_id": "", "current_model_id": "" }
+    }))
+    .unwrap();
+    let conv = svc.create(USER_ID, req).await.unwrap();
+
+    let runtime = acp_session_repo.load_runtime_state(&conv.id).await.unwrap();
+    // Either `None` (no runtime key yet) or Some(default) — both mean "nothing seeded".
+    assert!(
+        runtime
+            .as_ref()
+            .is_none_or(|r| r.current_mode_id.is_none() && r.current_model_id.is_none()),
+        "empty runtime fields should not produce a seed: got {runtime:?}"
+    );
+}

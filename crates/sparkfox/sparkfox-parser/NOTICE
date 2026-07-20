@@ -1,0 +1,28 @@
+sparkfox-parser
+Copyright (C) 2026 SparkFox Contributors (AGPL-3.0-only)
+
+This product includes software developed by third parties:
+
+1. lopdf 0.34 (MIT License)
+   - Use: PDF document loading and text extraction
+   - Source: https://github.com/J-F-Liu/lopdf
+   - Copyright (c) lopdf contributors
+
+2. docx-rs 0.4 (MIT License)
+   - Use: Word (.docx) document parsing
+   - Source: https://github.com/bokuweb/docx-rs
+   - Copyright (c) docx-rs contributors
+
+3. calamine 0.26 (MIT License)
+   - Use: Excel (.xlsx/.xls) workbook parsing
+   - Source: https://github.com/tafia/calamine
+   - Copyright (c) calamine contributors
+
+4. quick-xml 0.36 (MIT License)
+   - Use: XML parsing utility (transitive, reserved for nested-depth XML safety limits)
+   - Source: https://github.com/tafia/quick-xml
+   - Copyright (c) quick-xml contributors
+
+All Parser trait definitions, ParsedDocument/DocumentMetadata types, parse_with_timeout
+logic, security limits, and unit/integration tests are independently authored by
+SparkFox Contributors and licensed under AGPL-3.0-only.

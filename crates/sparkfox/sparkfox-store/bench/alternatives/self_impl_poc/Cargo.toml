@@ -1,0 +1,17 @@
+[package]
+name = "self_impl_poc"
+version = "0.1.0"
+edition = "2021"
+description = "PoC: simplified self-implemented HNSW (petgraph + rand) on Windows MSVC (Sub-Step 10.15.1)"
+
+# 独立 workspace，避免被父 workspace 自动包含
+[workspace]
+
+[dependencies]
+# petgraph: 图数据结构（用于 HNSW 多层图）
+petgraph = "0.6"
+# rand: 随机数生成（HNSW 入口点选择 + 层级分配）
+rand = "0.8"
+
+[profile.release]
+opt-level = 3

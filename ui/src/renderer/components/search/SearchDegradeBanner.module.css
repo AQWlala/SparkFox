@@ -1,0 +1,17 @@
+/**
+ * SearchDegradeBanner 样式（spec §三 10.12.2 / U-06b 修复）
+ *
+ * 仅定义横幅容器的间距与圆角，颜色与图标复用 Arco Design Alert 默认 warning 主题。
+ */
+
+.banner {
+  border-radius: 8px;
+  margin-bottom: 8px;
+  width: 100%;
+}
+
+/* 顶部公告模式：边角对齐容器宽度 */
+.bannerBanner {
+  border-radius: 0;
+  margin-bottom: 0;
+}

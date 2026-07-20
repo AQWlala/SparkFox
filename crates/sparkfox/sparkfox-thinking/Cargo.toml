@@ -1,0 +1,16 @@
+[package]
+name = "sparkfox-thinking"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "SparkFox thought stream visualization (BaiLongma clean-room)"
+
+[dependencies]
+sparkfox-core = { path = "../sparkfox-core" }
+tokio = { workspace = true }
+serde = { workspace = true }
+chrono = { workspace = true }
+
+[dev-dependencies]
+serde_json = { workspace = true }

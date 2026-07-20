@@ -1,0 +1,295 @@
+[workspace]
+resolver = "3"
+members = ["crates/agent/*", "crates/backend/*", "crates/shared/*", "crates/sparkfox/*", "apps/web", "apps/desktop"]
+
+[workspace.package]
+version = "0.2.28"
+edition = "2024"
+license = "AGPL-3.0-only"
+repository = "local/sparkfox"
+
+[workspace.dependencies]
+# --- Internal crates: backend (from nomifun-be-rs) ---
+sparkfox-be-common = { path = "crates/backend/sparkfox-be-common" }
+sparkfox-be-assets = { path = "crates/backend/sparkfox-be-assets" }
+sparkfox-be-db = { path = "crates/backend/sparkfox-be-db" }
+sparkfox-be-api-types = { path = "crates/backend/sparkfox-be-api-types" }
+sparkfox-be-realtime = { path = "crates/backend/sparkfox-be-realtime" }
+sparkfox-be-runtime = { path = "crates/backend/sparkfox-be-runtime" }
+sparkfox-be-auth = { path = "crates/backend/sparkfox-be-auth" }
+sparkfox-be-system = { path = "crates/backend/sparkfox-be-system" }
+sparkfox-be-file = { path = "crates/backend/sparkfox-be-file" }
+sparkfox-be-office = { path = "crates/backend/sparkfox-be-office" }
+sparkfox-be-shell = { path = "crates/backend/sparkfox-be-shell" }
+sparkfox-be-ai-agent = { path = "crates/backend/sparkfox-be-ai-agent" }
+sparkfox-be-mcp = { path = "crates/backend/sparkfox-be-mcp" }
+sparkfox-be-conversation = { path = "crates/backend/sparkfox-be-conversation" }
+sparkfox-be-extension = { path = "crates/backend/sparkfox-be-extension" }
+sparkfox-be-channel = { path = "crates/backend/sparkfox-be-channel" }
+sparkfox-be-cron = { path = "crates/backend/sparkfox-be-cron" }
+sparkfox-be-requirement = { path = "crates/backend/sparkfox-be-requirement" }
+sparkfox-be-idmm = { path = "crates/backend/sparkfox-be-idmm" }
+sparkfox-be-knowledge = { path = "crates/backend/sparkfox-be-knowledge" }
+sparkfox-be-companion = { path = "crates/backend/sparkfox-be-companion" }
+sparkfox-be-gateway = { path = "crates/backend/sparkfox-be-gateway" }
+sparkfox-be-public = { path = "crates/backend/sparkfox-be-public" }
+sparkfox-be-webhook = { path = "crates/backend/sparkfox-be-webhook" }
+sparkfox-be-agent-execution = { path = "crates/backend/sparkfox-be-agent-execution" }
+sparkfox-be-terminal = { path = "crates/backend/sparkfox-be-terminal" }
+sparkfox-be-preset = { path = "crates/backend/sparkfox-be-preset" }
+sparkfox-be-secret = { path = "crates/backend/sparkfox-be-secret" }
+sparkfox-be-public-agent = { path = "crates/backend/sparkfox-be-public-agent" }
+sparkfox-be-workshop = { path = "crates/backend/sparkfox-be-workshop" }
+sparkfox-be-creation = { path = "crates/backend/sparkfox-be-creation" }
+sparkfox-be-app = { path = "crates/backend/sparkfox-be-app" }
+
+# --- Internal crates: shared ---
+sparkfox-be-net = { path = "crates/shared/sparkfox-be-net" }
+sparkfox-sh-redact = { path = "crates/shared/sparkfox-sh-redact" }
+sparkfox-sh-process-runtime = { path = "crates/shared/sparkfox-sh-process-runtime" }
+
+# --- Internal crates: agent (from nomifun-agent-rs, now local) ---
+sparkfox-ag-types = { path = "crates/agent/sparkfox-ag-types" }
+sparkfox-ag-protocol = { path = "crates/agent/sparkfox-ag-protocol" }
+sparkfox-ag-compact = { path = "crates/agent/sparkfox-ag-compact" }
+sparkfox-ag-config = { path = "crates/agent/sparkfox-ag-config" }
+sparkfox-ag-providers = { path = "crates/agent/sparkfox-ag-providers" }
+sparkfox-ag-tools = { path = "crates/agent/sparkfox-ag-tools" }
+sparkfox-ag-mcp = { path = "crates/agent/sparkfox-ag-mcp" }
+sparkfox-ag-skills = { path = "crates/agent/sparkfox-ag-skills" }
+sparkfox-ag-memory = { path = "crates/agent/sparkfox-ag-memory" }
+sparkfox-ag-agent = { path = "crates/agent/sparkfox-ag-agent" }
+sparkfox-ag-computer = { path = "crates/agent/sparkfox-ag-computer" }
+sparkfox-ag-a11y = { path = "crates/agent/sparkfox-ag-a11y" }
+sparkfox-ag-browser-engine = { path = "crates/agent/sparkfox-ag-browser-engine" }
+sparkfox-ag-browser = { path = "crates/agent/sparkfox-ag-browser" }
+
+# --- Core framework ---
+tokio = { version = "1", features = ["full"] }
+# CancellationToken (tokio_util::sync) — exposed in default features on 0.7.x.
+# Hierarchical parent→child cancellation is the Rust idiom for Playwright's
+# LongStandingScope (page.close / frame.detach cancels all in-flight ops below).
+tokio-util = { version = "0.7" }
+axum = { version = "0.8", features = ["multipart", "ws"] }
+tower = { version = "0.5" }
+tower-http = { version = "0.6", features = ["cors", "trace", "limit", "fs"] }
+http = "1"
+futures = "0.3"
+futures-util = "0.3"
+
+# --- Serialization ---
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_yaml = "0.9"
+jsonschema = { version = "0.47", default-features = false }
+ts-rs = "12.0.1"
+encoding_rs = "0.8"
+
+# --- Async / error / log ---
+async-trait = "0.1"
+thiserror = "2"
+anyhow = "1"
+tracing = "0.1"
+tracing-appender = "0.2"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "json", "registry"] }
+
+# --- CLI ---
+clap = { version = "4", features = ["derive", "env"] }
+
+# --- Database ---
+sqlx = { version = "0.8", features = ["runtime-tokio", "sqlite"] }
+rusqlite = { version = "0.32", features = ["bundled"] }
+
+# --- Auth / Crypto ---
+# NOTE: sparkfox-ag-providers uses jsonwebtoken 10; sparkfox-be-auth pins 9 in its own
+# manifest (the only be-rs consumer). Keep the workspace default at 10.
+jsonwebtoken = "10"
+bcrypt = "0.17"
+aes-gcm = "0.10"
+ed25519-dalek = { version = "2", features = ["rand_core"] }
+# Public Suffix List (compile-time embedded, offline) for eTLD+1 domain binding
+# in sparkfox-be-secret. Correctly handles multi-level suffixes (co.uk, com.cn).
+psl = "2"
+
+# --- SparkFox: Sync / CRDT (RFC-004) ---
+# automerge-rs is the CRDT foundation for cross-device memory synchronization.
+# Pinned to 0.10 (latest stable); API still evolving, do not bump without PoC validation.
+automerge = "0.10"
+
+# --- SparkFox: E2EE (RFC-004) ---
+# ratchetx2 = Double Ratchet implementation (Signal-style) for end-to-end encrypted memory sync.
+# Stable, pure-Rust, well-documented. Used by sparkfox-e2ee crate.
+ratchetx2 = "0.3"
+
+uuid = { version = "1", features = ["v7"] }
+reqwest = { version = "0.12", features = ["json", "multipart", "stream", "rustls-tls", "socks", "system-proxy"], default-features = false }
+dashmap = "6"
+tokio-tungstenite = { version = "0.26", features = ["rustls-tls-native-roots"] }
+prost = "0.13"
+semver = "1"
+dirs = "6"
+regex = "1"
+sys-locale = "0.3"
+
+# --- File system ---
+include_dir = "0.7"
+notify = "8"
+walkdir = "2"
+ignore = "0.4"
+# Unified-diff computation for the knowledge-base inbox review panel (P4).
+similar = "2"
+zip = "2"
+# Node portable-runtime archive extraction (provisioner): tar.gz on unix/macos.
+flate2 = "1"
+tar = "0.4"
+git2 = { version = "0.20", default-features = false }
+mime_guess = "2"
+rust-embed = "8"
+fs2 = "0.4"
+zstd = "0.13"
+glob = "0.3"
+
+# --- Cron / time ---
+cron = "0.15"
+chrono = { version = "0.4", features = ["serde"] }
+chrono-tz = "0.10"
+
+# --- PTY / shell ---
+portable-pty = "0.8"
+# `shellexecute-on-windows`: launch via real ShellExecuteExW on Windows instead
+# of the default `cmd /c start "" <target>` fallback. The `start` builtin
+# mis-parses URLs/paths as window titles, runs with no console (CREATE_NO_WINDOW)
+# so its failure dialog can't surface, and pops a blocking "Windows cannot find
+# '\\'" modal. ShellExecuteExW delegates to the interactive shell (like the
+# `microsoft-edge:` protocol path that works) — no cmd, no console, no dialog.
+# Windows-only feature; macOS/Linux paths are unaffected.
+open = { version = "5", features = ["shellexecute-on-windows"] }
+which = "7"
+
+# --- Office ---
+calamine = "0.26"
+rust_xlsxwriter = "0.82"
+sha1 = "0.10"
+sha2 = "0.10"
+hmac = "0.12"
+
+# --- AWS ---
+aws-config = { version = "1", features = ["behavior-version-latest"] }
+aws-sdk-bedrock = { version = "1", default-features = false, features = ["rt-tokio", "default-https-client"] }
+aws-sigv4 = "1"
+aws-credential-types = { version = "1", features = ["hardcoded-credentials"] }
+
+# --- TLS ---
+rustls = "0.23"
+rustls-native-certs = "0.8"
+
+# --- OAuth / config ---
+oauth2 = "5.0.0-rc.1"
+# NOTE: sparkfox-ag-config uses toml 1.0; be-rs (sparkfox-be-mcp/runtime) uses 0.8 which is
+# the workspace default. sparkfox-ag-config pins 1.0 in its own manifest.
+toml = "0.8"
+
+# --- Encoding / misc ---
+base64 = "0.22"
+http-body-util = "0.1"
+getrandom = "0.2"
+hex = "0.4"
+# AES-128-ECB + MD5 for the WeChat (iLink) CDN media upload/encryption.
+aes = "0.8"
+md-5 = "0.10"
+# Nostr protocol (keys, NIP-04 DMs, event signing) — pure crypto, no net/TLS deps.
+nostr = { version = "0.37", default-features = false, features = ["std", "nip04"] }
+# HTML → Markdown (URL knowledge-source snapshots)
+htmd = "0.5"
+libc = "0.2"
+lru = "0.18"
+url = "2"
+unicode-width = "0.2.2"
+crossterm = "0.29"
+is-terminal = "0.4"
+
+# --- Computer / browser use ---
+image = { version = "0.25", default-features = false, features = ["png"] }
+xcap = "0.9"
+enigo = "0.6"
+# In-process self-hosted CDP browser engine (sparkfox-ag-browser-engine). 0.9.1 has NO
+# `tokio-runtime` feature — its transport rides `async-tungstenite` and is
+# runtime-agnostic, so the core CDP engine needs NO extra features here.
+# Deliberately default-features-only: we do NOT use chromiumoxide's built-in
+# Chrome *fetcher*. Task 6 ships a self-contained, proxy-aware download
+# (workspace `zip` + `sparkfox_be_net::http_client`) instead — the fetcher uses a
+# non-proxy-aware reqwest and would break the proxy-aware install promise, so its
+# `rustls`/`native-tls`/`zip*` features stay OFF (enabling a TLS feature without
+# `zip0`/`zip8` also won't compile in 0.9.1). CDP generated types arrive
+# transitively via `chromiumoxide_cdp`, so no separate workspace entry.
+chromiumoxide = { version = "0.9" }
+
+# --- Testing ---
+tempfile = "3"
+wiremock = "0.6"
+tokio-test = "0.4"
+mockall = "0.14"
+rstest = "0.26"
+serial_test = "3"
+# 快照测试：注入侧 aria 契约（observe_fixtures.rs）+ 序列化层契约（T6）防 PW 升级漂移。
+# yaml/json/redactions feature 用于结构化快照与随机字段归一。
+insta = { version = "1.48", features = ["yaml", "json", "redactions"] }
+
+# Minimal debuginfo to shrink build output. Incremental compilation stays at
+# the Cargo default (on for dev/test): it only applies to workspace members and
+# cuts touched-crate rebuilds 2-3x, which is the hot path of local iteration.
+# The disk cost lives in the build dir (see .cargo/config.toml build-dir) and
+# is reclaimed by the self-cleaning preflight in scripts/prune-build.mjs, which
+# runs at the start of every dev/build/test entry point (package.json scripts).
+# CI, if added, should set CARGO_INCREMENTAL=0 instead of hardcoding it here.
+[profile.dev]
+debug = "line-tables-only"
+
+# Dependencies don't need debuginfo — you never single-step into them. Dropping
+# it for the whole dependency graph (not workspace crates) is where most of the
+# build-dir size and file count lived: under macOS unpacked split-debuginfo each
+# dep emits many object/.dwo files, and high-frequency rebuilds never GC the old
+# ones. Workspace members keep line-tables above for usable stack traces; deps
+# compile once, so there is no rebuild-speed cost. Stale artifacts are pruned by
+# the self-cleaning preflight (scripts/prune-build.mjs) at each build start.
+[profile.dev.package."*"]
+debug = false
+
+[profile.test]
+debug = "line-tables-only"
+
+[profile.test.package."*"]
+debug = false
+
+# Size-optimized release profile. The packaged `sparkfox-desktop.exe` is the first
+# and largest file the NSIS installer writes, and an oversized *unsigned* binary
+# is the dominant cause of end-user "Extract: error writing to file
+# sparkfox-desktop.exe" failures: the longer the write window, the more likely
+# antivirus real-time scanning locks/quarantines the half-written exe (and the
+# bigger the download). Cargo's default release profile (no LTO,
+# codegen-units=16) left the binary at ~140 MB. These knobs cut the machine-code
+# bulk without changing runtime behavior:
+#   opt-level = 3      keep the default speed-optimized codegen (NOT "s"/"z"): the
+#                      LTO + codegen-units=1 win below is the main size lever, so
+#                      keeping opt-level=3 guarantees runtime perf >= the old build
+#                      (which was opt-level=3 but had NO LTO). Slightly larger than
+#                      opt-level="s" would be, but still far below the ~140 MB baseline.
+#   lto = "thin"       cross-crate dead-code elimination. Deliberately NOT fat
+#                      `true`: the desktop binary already embeds ui/dist (~34 MB)
+#                      and needs RUST_MIN_STACK=128MB for opt-level=3 codegen
+#                      (see .cargo/config.toml); fat LTO's memory/link pressure
+#                      would worsen the known intermittent rust-lld heap
+#                      corruption. Thin LTO keeps most of the size win, lighter.
+#   codegen-units = 1  let the optimizer see whole crates → smaller output.
+#   strip = true       drop residual symbol tables (also shrinks the non-Windows
+#                      appimage/deb/rpm/dmg artifacts).
+# NOT panic = "abort": the codebase relies on panic = "unwind" to isolate a
+# panicking tool from the agent process (sparkfox-ag-agent/src/tool_execution.rs,
+# apps/desktop/src/main.rs catch_unwind boundaries) and a test asserts unwind
+# semantics (sparkfox-be-ai-agent/src/protocol/acp.rs). Aborting would turn a single
+# tool panic into a full-process crash — a real behavior regression.
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = true

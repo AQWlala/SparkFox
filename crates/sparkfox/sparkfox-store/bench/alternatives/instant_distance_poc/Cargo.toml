@@ -1,0 +1,15 @@
+[package]
+name = "instant_distance_poc"
+version = "0.1.0"
+edition = "2021"
+description = "PoC: instant-distance on Windows MSVC (Sub-Step 10.15.1)"
+
+# 独立 workspace，避免被父 workspace 自动包含
+[workspace]
+
+[dependencies]
+# instant-distance: 纯 Rust HNSW 实现
+instant-distance = "0.6"
+
+[profile.release]
+opt-level = 3

@@ -1,0 +1,15 @@
+[package]
+name = "usearch_poc"
+version = "0.1.0"
+edition = "2021"
+description = "PoC: usearch-rs on Windows MSVC (Sub-Step 10.15.1)"
+
+# 独立 workspace，避免被父 workspace 自动包含
+[workspace]
+
+[dependencies]
+# usearch-rs: C++ FFI 绑定，需 C++ 编译器（cl.exe / clang++）
+usearch = "0.13"
+
+[profile.release]
+opt-level = 3

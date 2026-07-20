@@ -1,0 +1,81 @@
+[package]
+name = "sparkfox-be-gateway"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[features]
+# P3-GW1 路线 A：网关浏览器工具（per-companion BrowserTool registry）。门控因为它拉入
+# `sparkfox-ag-browser`（→ chromiumoxide CDP 栈 + 受管 Chromium）——无浏览器的 headless 宿主不应被迫依赖。
+# 由 `sparkfox-be-app` 的同名 feature 经 `sparkfox-be-gateway/browser-use` 向下传导；关时网关不暴露
+# sparkfox_ag_browser_* 工具（dispatch 走 unknown tool，schema 不注册）。依赖方向：gateway → sparkfox-ag-browser
+# （sparkfox-ag-browser 不反依赖 gateway，已核对无环）。
+browser-use = ["dep:sparkfox-ag-browser", "dep:sparkfox-ag-types", "dep:sparkfox-ag-config", "dep:sparkfox-ag-tools", "dep:sparkfox-be-secret", "dep:futures"]
+# Gateway computer-use tools (single shared desktop ComputerTool). Forwarded by
+# `sparkfox-be-app`'s `computer-use` feature via `sparkfox-be-gateway/computer-use`; off
+# on headless/web hosts (which never pull the native screen/input/UIA stack).
+# Reuses the optional sparkfox-ag-types/-config/-tools deps shared with browser-use.
+computer-use = ["dep:sparkfox-ag-computer", "dep:sparkfox-ag-types", "dep:sparkfox-ag-config", "dep:sparkfox-ag-tools"]
+
+[dependencies]
+sparkfox-be-common.workspace = true
+sparkfox-be-api-types.workspace = true
+sparkfox-be-conversation.workspace = true
+sparkfox-be-cron.workspace = true
+sparkfox-be-requirement.workspace = true
+sparkfox-be-companion.workspace = true
+sparkfox-be-ai-agent.workspace = true
+sparkfox-be-db.workspace = true
+sparkfox-be-terminal.workspace = true
+sparkfox-be-idmm.workspace = true
+sparkfox-be-knowledge.workspace = true
+# 创意工坊 (Creative Workshop): canvas/asset service (read canvas state + apply
+# agent ops) and the 生成引擎 (creation) task queue (trigger/inspect generation).
+# Both back the caps_workshop 画布助手 tools. Dependency direction gateway →
+# workshop / creation only (neither deps gateway — no cycle).
+sparkfox-be-workshop.workspace = true
+sparkfox-be-creation.workspace = true
+# Preset service: the Agent Execution gateway freezes each enabled preset's
+# persona/skills/model into an Execution participant snapshot. Dependency
+# direction gateway → sparkfox-be-preset only (no cycle — preset does not depend on gateway).
+sparkfox-be-preset.workspace = true
+# Persistent Agent Execution aggregate and Engine backing collaboration tools.
+sparkfox-be-agent-execution.workspace = true
+# System domain capabilities (settings / client preferences / providers / model fetch).
+sparkfox-be-system.workspace = true
+# Channel domain capabilities (IM bot plugins / pairing / users / companion binding).
+sparkfox-be-channel.workspace = true
+# Filesystem + shell-open domain capabilities.
+sparkfox-be-file.workspace = true
+sparkfox-be-shell.workspace = true
+# MCP-server + extensions/hub/skills domain capabilities.
+sparkfox-be-mcp.workspace = true
+sparkfox-be-extension.workspace = true
+# P3-GW1: per-companion BrowserTool registry（路线 A）。optional + feature 门控，关时不拉浏览器栈。
+sparkfox-ag-browser = { workspace = true, optional = true }
+# Computer-use: shared desktop ComputerTool. optional + feature 门控，关时不拉 screen/input/UIA 栈。
+sparkfox-ag-computer = { workspace = true, optional = true }
+# P3-X2: per-pet secret vault path resolver for gateway-driven secret:NAME (browser-use only).
+sparkfox-be-secret = { workspace = true, optional = true }
+sparkfox-ag-types = { workspace = true, optional = true }
+sparkfox-ag-config = { workspace = true, optional = true }
+# `Tool` trait（execute/category）——facade BrowserTool 实现它，registry 经它驱动动作。
+sparkfox-ag-tools = { workspace = true, optional = true }
+# CC: BrowserRegistry::execute_parallel 用 futures::future::join_all 并行多 key（异 key 真并发/同 key 串行）。
+futures = { workspace = true, optional = true }
+axum.workspace = true
+tokio.workspace = true
+async-trait.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+# Capability registry: single-source JSON Schema generation from each capability's
+# typed Request struct (same schemars major as rmcp 1.7 re-exports → identical shape
+# for the MCP clients consuming tools/list). The bridge passes these schema maps
+# straight through to `rmcp::model::Tool`, so only the gateway needs schemars.
+schemars = "1"
+tracing.workspace = true
+dirs.workspace = true
+
+[dev-dependencies]
+reqwest.workspace = true

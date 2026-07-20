@@ -1,0 +1,173 @@
+/**
+ * SparkFox Apple 系统风格全局 CSS（Step 0.4）
+ *
+ * 基于 Apple Human Interface Guidelines (HIG) + macOS 设计语言
+ * 来源：SparkFox 全新设计（参考 Apple 系统风格）
+ *
+ * 功能：
+ * - Apple 系统蓝 #007AFF 主色
+ * - macOS 圆角（10px 中等 / 16px 大）
+ * - SF Pro 字体栈（macOS 原生）
+ * - 全局 CSS 变量注入（覆盖 Arco 默认）
+ */
+
+/* ─── Apple 系统色彩变量 ─── */
+:root {
+  /* Apple System Colors (Light) */
+  --sf-color-primary: #007AFF;
+  --sf-color-primary-hover: #0066D6;
+  --sf-color-primary-active: #0054B3;
+  --sf-color-primary-light: rgba(0, 122, 255, 0.1);
+
+  --sf-color-success: #34C759;
+  --sf-color-warning: #FF9500;
+  --sf-color-danger: #FF3B30;
+  --sf-color-info: #5AC8FA;
+  --sf-color-purple: #5856D6;
+  --sf-color-pink: #FF2D55;
+  --sf-color-yellow: #FFCC00;
+  --sf-color-gray: #8E8E93;
+
+  /* Text Colors */
+  --sf-color-text: #1D1D1F;
+  --sf-color-text-secondary: #6E6E73;
+  --sf-color-text-tertiary: #AEAEB2;
+
+  /* Background Colors */
+  --sf-color-bg: #FFFFFF;
+  --sf-color-bg-secondary: #F5F5F7;
+  --sf-color-bg-tertiary: #E5E5EA;
+  --sf-color-bg-grouped: #F2F2F7;
+
+  /* Border Colors */
+  --sf-color-border: #D2D2D7;
+  --sf-color-separator: #C7C7CC;
+
+  /* Radius (macOS HIG) */
+  --sf-radius-xs: 4px;
+  --sf-radius-small: 6px;
+  --sf-radius-md: 8px;
+  --sf-radius-medium: 10px;
+  --sf-radius-xl: 12px;
+  --sf-radius-large: 16px;
+
+  /* Font (SF Pro) */
+  --sf-font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display',
+    'Segoe UI', Roboto, 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --sf-font-mono: 'SF Mono', ui-monospace, Menlo, Monaco, Consolas, monospace;
+  --sf-font-size: 14px;
+
+  /* Spacing Scale (4px grid) */
+  --sf-space-1: 4px;
+  --sf-space-2: 8px;
+  --sf-space-3: 12px;
+  --sf-space-4: 16px;
+  --sf-space-5: 20px;
+  --sf-space-6: 24px;
+  --sf-space-8: 32px;
+
+  /* Shadows (macOS HIG) */
+  --sf-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04), 0 1px 2px rgba(0, 0, 0, 0.03);
+  --sf-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.08), 0 2px 4px rgba(0, 0, 0, 0.04);
+  --sf-shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.12), 0 4px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ─── Apple System Colors (Dark) ─── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --sf-color-primary: #0A84FF;
+    --sf-color-primary-hover: #0066CC;
+    --sf-color-primary-active: #0055AA;
+    --sf-color-primary-light: rgba(10, 132, 255, 0.15);
+
+    --sf-color-success: #30D158;
+    --sf-color-warning: #FF9F0A;
+    --sf-color-danger: #FF453A;
+    --sf-color-info: #64D2FF;
+    --sf-color-purple: #5E5CE6;
+    --sf-color-pink: #FF375F;
+    --sf-color-yellow: #FFD60A;
+    --sf-color-gray: #98989D;
+
+    --sf-color-text: #F5F5F7;
+    --sf-color-text-secondary: #AEAEB2;
+    --sf-color-text-tertiary: #6E6E73;
+
+    --sf-color-bg: #1C1C1E;
+    --sf-color-bg-secondary: #2C2C2E;
+    --sf-color-bg-tertiary: #3A3A3C;
+    --sf-color-bg-grouped: #1C1C1E;
+
+    --sf-color-border: #48484A;
+    --sf-color-separator: #48484A;
+  }
+}
+
+/* ─── 全局字体注入 ─── */
+html,
+body,
+#root {
+  font-family: var(--sf-font-family);
+  font-size: var(--sf-font-size);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Arco 组件 Apple 风格覆盖（最小改动） ─── */
+
+/* 按钮：macOS 圆角 */
+.arco-btn {
+  border-radius: var(--sf-radius-small);
+  font-weight: 500;
+  transition: all 0.15s ease;
+}
+
+.arco-btn-primary {
+  background-color: var(--sf-color-primary);
+}
+
+.arco-btn-primary:hover {
+  background-color: var(--sf-color-primary-hover);
+}
+
+.arco-btn-primary:active {
+  background-color: var(--sf-color-primary-active);
+}
+
+/* 输入框：macOS 圆角 */
+.arco-input,
+.arco-textarea,
+.arco-select-view {
+  border-radius: var(--sf-radius-small);
+}
+
+/* 卡片：macOS 大圆角 + 轻阴影 */
+.arco-card {
+  border-radius: var(--sf-radius-medium);
+  box-shadow: var(--sf-shadow-sm);
+}
+
+/* 标签页：macOS 风格 */
+.arco-tabs-tab-active {
+  color: var(--sf-color-primary);
+}
+
+/* 链接颜色 */
+.arco-link {
+  color: var(--sf-color-primary);
+}
+
+.arco-link:hover {
+  color: var(--sf-color-primary-hover);
+}
+
+/* 开关：Apple 绿色 */
+.arco-switch-checked {
+  background-color: var(--sf-color-success);
+}
+
+/* 单选/多选选中色 */
+.arco-radio-checked .arco-radio-icon,
+.arco-checkbox-checked .arco-checkbox-icon {
+  color: var(--sf-color-primary);
+}

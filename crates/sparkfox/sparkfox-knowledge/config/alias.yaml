@@ -1,0 +1,141 @@
+# Sub-Step 10.4.2 — 实体别名表（alias.yaml）
+#
+# ## 字段说明
+#   canonical  规范名（作为 entity_id；alias 表自映射到自身）
+#   aliases    别名列表（每个别名 → canonical）
+#
+# ## 分布（共 60 条 canonical，覆盖 3 类别名）
+#   - 历史名 24 条（含合并尊称：孔子[孔丘/仲尼/夫子]、李白[太白/诗仙]、
+#     苏轼[东坡/文忠]、诸葛亮[孔明/卧龙]、杜甫[子美/诗圣]）
+#   - 尊称 16 条（不与历史名重复）
+#   - 简称 20 条（中国高校）
+#
+# ## RISK-SAG-08
+# 每条 canonical 与其 aliases 在 entity 表中归并为同一 entity_id；
+# 未命中别名表的实体由调用方回退到 NFKC + 编辑距离（阈值 0.2）。
+
+# ============================== 历史名 ==============================
+- canonical: "毛泽东"
+  aliases: ["毛润之", "李德胜"]
+- canonical: "孔子"
+  aliases: ["孔丘", "仲尼", "夫子"]
+- canonical: "蒋介石"
+  aliases: ["蒋中正"]
+- canonical: "李白"
+  aliases: ["太白", "诗仙"]
+- canonical: "苏轼"
+  aliases: ["东坡", "文忠"]
+- canonical: "诸葛亮"
+  aliases: ["孔明", "卧龙"]
+- canonical: "刘备"
+  aliases: ["玄德"]
+- canonical: "关羽"
+  aliases: ["云长"]
+- canonical: "张飞"
+  aliases: ["翼德"]
+- canonical: "曹操"
+  aliases: ["孟德"]
+- canonical: "孙权"
+  aliases: ["仲谋"]
+- canonical: "周瑜"
+  aliases: ["公瑾"]
+- canonical: "鲁肃"
+  aliases: ["子敬"]
+- canonical: "岳飞"
+  aliases: ["鹏举"]
+- canonical: "文天祥"
+  aliases: ["宋瑞"]
+- canonical: "王安石"
+  aliases: ["介甫"]
+- canonical: "司马光"
+  aliases: ["君实"]
+- canonical: "朱熹"
+  aliases: ["元晦"]
+- canonical: "王阳明"
+  aliases: ["伯安"]
+- canonical: "康熙"
+  aliases: ["玄烨"]
+- canonical: "杜甫"
+  aliases: ["子美", "诗圣"]
+- canonical: "司马迁"
+  aliases: ["子长"]
+- canonical: "班固"
+  aliases: ["孟坚"]
+- canonical: "司马相如"
+  aliases: ["长卿"]
+
+# ============================== 尊称 ==============================
+- canonical: "孟子"
+  aliases: ["亚圣"]
+- canonical: "老子"
+  aliases: ["李耳"]
+- canonical: "庄子"
+  aliases: ["庄周"]
+- canonical: "韩非子"
+  aliases: ["韩非"]
+- canonical: "屈原"
+  aliases: ["屈平"]
+- canonical: "王维"
+  aliases: ["诗佛"]
+- canonical: "韩愈"
+  aliases: ["文公"]
+- canonical: "白居易"
+  aliases: ["香山居士"]
+- canonical: "欧阳修"
+  aliases: ["醉翁"]
+- canonical: "陆游"
+  aliases: ["放翁"]
+- canonical: "辛弃疾"
+  aliases: ["稼轩"]
+- canonical: "李清照"
+  aliases: ["易安"]
+- canonical: "陶渊明"
+  aliases: ["五柳先生"]
+- canonical: "庞统"
+  aliases: ["凤雏"]
+- canonical: "王羲之"
+  aliases: ["书圣"]
+- canonical: "吴道子"
+  aliases: ["画圣"]
+
+# ============================== 简称（高校） ==============================
+- canonical: "北京大学"
+  aliases: ["北大"]
+- canonical: "清华大学"
+  aliases: ["清华"]
+- canonical: "复旦大学"
+  aliases: ["复旦"]
+- canonical: "上海交通大学"
+  aliases: ["上交"]
+- canonical: "浙江大学"
+  aliases: ["浙大"]
+- canonical: "南京大学"
+  aliases: ["南大"]
+- canonical: "武汉大学"
+  aliases: ["武大"]
+- canonical: "华中科技大学"
+  aliases: ["华科"]
+- canonical: "中山大学"
+  aliases: ["中山"]
+- canonical: "厦门大学"
+  aliases: ["厦大"]
+- canonical: "中国人民大学"
+  aliases: ["人大"]
+- canonical: "北京师范大学"
+  aliases: ["北师大"]
+- canonical: "中国科学技术大学"
+  aliases: ["中科大"]
+- canonical: "哈尔滨工业大学"
+  aliases: ["哈工大"]
+- canonical: "西安交通大学"
+  aliases: ["西交"]
+- canonical: "同济大学"
+  aliases: ["同济"]
+- canonical: "南开大学"
+  aliases: ["南开"]
+- canonical: "天津大学"
+  aliases: ["天大"]
+- canonical: "北京航空航天大学"
+  aliases: ["北航"]
+- canonical: "中国科学院大学"
+  aliases: ["国科大"]

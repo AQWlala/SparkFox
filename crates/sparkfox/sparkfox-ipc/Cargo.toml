@@ -1,0 +1,23 @@
+[package]
+name = "sparkfox-ipc"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "SparkFox Tauri IPC bridge"
+
+[dependencies]
+sparkfox-core = { path = "../sparkfox-core" }
+# Task 7.1: Tauri 2 commands + events 桥接（仅用 #[tauri::command] 宏，无需 features）
+tauri = { version = "2" }
+serde = { workspace = true }
+serde_json = { workspace = true }
+log = "0.4"
+env_logger = "0.11"
+# Task 8.7: Tick 心跳后端 — tokio::time::interval + tokio::sync::Mutex
+tokio = { workspace = true }
+# Task 8.7: TickResult 时间戳
+chrono = { workspace = true }
+
+[dev-dependencies]
+tokio = { workspace = true }

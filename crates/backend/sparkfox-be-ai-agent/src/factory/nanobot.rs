@@ -1,0 +1,27 @@
+use std::sync::Arc;
+
+use sparkfox_be_common::{AgentType, AppError};
+
+use crate::runtime_handle::AgentRuntimeHandle;
+use crate::factory::AgentFactoryDeps;
+use crate::factory::context::FactoryContext;
+use crate::manager::nanobot::NanobotAgentManager;
+use crate::types::AgentRuntimeBuildOptions;
+
+pub(super) async fn build(
+    deps: Arc<AgentFactoryDeps>,
+    _options: AgentRuntimeBuildOptions,
+    ctx: FactoryContext,
+) -> Result<AgentRuntimeHandle, AppError> {
+    // Nanobot lives in the catalog as an internal row; reuse the
+    // registry-resolved path instead of re-running `which()`.
+    let cli_path = deps
+        .agent_registry
+        .list_by_agent_type(AgentType::Nanobot)
+        .await
+        .into_iter()
+        .find_map(|m| m.resolved_command)
+        .ok_or_else(|| AppError::BadRequest("Nanobot CLI not found in PATH".into()))?;
+    let agent = NanobotAgentManager::new(ctx.conversation_id, ctx.workspace, cli_path, deps.data_dir.clone()).await?;
+    Ok(AgentRuntimeHandle::Nanobot(Arc::new(agent)))
+}

@@ -1,0 +1,165 @@
+SparkFox
+Copyright 2026 SparkFox Contributors
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Affero General Public License as published
+by the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License
+along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                      Third-Party Notices
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+This product includes code derived from the following upstream projects.
+Each project's original license terms apply to its respective contributions;
+SparkFox original code is licensed under AGPL-3.0-only.
+
+───────────────────────────────────────────────────────────────────────
+1. NomiFun (https://nomifun.com)
+───────────────────────────────────────────────────────────────────────
+License: Apache-2.0
+Original Copyright: Copyright 2025-2026 NomiFun
+
+Contributions to SparkFox:
+  - Tauri 2 desktop shell (apps/desktop/)
+  - React 19 + Arco Design UI framework (ui/)
+  - Rust workspace structure (crates/agent/, crates/backend/, crates/shared/)
+  - 50+ build scripts (scripts/)
+  - macOS traffic light positioning + companion pet window
+  - System tray + keepawake + auto-update infrastructure
+  - i18n type generation + theme contract checking
+
+License Compatibility: Apache-2.0 is compatible with AGPL-3.0.
+  See: https://www.gnu.org/licenses/license-compatibility.en.html
+
+───────────────────────────────────────────────────────────────────────
+2. Pangu Nebula
+───────────────────────────────────────────────────────────────────────
+License: Proprietary (blueprint reference only)
+Original Copyright: Copyright 2026 Pangu Nebula
+
+Contributions to SparkFox:
+  - 6-layer memory architecture L0-L5 blueprint (RFC-003)
+  - Swarm orchestration philosophy (RFC-002)
+  - Dual-engine design concept
+
+Note: Pangu Nebula's code is NOT included in SparkFox. Only architectural
+  blueprints and design concepts are referenced. All SparkFox implementations
+  based on these blueprints are original clean-room work.
+
+───────────────────────────────────────────────────────────────────────
+3. OpenAkita
+───────────────────────────────────────────────────────────────────────
+License: Proprietary (reference only)
+Original Copyright: Copyright 2026 OpenAkita
+
+Contributions to SparkFox:
+  - Three-layer memory system design (Layer 1 Scratchpad / Layer 2 Core+Dynamic / Layer 3 Persona+Identity)
+  - Agent menu 22-field configuration (AgentProfile schema)
+  - Monitor panel design (TokenStatsView 6-period 5-dimension metrics)
+  - Organization orchestration concept (merged with Pangu Nebula swarm into DAG)
+  - Sheet side-panel edit pattern
+
+Note: OpenAkita's code (Python/React) is NOT included in SparkFox. Only
+  architectural patterns and UI design concepts are referenced. All SparkFox
+  implementations are original Rust/TypeScript clean-room rewrites.
+
+───────────────────────────────────────────────────────────────────────
+4. BaiLongma
+───────────────────────────────────────────────────────────────────────
+License: MIT
+Original Copyright: Copyright 2026 BaiLongma
+
+Contributions to SparkFox:
+  - Conversation display pattern (liveEl streaming + double dedup + activation warmup lock)
+  - ThoughtStream thinking visualization (3-zone linkage + 57 tool mapping)
+  - Hotspot tracking concept (4-platform + 3D earth + ticker + neutral context)
+  - Scene Protocol design
+  - Tick heartbeat mechanism
+  - Thread clue model
+
+License Compatibility: MIT is compatible with AGPL-3.0.
+
+Clean-Room Rewrite Requirement (RFC-001):
+  BaiLongma MIT-licensed components MUST undergo clean-room rewrite to
+  maintain AGPL compliance. Team A reviews BaiLongma source and writes
+  specifications; Team B implements from specifications without seeing
+  original source. All SparkFox implementations based on BaiLongma concepts
+  are original Rust/TypeScript clean-room rewrites.
+
+───────────────────────────────────────────────────────────────────────
+5. SAG (Schema-Augmented Graph) / SAG-Benchmark
+───────────────────────────────────────────────────────────────────────
+License: MIT
+Original Copyright: Copyright (c) 2026 Zleap Team
+
+Contributions to SparkFox:
+  - SAG 5-table schema design (SourceConfig → Article → ArticleSection → SourceChunk → SourceEvent)
+  - 4 retrieval strategies (VECTOR / ATOMIC / MULTI / MULTI_ES)
+  - MULTI 8-step pipeline (NER → entity vector retrieval → dual-channel event recall → ... → LLM Rerank)
+  - EventEntityEmbedding (relation-level embedding: same entity has different semantics in different events)
+  - Chinese multi-hop Benchmark evaluation methodology
+
+Schema Borrowing Statement (C-02):
+  Per spec v2.0 revision: "清洁室" terminology revised to "schema borrowing and field renaming based on MIT license".
+  Schema field-level mapping does not constitute classical clean-room rewrite.
+  SparkFox implementations based on SAG schemas are original Rust code with renamed fields,
+  stored in crates/sparkfox/sparkfox-knowledge/src/schema.rs.
+
+License Verification (C-01, resolved 2026-07-19):
+  SAG-Benchmark MIT License verified from upstream repository.
+  Reference: docs/SAG-深度评估与重构方案-1.0.md
+
+License Compatibility: MIT is compatible with AGPL-3.0.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                      License Compatibility Matrix
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+┌─────────────────┬──────────────┬───────────────────┬──────────────────────┐
+│ Upstream Project│ License      │ Compatible w/AGPL?│ Inclusion Mode       │
+├─────────────────┼──────────────┼───────────────────┼──────────────────────┤
+│ NomiFun         │ Apache-2.0   │ Yes               │ Direct code reuse    │
+│ Pangu Nebula    │ Proprietary  │ N/A (blueprint)   │ Blueprint reference  │
+│ OpenAkita       │ Proprietary  │ N/A (reference)   │ Clean-room rewrite   │
+│ BaiLongma       │ MIT          │ Yes               │ Clean-room rewrite   │
+│ SAG             │ MIT          │ Yes               │ Schema borrowing     │
+└─────────────────┴──────────────┴───────────────────┴──────────────────────┘
+
+SparkFox original code: AGPL-3.0-only
+  - All new Rust crates under crates/sparkfox/
+  - All new TypeScript modules under ui/src/renderer/views/SparkFox*/
+  - All new Zustand stores under ui/src/renderer/store/
+  - All new Apple theme presets under ui/src/renderer/utils/theme/presets/
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                      Attribution Retention
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Per Apache-2.0 Section 4(d): All attribution notices in NomiFun source files
+are retained in their original form. Files modified by SparkFox contributors
+include an additional notice stating "Modified by SparkFox Contributors, 2026".
+
+Per MIT license: The BaiLongma copyright notice and permission notice are
+retained in all clean-room rewrite files that derive from BaiLongma concepts.
+
+Per MIT license: The SAG copyright notice is retained in all SparkFox files
+that derive from SAG schemas. See crates/sparkfox/sparkfox-knowledge/NOTICE
+for crate-level SAG attribution.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+For questions about licensing, contact: SparkFox Contributors
+For the full text of AGPL-3.0, see: LICENSE file
+For the full text of Apache-2.0, see: LICENSES/Apache-2.0.txt
+For the full text of MIT, see: LICENSES/MIT.txt
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

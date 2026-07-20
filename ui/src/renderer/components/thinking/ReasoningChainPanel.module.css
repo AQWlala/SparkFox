@@ -1,0 +1,231 @@
+/**
+ * @license
+ * Copyright 2026 SparkFox Contributors — AGPL-3.0-only
+ *
+ * ReasoningChainPanel 样式（REFACTOR 阶段从内联 className 提取为 CSS module）
+ *
+ * 来源：spec §三 10.9.2 (Sub-Step 10.7.2 / TDD-REFACTOR)
+ *
+ * 设计要点：
+ * - 沿用 thinking.css 中的 Apple 主题色 CSS 变量（--sf-color-* / --sf-bg-*）
+ * - hop1=蓝（ATOMIC 单跳）/ hop2=黄（MULTI 二跳）/ hop3=灰（MULTI 三跳）
+ * - 折叠态隐藏 content，仅显示 header
+ * - 占位文案居中显示
+ */
+
+/* ─── 主容器 ─── */
+
+.reasoningChain {
+  font-family: var(--sf-font-family, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+  font-size: 12px;
+  color: var(--sf-text-primary, #1d1d1f);
+  padding: 8px 0;
+}
+
+.reasoningChain.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+}
+
+/* ─── 占位文案 ─── */
+
+.placeholder {
+  text-align: center;
+  color: var(--sf-text-tertiary, #aeaeb2);
+  padding: 16px 0;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+}
+
+/* ─── 步骤列表容器 ─── */
+
+.reasoningSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ─── 单步容器 ─── */
+
+.reasoningStep {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--sf-border, #d2d2d7);
+  transition: background 0.15s ease;
+}
+
+.reasoningStep:last-child {
+  border-bottom: none;
+}
+
+.reasoningStep:hover {
+  background: var(--sf-bg-secondary, #f5f5f7);
+}
+
+/* 折叠态：不显示 content（由 JSX 条件控制，此处仅保留样式钩子） */
+.reasoningStep.collapsed .stepContent {
+  display: none;
+}
+
+/* ─── 步骤头部 ─── */
+
+.stepHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  padding: 2px 0;
+}
+
+.stepChevron {
+  width: 10px;
+  font-size: 10px;
+  color: var(--sf-text-tertiary, #aeaeb2);
+  flex-shrink: 0;
+  transition: transform 0.15s ease;
+}
+
+.stepId {
+  font-size: 9px;
+  font-family: var(--sf-font-mono, 'SF Mono', Menlo, monospace);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--sf-primary, #007aff);
+  flex-shrink: 0;
+}
+
+.stepTitle {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--sf-text-primary, #1d1d1f);
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ─── hop 标识徽章 ─── */
+
+.hopBadge {
+  font-size: 9px;
+  font-family: var(--sf-font-mono, 'SF Mono', Menlo, monospace);
+  letter-spacing: 0.06em;
+  padding: 2px 7px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  flex-shrink: 0;
+  text-transform: lowercase;
+}
+
+/* ─── 步骤内容 ─── */
+
+.stepContent {
+  font-size: 11.5px;
+  line-height: 1.6;
+  color: var(--sf-text-secondary, #6e6e73);
+  padding: 6px 0 2px 18px;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+/* ─── via_entities 多跳路径 ─── */
+
+.viaEntities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 10px 12px;
+  border-top: 1px solid var(--sf-border, #d2d2d7);
+  margin-top: 6px;
+}
+
+.viaEntity {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--sf-border, #d2d2d7);
+  background: var(--sf-bg-secondary, #f5f5f7);
+}
+
+.viaEntityType {
+  font-family: var(--sf-font-mono, 'SF Mono', Menlo, monospace);
+  font-size: 9px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+.viaEntityName {
+  font-weight: 500;
+  color: var(--sf-text-primary, #1d1d1f);
+}
+
+/* ─── hop 颜色：蓝/黄/灰（同时作用于 step 容器、hopBadge、viaEntity） ─── */
+
+/* hop1 = 蓝色（ATOMIC 单跳，--sf-primary 系统蓝） */
+.hop1 {
+  border-color: rgba(0, 122, 255, 0.4);
+  background: rgba(0, 122, 255, 0.08);
+  color: var(--sf-primary, #007aff);
+}
+
+.hop1 .stepId {
+  color: var(--sf-primary, #007aff);
+}
+
+.hop1 .hopBadge {
+  color: var(--sf-primary, #007aff);
+  border-color: rgba(0, 122, 255, 0.4);
+  background: rgba(0, 122, 255, 0.08);
+}
+
+/* hop2 = 黄色（MULTI 二跳扩展，--sf-warning 橙黄） */
+.hop2 {
+  border-color: rgba(255, 149, 0, 0.4);
+  background: rgba(255, 149, 0, 0.08);
+  color: var(--sf-warning, #ff9500);
+}
+
+.hop2 .stepId {
+  color: var(--sf-warning, #ff9500);
+}
+
+.hop2 .hopBadge {
+  color: var(--sf-warning, #ff9500);
+  border-color: rgba(255, 149, 0, 0.4);
+  background: rgba(255, 149, 0, 0.08);
+}
+
+/* hop3 = 灰色（MULTI 三跳及以上，中性灰） */
+.hop3 {
+  border-color: var(--sf-border, #d2d2d7);
+  background: var(--sf-bg-secondary, #f5f5f7);
+  color: var(--sf-text-secondary, #6e6e73);
+}
+
+.hop3 .stepId {
+  color: var(--sf-text-secondary, #6e6e73);
+}
+
+.hop3 .hopBadge {
+  color: var(--sf-text-secondary, #6e6e73);
+  border-color: var(--sf-border, #d2d2d7);
+  background: var(--sf-bg-secondary, #f5f5f7);
+}
+
+/* ─── 暗色主题适配 ─── */
+
+[data-theme='dark'] .reasoningChain {
+  color: var(--sf-text-primary, #f5f5f7);
+}
+
+[data-theme='dark'] .reasoningStep:hover {
+  background: var(--sf-bg-secondary, rgba(255, 255, 255, 0.04));
+}

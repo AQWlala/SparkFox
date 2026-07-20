@@ -1,0 +1,155 @@
+/**
+ * @license
+ * Copyright 2026 SparkFox Contributors — AGPL-3.0-only
+ *
+ * CitationDetailDrawer.module.css — 三级溯源抽屉样式
+ *
+ * U-03 修复：三级溯源缺失问题
+ * 设计目标：在 Arco Drawer 内提供清晰的 L1/L2/L3 三级折叠展示，
+ * 每级用左侧色条 + 层级标签 + 字段网格呈现。
+ */
+
+.drawerBody {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 0 16px;
+}
+
+.placeholder {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--sf-color-text-tertiary, #AEAEB2);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ─── 层级卡片通用样式 ─── */
+
+.level {
+  border: 1px solid var(--sf-color-border, #D2D2D7);
+  border-radius: 10px;
+  padding: 12px 14px;
+  background: var(--sf-color-bg-secondary, #F5F5F7);
+  position: relative;
+  overflow: hidden;
+}
+
+.level::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--sf-color-primary, #007AFF);
+}
+
+.levelHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sf-color-text, #1D1D1F);
+}
+
+.levelTag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 4px;
+  background: var(--sf-color-primary, #007AFF);
+  color: #FFFFFF;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.levelTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sf-color-text, #1D1D1F);
+}
+
+/* ─── 字段网格 ─── */
+
+.fieldGrid {
+  display: grid;
+  grid-template-columns: minmax(72px, max-content) minmax(0, 1fr);
+  gap: 6px 12px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.fieldLabel {
+  color: var(--sf-color-text-tertiary, #6E6E73);
+  font-weight: 500;
+}
+
+.fieldValue {
+  color: var(--sf-color-text, #1D1D1F);
+  word-break: break-all;
+}
+
+.fieldValueMono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11.5px;
+}
+
+/* ─── L3 chunk 原文卡片 ─── */
+
+.chunkText {
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: var(--sf-color-bg, #FFFFFF);
+  border: 1px solid var(--sf-color-border, #E5E5EA);
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--sf-color-text, #1D1D1F);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.chunkSpanBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 6px;
+  border-radius: 3px;
+  background: var(--sf-color-bg, #FFFFFF);
+  border: 1px solid var(--sf-color-border, #D2D2D7);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 11px;
+  color: var(--sf-color-text-secondary, #6E6E73);
+}
+
+/* ─── 三级层级颜色 ─── */
+
+.levelL1::before {
+  background: rgb(var(--primary-6, #007AFF));
+}
+
+.levelL2::before {
+  background: rgb(var(--success-6, #00B42A));
+}
+
+.levelL3::before {
+  background: rgb(var(--warning-6, #FF7D00));
+}
+
+.levelTagL1 {
+  background: rgb(var(--primary-6, #007AFF));
+}
+
+.levelTagL2 {
+  background: rgb(var(--success-6, #00B42A));
+}
+
+.levelTagL3 {
+  background: rgb(var(--warning-6, #FF7D00));
+}

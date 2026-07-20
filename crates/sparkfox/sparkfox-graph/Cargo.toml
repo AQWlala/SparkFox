@@ -1,0 +1,25 @@
+[package]
+name = "sparkfox-graph"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "SparkFox 通用图遍历引擎（A-02 P0 修复：降级为 GraphBackend，sparkfox-knowledge 为唯一 SoT）"
+
+[dependencies]
+# A-02 P0 修复：sparkfox-graph 不再维护独立 node/edge 表，
+# 通过 GraphBackend trait 抽象图遍历操作，KnowledgeGraphBackend 反向引用
+# sparkfox-knowledge 的 entity / knowledge_event / event_entity_relation 表。
+# Task 8.12/8.16：PetgraphBackend 作为另一个 GraphBackend 实现（自维护 SQLite 表）。
+sparkfox-core = { path = "../sparkfox-core" }
+async-trait = { workspace = true }
+rusqlite = { workspace = true }
+tokio = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+# petgraph 用于 PetgraphBackend 的内存图数据结构（StableDiGraph 支持安全删除）
+petgraph = "0.6"
+
+[dev-dependencies]
+tokio = { workspace = true }
+tempfile = { workspace = true }

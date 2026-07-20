@@ -1,0 +1,25 @@
+[package]
+name = "sparkfox-security"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "SparkFox 11-layer security stack"
+
+[dependencies]
+sparkfox-core = { path = "../sparkfox-core" }
+sparkfox-e2ee = { path = "../sparkfox-e2ee" }
+# 审计日志（Task 7.2.2 S-01 P0 修复）：rusqlite 存储 + tokio 异步锁 + uuid/chrono
+# MCP 审计日志（Task 9.3）：rusqlite 存储 + std::sync::Mutex 同步锁 + serde 序列化
+rusqlite = { workspace = true }
+tokio = { workspace = true }
+uuid = { version = "1", features = ["v4"] }
+chrono = { workspace = true }
+serde = { workspace = true }
+# init() 日志
+log = "0.4"
+env_logger = "0.11"
+
+[dev-dependencies]
+# 审计日志测试需要 tokio 运行时
+tokio = { workspace = true }

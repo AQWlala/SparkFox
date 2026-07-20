@@ -1,0 +1,31 @@
+[package]
+name = "sparkfox-be-office"
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+sparkfox-be-common.workspace = true
+sparkfox-be-api-types.workspace = true
+sparkfox-be-realtime.workspace = true
+sparkfox-be-auth.workspace = true
+sparkfox-be-file.workspace = true
+sparkfox-sh-process-runtime.workspace = true
+axum.workspace = true
+tokio.workspace = true
+reqwest.workspace = true
+which.workspace = true
+calamine.workspace = true
+sha1.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+dashmap.workspace = true
+tracing.workspace = true
+thiserror.workspace = true
+async-trait.workspace = true
+getrandom.workspace = true
+hex.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
+rust_xlsxwriter.workspace = true
+tokio = { workspace = true, features = ["test-util"] }

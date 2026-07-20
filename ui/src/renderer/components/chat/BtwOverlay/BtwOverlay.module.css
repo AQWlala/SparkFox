@@ -1,0 +1,45 @@
+.portalRoot {
+  inset: 0;
+  position: fixed;
+  z-index: 9999;
+}
+
+.backdrop {
+  background: rgba(0, 0, 0, 0.36);
+  inset: 0;
+  position: absolute;
+}
+
+.panelWrap {
+  height: 100%;
+  inset: 0;
+  pointer-events: none;
+  position: relative;
+}
+
+.overlay {
+  backdrop-filter: blur(18px);
+  background: var(--sf-color-bg);
+  border: 1px solid var(--sf-color-border);
+  box-shadow: var(--sf-shadow-md);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  pointer-events: auto;
+  position: fixed;
+}
+
+.answer {
+  max-height: min(40vh, 360px);
+  overflow: auto;
+}
+
+.questionBubble {
+  background: var(--sf-color-primary);
+  color: #FFFFFF;
+}
+
+.answerBubble {
+  background: var(--sf-color-bg-secondary);
+  border: 1px solid var(--sf-color-border);
+}
