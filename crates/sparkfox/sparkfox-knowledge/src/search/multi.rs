@@ -1,19 +1,28 @@
-//! Sub-Step 10.8.2 + 11.1.1 — MULTI 检索策略（8 步骨架 + BFS 多跳扩展，spec §三 11.1 / 11.2.1）
+//! Sub-Step 10.8.2 + 11.1.1 + 11.2.4 — MULTI 检索策略（8 步骨架 + BFS 多跳扩展 + R-07 三道 LIMIT 阀门）
 //!
 //! ## 8 步骨架（11.1.1 引入）
 //! [`MultiStrategy::search`] 调用 [`super::multi_step`] 的 8 步流程：
 //! - **Step1** [`multi_step::step1_vectorize`]：query 向量化（mock embedding）
 //! - **Step2** [`multi_step::step2_extract_entities_with_jieba`]：query 实体抽取（jieba + 正则）
 //! - Step3-4：当前在 search 内部用 SQL 文本匹配代替（11.2.x 接入 HnswIndex + event_entity_relation）
-//! - **Step5**：保留 10.8.2 的 BFS 多跳扩展作为 multi 策略实现
+//! - **Step5**：保留 10.8.2 的 BFS 多跳扩展作为 multi 策略实现（11.2.4 加入 R-07 三道阀门）
 //! - Step6-7：BFS 内置去重 + 排序（11.2.x 接入 rerank 模型）
 //! - **Step8** [`multi_step::step8_build_result`]：返回 [`SearchResult`]
 //!
 //! ## BFS 多跳扩展流程（10.8.2 保留）
 //! 1. **hop=1**：seed entity → `event_entity_relation` → 直接关联的 events
 //! 2. **hop=2**：hop1 event → 其他 entity → 这些 entity 的其他 events
-//! 3. **hop=3**：重复 Step 3，直到 `max_hop`（默认 3）
+//! 3. **hop=3**：重复 Step 3，直到 `max_hop`（默认 [`MAX_HOP`]=3）
 //! 4. **裁剪**：按 hop 升序排序，取 `top_k`
+//!
+//! ## R-07 三道 LIMIT 阀门（11.2.4 引入，RISK-SAG-07 / R-07）
+//! 防止 graph explosion（图爆炸），BFS 扩展时三道独立阀门：
+//! - **阀门 1** [`MAX_HOP`]：BFS 扩展深度上限（默认 3，正常配置不产生 warning）
+//! - **阀门 2** [`MAX_INTERMEDIATE_ENTITIES`]：中间实体数量上限（默认 100，超 100 时 break）
+//! - **阀门 3** [`MAX_JOIN_ROWS`]：JOIN 行数上限（默认 10000，超 10000 时 break）
+//!
+//! 任一阀门触发时：截断扩展 + 记录 warning（thought_process + log::warn! + last_valve_warnings）
+//! + 返回已收集的 hits（部分结果）。三道阀门相互独立，互不影响。
 //!
 //! ## hop 含义
 //! - hop=1：seed entity 直接关联的 event（等价于 ATOMIC 检索）
@@ -96,6 +105,31 @@ LEFT JOIN entity_type et ON e.entity_type_id = et.id
 WHERE e.id = ?
 "#;
 
+// ---------------------------------------------------------------------------
+// Sub-Step 11.2.4 — R-07 三道 LIMIT 阀门常量（RISK-SAG-07 / R-07）
+// ---------------------------------------------------------------------------
+
+/// MULTI 检索配置 — 三道 LIMIT 阀门（RISK-SAG-07 / R-07）
+///
+/// 防止 graph explosion（图爆炸），三道独立阀门：
+/// 1. `MAX_HOP=3`：最大跳数（BFS 扩展深度上限）
+/// 2. `MAX_INTERMEDIATE_ENTITIES=100`：中间实体数量上限（单次扩展候选实体总数）
+/// 3. `MAX_JOIN_ROWS=10000`：JOIN 行数上限（event_entity_relation 查询返回行数）
+///
+/// 任一阀门触发时：
+/// - 截断扩展（不再继续 BFS）
+/// - 记录 warning 到 `thought_process` + `log::warn!` + `last_valve_warnings`
+/// - 返回已收集的 hits（部分结果）
+///
+/// ## 三道阀门独立性
+/// 三道阀门相互独立，任一阀门触发不影响其他阀门的判定逻辑：
+/// - 阀门 1（max_hop）：BFS 扩展深度上限，正常配置不产生 warning
+/// - 阀门 2（max_intermediate_entities）：visited_entities 数量上限，超 100 时 break
+/// - 阀门 3（max_join_rows）：find_events_by_entity 累计行数上限，超 10000 时 break
+pub const MAX_HOP: u8 = 3;
+pub const MAX_INTERMEDIATE_ENTITIES: usize = 100;
+pub const MAX_JOIN_ROWS: usize = 10000;
+
 /// MULTI 检索策略 — BFS 多跳扩展
 ///
 /// 从 query 抽取的 seed entity 出发，沿 `event_entity_relation` 双向索引进行 BFS
@@ -120,18 +154,30 @@ pub struct MultiStrategy {
     jieba: JiebaNer,
     /// 返回结果的最大行数
     top_k: usize,
-    /// BFS 最大跳数（默认 3）
+    /// BFS 最大跳数（默认 3，受 [`MAX_HOP`] 约束）
     max_hop: u8,
+    /// 上次 `search` 调用产生的 R-07 阀门警告列表（测试访问入口）
+    ///
+    /// 三道 LIMIT 阀门（[`MAX_HOP`] / [`MAX_INTERMEDIATE_ENTITIES`] / [`MAX_JOIN_ROWS`]）
+    /// 任一触发时，将 warning 字符串 push 到此列表。`search` 调用开始时清空，
+    /// 结束时保留供测试通过 [`MultiStrategy::last_valve_warnings`] 访问。
+    ///
+    /// ## 设计动机
+    /// `SearchResult` 结构体不暴露 `thought_process`（避免回归），但测试需要
+    /// 验证阀门触发时产生了 warning。通过此字段提供测试可访问的入口，
+    /// 同时 `thought_process` 内部仍会记录（`search` 方法中 push）。
+    last_valve_warnings: Mutex<Vec<String>>,
 }
 
 impl MultiStrategy {
-    /// 创建默认 `top_k=10` / `max_hop=3` 的 [`MultiStrategy`]
+    /// 创建默认 `top_k=10` / `max_hop=MAX_HOP` 的 [`MultiStrategy`]
     pub fn new(conn: Connection) -> Self {
         Self {
             conn: Mutex::new(conn),
             jieba: JiebaNer::new(),
             top_k: 10,
-            max_hop: 3,
+            max_hop: MAX_HOP,
+            last_valve_warnings: Mutex::new(Vec::new()),
         }
     }
 
@@ -144,6 +190,7 @@ impl MultiStrategy {
             jieba: JiebaNer::new(),
             top_k: 10,
             max_hop,
+            last_valve_warnings: Mutex::new(Vec::new()),
         }
     }
 
@@ -154,7 +201,26 @@ impl MultiStrategy {
             jieba: JiebaNer::new(),
             top_k,
             max_hop,
+            last_valve_warnings: Mutex::new(Vec::new()),
         }
+    }
+
+    /// 返回上次 `search` 调用产生的 R-07 阀门警告列表
+    ///
+    /// 三道 LIMIT 阀门（[`MAX_HOP`] / [`MAX_INTERMEDIATE_ENTITIES`] / [`MAX_JOIN_ROWS`]）
+    /// 任一触发时，warning 字符串会被记录到此列表。
+    ///
+    /// ## 用途
+    /// - 测试断言阀门是否触发（无需修改 `SearchResult` 结构体）
+    /// - 调用方诊断检索为何被截断（图爆炸防护触发情况）
+    ///
+    /// ## 返回
+    /// `Vec<String>`：上次 `search` 产生的阀门警告列表（若未触发任何阀门则为空）
+    pub fn last_valve_warnings(&self) -> Vec<String> {
+        self.last_valve_warnings
+            .lock()
+            .map(|w| w.clone())
+            .unwrap_or_default()
     }
 
     /// 查找与给定实体文本匹配的 `entity.id` 列表
@@ -334,14 +400,29 @@ impl MultiStrategy {
     /// - `visited_events`：同一 event 只记录首次到达（BFS 最短路径）
     /// - `visited_entities`：同一 entity 只扩展一次
     ///
+    /// ## R-07 三道 LIMIT 阀门（RISK-SAG-07 / R-07）
+    /// 防止 graph explosion（图爆炸），三道独立阀门：
+    /// - **阀门 1**（[`MAX_HOP`]）：BFS 扩展深度上限，`hop >= max_hop` 时跳过（已有逻辑）
+    /// - **阀门 2**（[`MAX_INTERMEDIATE_ENTITIES`]）：`visited_entities.len() >= 100` 时 break
+    /// - **阀门 3**（[`MAX_JOIN_ROWS`]）：`find_events_by_entity` 累计行数 > 10000 时 break
+    ///
+    /// 任一阀门触发时：
+    /// - 截断扩展（不再继续 BFS）
+    /// - 将 warning 字符串加入返回的 `warnings` 列表
+    /// - 返回已收集的 `results`（部分结果）
+    ///
     /// ## 返回
-    /// `Vec<(event_id, hop, via_entities)>`：event_id + 跳数 + 路径上的 [`EntityRef`] 列表
+    /// `(Vec<(event_id, hop, via_entities)>, Vec<String>)`：
+    /// - 第一个元素：BFS 扩展结果（含 event_id + 跳数 + 路径上的 [`EntityRef`] 列表）
+    /// - 第二个元素：阀门触发时产生的 warning 字符串列表（空表示未触发任何阀门）
     fn bfs_expand(
         &self,
         seed_entity_ids: &[String],
-    ) -> Result<Vec<(String, u8, Vec<EntityRef>)>> {
+    ) -> Result<(Vec<(String, u8, Vec<EntityRef>)>, Vec<String>)> {
+        let mut warnings: Vec<String> = Vec::new();
+
         if seed_entity_ids.is_empty() || self.max_hop == 0 {
-            return Ok(Vec::new());
+            return Ok((Vec::new(), warnings));
         }
 
         let mut visited_events: HashSet<String> = HashSet::new();
@@ -349,16 +430,34 @@ impl MultiStrategy {
         let mut results: Vec<(String, u8, Vec<EntityRef>)> = Vec::new();
         let mut queue: VecDeque<(String, u8, Vec<EntityRef>)> = VecDeque::new();
 
+        // R-07 阀门 3：累计 JOIN 行数（find_events_by_entity 返回行数总和）
+        let mut total_join_rows: usize = 0;
+
         // 初始化：seed entities 入队，hop=0（它们将产生 hop=1 的 events）
         for eid in seed_entity_ids {
             queue.push_back((eid.clone(), 0u8, Vec::new()));
         }
 
         while let Some((entity_id, hop, path)) = queue.pop_front() {
-            // 超过 max_hop 的 entity 不再扩展（它产生的 event 将是 hop+1 > max_hop）
+            // 阀门 1: max_hop（BFS 扩展深度上限，RISK-SAG-07 / R-07）
+            // 已有逻辑：超过 max_hop 的 entity 不再扩展（它产生的 event 将是 hop+1 > max_hop）
+            // 注：阀门 1 是正常配置，不产生 warning（与阀门 2/3 异常截断不同）
             if hop >= self.max_hop {
                 continue;
             }
+
+            // 阀门 2: max_intermediate_entities（中间实体数量上限，RISK-SAG-07 / R-07）
+            // visited_entities 含 seed + intermediate，超 100 时截断 BFS
+            if visited_entities.len() >= MAX_INTERMEDIATE_ENTITIES {
+                let warning = format!(
+                    "阀门 2 触发：中间实体数量 {} 已达上限 {}，截断 BFS 扩展（RISK-SAG-07 / R-07）",
+                    visited_entities.len(),
+                    MAX_INTERMEDIATE_ENTITIES
+                );
+                warnings.push(warning);
+                break;
+            }
+
             // 同一 entity 只扩展一次（避免环路）
             if !visited_entities.insert(entity_id.clone()) {
                 continue;
@@ -374,6 +473,19 @@ impl MultiStrategy {
 
             // 查该 entity 关联的 events
             let events = self.find_events_by_entity(&entity_id)?;
+
+            // 阀门 3: max_join_rows（JOIN 行数上限，RISK-SAG-07 / R-07）
+            // 累计 find_events_by_entity 返回的行数，超 10000 时截断 BFS
+            total_join_rows += events.len();
+            let valve3_triggered = total_join_rows > MAX_JOIN_ROWS;
+            if valve3_triggered {
+                let warning = format!(
+                    "阀门 3 触发：JOIN 行数 {} 已超上限 {}，截断 BFS 扩展（RISK-SAG-07 / R-07）",
+                    total_join_rows, MAX_JOIN_ROWS
+                );
+                warnings.push(warning);
+            }
+
             for event_id in events {
                 // 同一 event 只记录首次到达
                 if !visited_events.insert(event_id.clone()) {
@@ -382,15 +494,25 @@ impl MultiStrategy {
                 let event_hop = hop + 1;
                 results.push((event_id.clone(), event_hop, new_path.clone()));
 
+                // 阀门 3 触发时不再继续扩展（不入队 next entities），但仍处理当前 events
+                if valve3_triggered {
+                    continue;
+                }
+
                 // 查该 event 关联的其他 entities，继续扩展
                 let next_entities = self.find_entities_by_event(&event_id, &entity_id)?;
                 for next_entity_id in next_entities {
                     queue.push_back((next_entity_id, event_hop, new_path.clone()));
                 }
             }
+
+            // 阀门 3 触发后停止 BFS（已处理当前 events，不再继续扩展）
+            if valve3_triggered {
+                break;
+            }
         }
 
-        Ok(results)
+        Ok((results, warnings))
     }
 
     /// 将 BFS 扩展结果转换为 [`SearchHit`] 列表
@@ -436,6 +558,11 @@ impl SearchStrategy for MultiStrategy {
     async fn search(&self, query: &str) -> Result<SearchResult> {
         let start = Instant::now();
 
+        // 清空上次 search 的阀门警告（R-07 三道 LIMIT 阀门，RISK-SAG-07）
+        if let Ok(mut last) = self.last_valve_warnings.lock() {
+            last.clear();
+        }
+
         // 8 步流程骨架（spec §三 11.1）
         //
         // Step1: query 向量化（mock embedding，384 维）
@@ -472,14 +599,28 @@ impl SearchStrategy for MultiStrategy {
 
         // Step5: 三策略占位 — 当前复用 10.8.2 的 BFS 作为 multi 策略实现
         //   - bfs_expand: 从 seed entities BFS 扩展 max_hop 跳内所有可达 events
+        //     （含 R-07 三道 LIMIT 阀门：MAX_HOP / MAX_INTERMEDIATE_ENTITIES / MAX_JOIN_ROWS）
         //   - build_hits: 按 hop 升序排序 + score=1/hop 衰减 + 取 top_k
         //   - 11.2.x 在此分支调用 multi / multi1 / hopllm 三策略
-        let expansion = self.bfs_expand(&entity_ids)?;
+        let (expansion, valve_warnings) = self.bfs_expand(&entity_ids)?;
+
+        // R-07 阀门触发时：记录 warning 到 thought_process + log::warn! + last_valve_warnings
+        // （不修改 SearchResult 结构体，避免回归；通过 last_valve_warnings 方法暴露给测试）
+        for warning in &valve_warnings {
+            state.thought_process.push(warning.clone());
+            log::warn!("{} (RISK-SAG-07 / R-07)", warning);
+        }
+        if !valve_warnings.is_empty() {
+            if let Ok(mut last) = self.last_valve_warnings.lock() {
+                *last = valve_warnings.clone();
+            }
+        }
+
         let hits = self.build_hits(expansion)?;
         state.hits = hits;
         state
             .thought_process
-            .push("Step5: multi 策略（10.8.2 BFS 多跳扩展）".to_string());
+            .push("Step5: multi 策略（10.8.2 BFS 多跳扩展 + R-07 三道阀门）".to_string());
 
         // Step6: 候选合并 + 去重 — BFS 内置 visited_events/visited_entities 去重
         state

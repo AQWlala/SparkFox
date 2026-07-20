@@ -1,10 +1,11 @@
 /**
- * KnowledgeGraphView 样式（spec §三 11.3.1 / 11.3.2 / 第 13 波并行 sub-step C）
+ * KnowledgeGraphView 样式（spec §三 11.3.1 / 11.3.2 / 11.4.1 / 第 13-15 波并行 sub-step C）
  *
  * 11.3.1 阶段：定义图谱视图容器的最小布局（垂直 flex、居中、间距）。
  * 11.3.2 阶段：追加 GraphCanvas 画布、图例、PoC 提示样式。
+ * 11.4.1 阶段：追加 GraphFlow 渲染模式切换栏 + 标签样式（@xyflow/react v12）。
  *
- * 实际力导布局由 11.4.1 阶段接入 @xyflow/react 后实现。
+ * 实际力导布局由 11.4.x 阶段接入 d3-force / elkjs 后实现。
  */
 
 .container {
@@ -174,4 +175,24 @@
   background-color: var(--color-warning-light-1);
   border-radius: 4px;
   line-height: 1.4;
+}
+
+/* ─── 11.4.1 GraphFlow 渲染模式切换 + 容器样式 ─── */
+
+/* 渲染模式切换栏：横向 flex（标签 + Radio.Group） */
+.modeSwitch {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background-color: var(--color-fill-1);
+  border-radius: 8px;
+}
+
+/* 模式标签：小字号提示 */
+.modeLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-2);
+  white-space: nowrap;
 }
