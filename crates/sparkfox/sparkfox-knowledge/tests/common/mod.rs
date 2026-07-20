@@ -34,7 +34,15 @@ use serde::Deserialize;
 /// 单个 NER 测试 case
 ///
 /// 对应 `tests/data/zh_ner_100_cases.json` 中的一条记录。
+///
+/// ## 跨测试文件 dead_code 说明
+/// 每个 `tests/*.rs` 是独立 crate，引用 `common` 时会重新编译本模块。
+/// `NerCase` / `ExpectedEntity` / `load_zh_ner_dataset` 仅被 NER 相关测试使用
+/// （如 `zh_ner_f1.rs`），其他测试（如 `bench_compare_4_strategies.rs`）仅使用
+/// `bench_metrics` 模块，会导致这些 NER 类型在本测试 crate 内未使用而触发
+/// dead_code warning。因此标注 `#[allow(dead_code)]` 抑制跨 crate 的假阳性。
 #[derive(Debug, Clone, Deserialize)]
+#[allow(dead_code)]
 pub struct NerCase {
     /// case 编号（1-100，连续递增）
     pub id: usize,
@@ -46,6 +54,7 @@ pub struct NerCase {
 
 /// 期望识别的实体
 #[derive(Debug, Clone, Deserialize)]
+#[allow(dead_code)]
 pub struct ExpectedEntity {
     /// 实体类型（PERSON / LOCATION / ORGANIZATION / TIME / NUMBER / EVENT）
     pub entity_type: String,
@@ -59,6 +68,7 @@ pub struct ExpectedEntity {
 ///
 /// ## Panic
 /// 若 JSON 解析失败会 panic（测试场景下可接受，说明数据集格式有误）。
+#[allow(dead_code)]
 pub fn load_zh_ner_dataset() -> Vec<NerCase> {
     let json = include_str!("../data/zh_ner_100_cases.json");
     serde_json::from_str(json).expect("zh_ner_100_cases.json 解析失败")
@@ -67,3 +77,7 @@ pub fn load_zh_ner_dataset() -> Vec<NerCase> {
 // Sub-Step 10.6.2 REFACTOR：F1 评估指标共享模块
 // 供 jieba_fallback_f1_test.rs 及后续 10.3.3 LLM F1 验证复用。
 pub mod metrics;
+
+// Sub-Step 12.3.2 REFACTOR：Benchmark 指标共享模块
+// 供 bench_compare_4_strategies.rs 及后续 benchmark 测试文件复用。
+pub mod bench_metrics;

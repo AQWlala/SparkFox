@@ -139,3 +139,27 @@
   aliases: ["北航"]
 - canonical: "中国科学院大学"
   aliases: ["国科大"]
+
+# ============================== 地理别名（Sub-Step 12.3.3 调优） ==============================
+# 任务 12.3.3 调优：增加 Beijing/Shanghai 等地理别名 + 简繁转换覆盖
+# 用途：zh_multihop 数据集中"北京 / 上海"为 anchor 实体，但用户查询可能用
+# "北京市 / Beijing / 北平"等同义指代。通过别名表将这些指代归一化为同一 canonical，
+# 提升 EntityNormalize 别名解析覆盖率（spec §三 12.3.3 验收指标 5）。
+#
+# 注：与简称（高校）分类并列，单独以"地理别名"分组，便于后续扩展（如广州/深圳/南京 等）。
+- canonical: "北京"
+  aliases: ["北京市", "Beijing", "北平"]
+- canonical: "上海"
+  aliases: ["上海市", "Shanghai"]
+- canonical: "广州"
+  aliases: ["广州市", "Guangzhou"]
+- canonical: "深圳"
+  aliases: ["深圳市", "Shenzhen"]
+- canonical: "杭州"
+  aliases: ["杭州市", "Hangzhou"]
+- canonical: "南京"
+  aliases: ["南京市", "Nanjing"]
+- canonical: "成都"
+  aliases: ["成都市", "Chengdu"]
+- canonical: "武汉"
+  aliases: ["武汉市", "Wuhan"]

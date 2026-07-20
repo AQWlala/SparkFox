@@ -1,0 +1,78 @@
+{
+  "meta": {
+    "name": "SparkFox Sub-Step 12.3.2 — 4 策略对比 Benchmark",
+    "spec": "§三 12.3.2",
+    "version": "1.1.0",
+    "license": "AGPL-3.0-only",
+    "description": "ATOMIC / MULTI1 / MULTI / MULTI_ES 4 策略在 zh_multihop 50 查询上的 Recall@10 / Precision@10 / latency 对比",
+    "dataset": {
+      "entities": "tests/fixtures/zh_multihop/entities.json (200 entities)",
+      "events": "tests/fixtures/zh_multihop/events.json (500 events)",
+      "relations": "tests/fixtures/zh_multihop/relations.json (1500 relations)",
+      "queries": "tests/fixtures/zh_multihop/queries.json (50 queries)",
+      "fixture_extensions": "filler 1000 entities + 9500 events + ~19000 relations (10k 规模)"
+    },
+    "strategy_adaptation_note": "spec 提到 VectorStrategy，但本 crate 未实现该策略（src/search/vector.rs 不存在）。改用 Multi1Strategy 作为 4 策略之一（与 ATOMIC / MULTI / MULTI_ES 并列的现有实现）。",
+    "metrics": {
+      "recall_at_10": "命中 case 数 / 总 case 数（top-10 含 ground_truth 任一 event_id 即记为命中）",
+      "precision_at_10": "sum(top-10 ∩ ground_truth 数量) / (10 × case 数)",
+      "avg_latency_ms": "sum(per-case latency_ms) / case 数",
+      "p99_latency_ms": "50 case 升序排序后第 floor(0.99 × 50) = 49 位（最大值）"
+    }
+  },
+  "results": {
+    "atomic": {
+      "strategy_name": "atomic",
+      "recall_at_10": null,
+      "precision_at_10": null,
+      "avg_latency_ms": null,
+      "p99_latency_ms": null,
+      "tests": {
+        "test_atomic_strategy_recall_at_10": null
+      }
+    },
+    "multi1": {
+      "strategy_name": "multi1",
+      "recall_at_10": null,
+      "precision_at_10": null,
+      "avg_latency_ms": null,
+      "p99_latency_ms": null,
+      "tests": {
+        "test_multi1_strategy_recall_at_10": null
+      }
+    },
+    "multi": {
+      "strategy_name": "multi",
+      "recall_at_10": null,
+      "precision_at_10": null,
+      "avg_latency_ms": null,
+      "p99_latency_ms": null,
+      "tests": {
+        "test_multi_strategy_recall_at_10": null
+      }
+    },
+    "multi_es": {
+      "strategy_name": "multi_es",
+      "recall_at_10": null,
+      "precision_at_10": null,
+      "avg_latency_ms": null,
+      "p99_latency_ms": null,
+      "tests": {
+        "test_multi_es_strategy_recall_at_10": null
+      }
+    }
+  },
+  "comparison_tables": {
+    "results_comparison_table": {
+      "tests": ["test_results_comparison_table"],
+      "format": "Markdown table: Strategy | Recall@10 | Precision@10 | Avg Latency(ms) | P99 Latency(ms)",
+      "assertion": "MULTI_ES Recall@10 >= MULTI Recall@10 - 0.01"
+    },
+    "latency_comparison_table": {
+      "tests": ["test_latency_comparison_table"],
+      "format": "Markdown table: Strategy | Avg Latency(ms) | P99 Latency(ms) | Max Latency(ms)",
+      "assertion": "All strategies avg_latency_ms < 5000ms (5s timeout)"
+    }
+  },
+  "raw_output": "Run run_bench.sh to populate this file with actual cargo test output"
+}
