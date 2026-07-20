@@ -3877,21 +3877,62 @@
 - 11.2.1 / 11.1.1 / 11.3.1 / 11.2.2 / 11.1.2 / 11.3.2 / 11.1.3 / 11.2.3 / 11.3.3 / 11.1.4 / 11.2.4 / 11.4.1 / 11.4.2 / 11.5.1 / 11.6.1 / 11.5.2 / 11.6.2 / 11.7.2 / **11.7.1** ⭐ 第十八波收官
 - **Task 11.x SAG 多跳检索全部完成**
 
+##### 第十九波（Task 12.x）完成报告 — 12.1.1 MULTI_ES + 12.3.1 中文多跳数据集 + 12.4.1 合并冲突修复（3 路并行）
+
+> **完成日**：2026-07-20
+> **验收人**：主 agent
+> **执行方式**：3 个 subagent 并行（12.1.1 后端 MULTI_ES / 12.3.1 后端中文多跳数据集 / 12.4.1 后端合并冲突修复），目标隔离无文件冲突
+
+| Sub-Step | 类型 | 文件 | 关键产出 | 状态 |
+|---|---|---|---|---|
+| 12.1.1 | 后端 / MultiEsStrategy | [crates/sparkfox/sparkfox-knowledge/src/search/multi_es.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/src/search/multi_es.rs) | MultiEsStrategy struct（ES-first 直接实体检索 + 降级到 MultiStrategy）+ 复制 Step3-Step8 BFS 逻辑（bfs_expand / build_hits / find_events_by_entity 等 6 个 helper）避免修改 multi.rs + SQL 参数绑定防注入 | ✅ |
+| 12.1.1 | 后端 / 模块注册 | [crates/sparkfox/sparkfox-knowledge/src/search/mod.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/src/search/mod.rs) | 注册 `pub mod multi_es;` + `pub use multi_es::MultiEsStrategy;` | ✅ |
+| 12.1.1 | 后端 / TDD 测试 | [crates/sparkfox/sparkfox-knowledge/tests/multi_es_strategy_test.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/tests/multi_es_strategy_test.rs) | 6 测试：trait 实现 / search 返回结果 / 精确匹配 / LIKE 部分匹配 / 无匹配降级 / max_hop 限制 | ✅ |
+| 12.3.1 | 数据集 / entities | [crates/sparkfox/sparkfox-knowledge/tests/fixtures/zh_multihop/entities.json](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/tests/fixtures/zh_multihop/entities.json) | 200 实体（11 类分布：PERSON 40 / LOCATION 30 / ORGANIZATION 30 / TIME 20 / EVENT 20 / CONCEPT 20 / ARTIFACT 15 / SOFTWARE 10 / HARDWARE 5 / DOCUMENT 5 / OTHER 5）+ 中国科技场景（腾讯/阿里/字节/马化腾/雷军/微信/抖音/飞书等） | ✅ |
+| 12.3.1 | 数据集 / events | [crates/sparkfox/sparkfox-knowledge/tests/fixtures/zh_multihop/events.json](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/tests/fixtures/zh_multihop/events.json) | 500 事件（hop 分布：1=59 / 2=279 / 3=162）+ 每事件 1-3 句中文描述 + 30 个中文事件模板随机填充生成 | ✅ |
+| 12.3.1 | 数据集 / relations | [crates/sparkfox/sparkfox-knowledge/tests/fixtures/zh_multihop/relations.json](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/tests/fixtures/zh_multihop/relations.json) | 1500 关系（event_id ↔ entity_id + relation_type 语义角色）+ 从 events 派生并补充 | ✅ |
+| 12.3.1 | 数据集 / queries | [crates/sparkfox/sparkfox-knowledge/tests/fixtures/zh_multihop/queries.json](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/tests/fixtures/zh_multihop/queries.json) | 50 查询 + ground truth（hop 分布精确：1=15 / 2=20 / 3=15）+ 每查询含 query_entities 列表 | ✅ |
+| 12.3.1 | 数据集 / 生成脚本 | [crates/sparkfox/sparkfox-knowledge/tests/fixtures/zh_multihop/_generate.py](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/tests/fixtures/zh_multihop/_generate.py) | Python 生成脚本（556 行）+ 固定随机种子 20260721 确保可复现 + 引用完整性内嵌断言 | ✅ |
+| 12.3.1 | 数据集 / 说明 | [crates/sparkfox/sparkfox-knowledge/tests/fixtures/zh_multihop/README.md](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/tests/fixtures/zh_multihop/README.md) | 数据集说明（120 行）+ 规模 + 11 类分布 + 查询跳数分布 + 生成方式 + License | ✅ |
+| 12.3.1 | 后端 / TDD 测试 | [crates/sparkfox/sparkfox-knowledge/tests/zh_multihop_dataset_test.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/tests/zh_multihop_dataset_test.rs) | 6 测试：200 实体 / 500 事件 / 1500 关系 / 50 查询 / 跳数分布 15-20-15 / query_entities 引用完整性 | ✅ |
+| 12.4.1 | 后端 / entity_ops 增强 | [crates/sparkfox/sparkfox-knowledge/src/entity_ops.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/src/entity_ops.rs) | 新增 `merge_entities_with_conflict_report`（冲突检测+去重+报告）+ `SplitStrategy` 枚举（RoundRobin / ByEntityType）+ `split_entity_with_strategy` + 向后兼容原接口（378→609 行，+231） | ✅ |
+| 12.4.1 | 后端 / TDD 测试 | [crates/sparkfox/sparkfox-knowledge/tests/entity_commands_test.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/tests/entity_commands_test.rs) | 追加 4 新测试（共 10 测试）：冲突检测返回 / 冲突去重 / ByEntityType 策略 / 向后兼容（494→913 行，+419） | ✅ |
+
+**第十九波合计**：3 个 sub-step / 9 个新增文件 + 3 个修改文件 / 16 个新测试（6 MULTI_ES + 6 数据集 + 4 entity_ops 增强）/ 0 回归测试失败。
+
+**关键设计决策**：
+1. **方案 A 复制 Step3-Step8 逻辑**（12.1.1）：严格遵循任务约束，将 MultiStrategy 的 BFS 扩展逻辑（bfs_expand / build_hits / find_events_by_entity / find_entities_by_event / find_entity_ref / find_event_detail）独立复制到 multi_es.rs，避免修改 multi.rs，与并行 subagent 零冲突
+2. **ES-first 算法 + 降级路径**（12.1.1）：search 流程先用 `name LIKE '%query%' OR normalized_name = query` 直接匹配 entity 表（跳过 jieba NER）；若返回空，降级到 MultiStrategy 等效路径（jieba NER + find_entity_ids_by_texts）。降级不改变 strategy_name="multi_es"，便于上层诊断。SQL 使用参数绑定防注入
+3. **数据集主题选择**（12.3.1）：围绕中国科技场景（互联网公司 / 创始人 / 产品 / 技术概念）构造，而非 lorem ipsum。实体含真实公司名（腾讯/阿里/字节/百度/美团等）、真实创始人姓名（马化腾/雷军/张一鸣/李彦宏等）、真实产品（微信/抖音/飞书/钉钉等），以及 SparkFox 自身技术栈（Tauri/Rust/TypeScript/Preact），便于 12.3.2/12.3.3 评估多跳检索在真实语义场景下的 Recall@10
+4. **数据生成方式（手工 + 模板化）**（12.3.1）：200 实体手工列举（确保真实合理），500 事件用 30 个中文事件模板随机填充生成并去重，relations 从 events 派生并补充至 1500 条，50 查询手工设计 + ground truth 反向计算。固定随机种子 20260721 确保可复现
+5. **引用完整性内嵌于生成脚本**（12.3.1）：_generate.py 在生成时已断言所有 entities/events/relations/queries 的相互引用合法，测试文件再以 Rust 端 include_str! + serde_json 二次校验，双重保证数据集完整性
+6. **ByEntityType 策略的「类型签名聚类」实现**（12.4.1）：对每个 event 查询其非 source 实体的 entity_type_id 集合（排除 source 自身类型避免签名退化为常量），将类型集合排序后用逗号拼接为字符串签名，同签名的 event 分配到同一新 entity（首次出现的签名按顺序分配，超过 n 个签名时取模回绕），实现「上下文相同的 event 聚到一起」的语义聚类效果
+7. **冲突检测必须在 DELETE 之前查询**（12.4.1）：merge_entities_with_conflict_report_inner 严格按顺序：先 SELECT 冲突 event_id，再 DELETE source 重复关系。若顺序颠倒，source 关系已删除，无法检测冲突
+8. **SQL 常量复用 + 扩展**（12.4.1）：将 SELECT_SOURCE_RELATIONS_SQL 从 SELECT id 扩展为 SELECT id, event_id（ByEntityType 需要 event_id 查询签名），保持单一常量定义避免重复
+9. **向后兼容关键设计**（12.4.1）：merge_entities 委托给 merge_entities_with_conflict_report(...).map(|_| ())，split_entity 委托给 split_entity_with_strategy(..., RoundRobin)，签名保持不变。Tauri command 层 entity_merge / entity_split / entity_rename 无需任何改动
+
+**回归验证**：
+- `cargo test -p sparkfox-knowledge --tests`：**33 个测试套件全绿**（含 12.1.1 新增 6 multi_es + 12.3.1 新增 6 zh_multihop_dataset + 12.4.1 追加 4 entity_commands = 16 新测试）
+- `cargo build -p sparkfox-ipc`：编译通过，11.4.2 Tauri command 无影响
+- `cargo build -p sparkfox-knowledge`：无新 warning
+
+**Task 12.x 进度**：3/16 已完成（18.75%），下一步进入第二十波（12.1.2 MULTI_ES 端到端 < 1.5s + 12.2.1 HyperedgeDetector + 12.4.2 重命名预览）
+
 #### 4.1.3 Task 12.x 系列（34.0d，17 个 sub-step）
 
 | Sub-Step | 名称 | 工期（d） | 优先级 | 状态 | 负责人 | 开始日 | 完成日 | 验收人 |
 |---|---|---|---|---|---|---|---|---|
-| 12.1.1 | ES-first 实现 | 2.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
+| 12.1.1 | ES-first 实现 | 2.0 | P0 | ✅ | subagent A | 2026-07-20 | 2026-07-20 | 第十九波：MultiEsStrategy（ES-first 直接实体检索 + 降级到 MultiStrategy）+ 复制 Step3-Step8 BFS 逻辑避免修改 multi.rs + 6 测试 |
 | 12.1.2 | 端到端 < 1.5s 验证 | 2.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
 | 12.1.3 | 三策略对比测试 | 2.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
 | 12.2.1 | HyperedgeDetector | 2.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
 | 12.2.2 | 超边激活 SQL JOIN | 2.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
 | 12.2.3 | 可视化 react-flow 集成 | 2.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
 | 12.2.4 | E2E 测试 | 2.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
-| 12.3.1 | 数据集构建 | 4.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
+| 12.3.1 | 数据集构建 | 4.0 | P0 | ✅ | subagent B | 2026-07-20 | 2026-07-20 | 第十九波：中文多跳 Benchmark 数据集（200 实体 + 500 事件 + 1500 关系 + 50 查询 15/20/15 跳数分布）+ 中国科技场景 + 固定种子 20260721 可复现 + 6 测试 |
 | 12.3.2 | 4 策略对比测试 | 3.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
 | 12.3.3 | Recall@10 > 0.85 调优 | 3.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
-| 12.4.1 | 合并冲突 + 拆分关系重定向 | 1.5 | P0 | ⬜ | ____ | ____ | ____ | ____ |
+| 12.4.1 | 合并冲突 + 拆分关系重定向 | 1.5 | P0 | ✅ | subagent C | 2026-07-20 | 2026-07-20 | 第十九波：merge_entities_with_conflict_report（冲突检测+去重+报告）+ SplitStrategy 枚举（RoundRobin / ByEntityType 类型签名聚类）+ 向后兼容原接口 |
 | 12.4.2 | 重命名影响预览 + E2E | 1.5 | P0 | ⬜ | ____ | ____ | ____ | ____ |
 | 12.5.1 | 营销页文案 + Benchmark | 3.0 | P1 | ⬜ | ____ | ____ | ____ | ____ |
 | 12.5.2 | 推理链 GIF 制作 | 2.0 | P1 | ⬜ | ____ | ____ | ____ | ____ |

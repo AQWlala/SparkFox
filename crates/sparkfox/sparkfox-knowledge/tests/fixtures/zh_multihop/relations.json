@@ -1,0 +1,7502 @@
+[
+  {
+    "event_id": "evt-001",
+    "entity_id": "ent-001",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-001",
+    "entity_id": "ent-041",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-001",
+    "entity_id": "ent-071",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-002",
+    "entity_id": "ent-001",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-002",
+    "entity_id": "ent-104",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-002",
+    "entity_id": "ent-041",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-002",
+    "entity_id": "ent-071",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-003",
+    "entity_id": "ent-001",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-003",
+    "entity_id": "ent-071",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-004",
+    "entity_id": "ent-001",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-004",
+    "entity_id": "ent-002",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-004",
+    "entity_id": "ent-142",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-005",
+    "entity_id": "ent-001",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-005",
+    "entity_id": "ent-104",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-005",
+    "entity_id": "ent-041",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-005",
+    "entity_id": "ent-073",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-006",
+    "entity_id": "ent-001",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-006",
+    "entity_id": "ent-041",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-006",
+    "entity_id": "ent-071",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-006",
+    "entity_id": "ent-192",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-007",
+    "entity_id": "ent-001",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-007",
+    "entity_id": "ent-002",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-007",
+    "entity_id": "ent-163",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-007",
+    "entity_id": "ent-142",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-008",
+    "entity_id": "ent-001",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-008",
+    "entity_id": "ent-176",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-008",
+    "entity_id": "ent-161",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-009",
+    "entity_id": "ent-071",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-009",
+    "entity_id": "ent-191",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-009",
+    "entity_id": "ent-146",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-010",
+    "entity_id": "ent-090",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-010",
+    "entity_id": "ent-107",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-010",
+    "entity_id": "ent-185",
+    "relation_type": "software"
+  },
+  {
+    "event_id": "evt-011",
+    "entity_id": "ent-033",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-011",
+    "entity_id": "ent-102",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-011",
+    "entity_id": "ent-088",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-012",
+    "entity_id": "ent-084",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-012",
+    "entity_id": "ent-118",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-012",
+    "entity_id": "ent-183",
+    "relation_type": "language"
+  },
+  {
+    "event_id": "evt-013",
+    "entity_id": "ent-074",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-013",
+    "entity_id": "ent-119",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-013",
+    "entity_id": "ent-065",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-014",
+    "entity_id": "ent-091",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-014",
+    "entity_id": "ent-072",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-014",
+    "entity_id": "ent-160",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-015",
+    "entity_id": "ent-014",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-015",
+    "entity_id": "ent-070",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-015",
+    "entity_id": "ent-071",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-016",
+    "entity_id": "ent-006",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-016",
+    "entity_id": "ent-050",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-016",
+    "entity_id": "ent-081",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-017",
+    "entity_id": "ent-027",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-017",
+    "entity_id": "ent-060",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-017",
+    "entity_id": "ent-140",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-017",
+    "entity_id": "ent-153",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-018",
+    "entity_id": "ent-003",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-018",
+    "entity_id": "ent-055",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-018",
+    "entity_id": "ent-099",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-018",
+    "entity_id": "ent-195",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-019",
+    "entity_id": "ent-072",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-019",
+    "entity_id": "ent-096",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-019",
+    "entity_id": "ent-155",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-020",
+    "entity_id": "ent-078",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-020",
+    "entity_id": "ent-194",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-020",
+    "entity_id": "ent-152",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-021",
+    "entity_id": "ent-073",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-021",
+    "entity_id": "ent-105",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-021",
+    "entity_id": "ent-041",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-021",
+    "entity_id": "ent-134",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-022",
+    "entity_id": "ent-031",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-022",
+    "entity_id": "ent-029",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-022",
+    "entity_id": "ent-167",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-022",
+    "entity_id": "ent-145",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-023",
+    "entity_id": "ent-032",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-023",
+    "entity_id": "ent-043",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-023",
+    "entity_id": "ent-075",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-023",
+    "entity_id": "ent-193",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-024",
+    "entity_id": "ent-004",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-024",
+    "entity_id": "ent-118",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-024",
+    "entity_id": "ent-096",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-025",
+    "entity_id": "ent-081",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-025",
+    "entity_id": "ent-045",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-025",
+    "entity_id": "ent-161",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-026",
+    "entity_id": "ent-017",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-026",
+    "entity_id": "ent-116",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-026",
+    "entity_id": "ent-049",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-026",
+    "entity_id": "ent-089",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-027",
+    "entity_id": "ent-072",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-027",
+    "entity_id": "ent-194",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-027",
+    "entity_id": "ent-148",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-028",
+    "entity_id": "ent-081",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-028",
+    "entity_id": "ent-104",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-028",
+    "entity_id": "ent-175",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-029",
+    "entity_id": "ent-087",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-029",
+    "entity_id": "ent-076",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-029",
+    "entity_id": "ent-054",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-030",
+    "entity_id": "ent-083",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-030",
+    "entity_id": "ent-061",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-030",
+    "entity_id": "ent-172",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-031",
+    "entity_id": "ent-040",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-031",
+    "entity_id": "ent-189",
+    "relation_type": "device"
+  },
+  {
+    "event_id": "evt-031",
+    "entity_id": "ent-151",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-032",
+    "entity_id": "ent-033",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-032",
+    "entity_id": "ent-091",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-033",
+    "entity_id": "ent-016",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-033",
+    "entity_id": "ent-049",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-033",
+    "entity_id": "ent-128",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-034",
+    "entity_id": "ent-016",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-034",
+    "entity_id": "ent-055",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-034",
+    "entity_id": "ent-128",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-034",
+    "entity_id": "ent-153",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-035",
+    "entity_id": "ent-093",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-035",
+    "entity_id": "ent-111",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-035",
+    "entity_id": "ent-131",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-035",
+    "entity_id": "ent-016",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-036",
+    "entity_id": "ent-038",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-036",
+    "entity_id": "ent-108",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-036",
+    "entity_id": "ent-063",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-036",
+    "entity_id": "ent-080",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-037",
+    "entity_id": "ent-095",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-037",
+    "entity_id": "ent-153",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-037",
+    "entity_id": "ent-175",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-038",
+    "entity_id": "ent-021",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-038",
+    "entity_id": "ent-180",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-038",
+    "entity_id": "ent-173",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-039",
+    "entity_id": "ent-100",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-039",
+    "entity_id": "ent-193",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-039",
+    "entity_id": "ent-158",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-040",
+    "entity_id": "ent-003",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-040",
+    "entity_id": "ent-082",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-041",
+    "entity_id": "ent-035",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-041",
+    "entity_id": "ent-181",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-041",
+    "entity_id": "ent-163",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-042",
+    "entity_id": "ent-038",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-042",
+    "entity_id": "ent-020",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-042",
+    "entity_id": "ent-157",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-043",
+    "entity_id": "ent-029",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-043",
+    "entity_id": "ent-114",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-043",
+    "entity_id": "ent-048",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-043",
+    "entity_id": "ent-087",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-044",
+    "entity_id": "ent-095",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-044",
+    "entity_id": "ent-104",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-044",
+    "entity_id": "ent-064",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-044",
+    "entity_id": "ent-131",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-045",
+    "entity_id": "ent-035",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-045",
+    "entity_id": "ent-065",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-045",
+    "entity_id": "ent-131",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-046",
+    "entity_id": "ent-091",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-046",
+    "entity_id": "ent-125",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-047",
+    "entity_id": "ent-023",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-047",
+    "entity_id": "ent-012",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-047",
+    "entity_id": "ent-167",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-047",
+    "entity_id": "ent-156",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-048",
+    "entity_id": "ent-009",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-048",
+    "entity_id": "ent-186",
+    "relation_type": "hardware"
+  },
+  {
+    "event_id": "evt-048",
+    "entity_id": "ent-147",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-049",
+    "entity_id": "ent-023",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-049",
+    "entity_id": "ent-120",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-049",
+    "entity_id": "ent-049",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-049",
+    "entity_id": "ent-098",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-050",
+    "entity_id": "ent-084",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-050",
+    "entity_id": "ent-080",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-050",
+    "entity_id": "ent-146",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-051",
+    "entity_id": "ent-074",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-051",
+    "entity_id": "ent-087",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-051",
+    "entity_id": "ent-159",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-052",
+    "entity_id": "ent-002",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-052",
+    "entity_id": "ent-185",
+    "relation_type": "software"
+  },
+  {
+    "event_id": "evt-052",
+    "entity_id": "ent-163",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-053",
+    "entity_id": "ent-033",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-053",
+    "entity_id": "ent-085",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-054",
+    "entity_id": "ent-092",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-054",
+    "entity_id": "ent-078",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-054",
+    "entity_id": "ent-142",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-055",
+    "entity_id": "ent-021",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-055",
+    "entity_id": "ent-105",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-055",
+    "entity_id": "ent-053",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-055",
+    "entity_id": "ent-084",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-056",
+    "entity_id": "ent-077",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-056",
+    "entity_id": "ent-091",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-056",
+    "entity_id": "ent-149",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-057",
+    "entity_id": "ent-010",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-057",
+    "entity_id": "ent-066",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-057",
+    "entity_id": "ent-155",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-058",
+    "entity_id": "ent-097",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-058",
+    "entity_id": "ent-193",
+    "relation_type": "reference"
+  },
+  {
+    "event_id": "evt-058",
+    "entity_id": "ent-160",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-059",
+    "entity_id": "ent-030",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-059",
+    "entity_id": "ent-182",
+    "relation_type": "software"
+  },
+  {
+    "event_id": "evt-059",
+    "entity_id": "ent-167",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-060",
+    "entity_id": "ent-084",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-060",
+    "entity_id": "ent-141",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-060",
+    "entity_id": "ent-162",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-061",
+    "entity_id": "ent-033",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-061",
+    "entity_id": "ent-062",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-061",
+    "entity_id": "ent-071",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-061",
+    "entity_id": "ent-191",
+    "relation_type": "reference"
+  },
+  {
+    "event_id": "evt-062",
+    "entity_id": "ent-005",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-062",
+    "entity_id": "ent-014",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-062",
+    "entity_id": "ent-141",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-063",
+    "entity_id": "ent-003",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-063",
+    "entity_id": "ent-087",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-064",
+    "entity_id": "ent-012",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-064",
+    "entity_id": "ent-053",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-064",
+    "entity_id": "ent-158",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-065",
+    "entity_id": "ent-083",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-065",
+    "entity_id": "ent-095",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-066",
+    "entity_id": "ent-037",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-066",
+    "entity_id": "ent-017",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-066",
+    "entity_id": "ent-175",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-066",
+    "entity_id": "ent-145",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-067",
+    "entity_id": "ent-073",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-067",
+    "entity_id": "ent-101",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-067",
+    "entity_id": "ent-047",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-068",
+    "entity_id": "ent-022",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-068",
+    "entity_id": "ent-115",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-068",
+    "entity_id": "ent-049",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-068",
+    "entity_id": "ent-071",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-069",
+    "entity_id": "ent-074",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-069",
+    "entity_id": "ent-063",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-070",
+    "entity_id": "ent-032",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-070",
+    "entity_id": "ent-184",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-070",
+    "entity_id": "ent-175",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-071",
+    "entity_id": "ent-097",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-071",
+    "entity_id": "ent-111",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-071",
+    "entity_id": "ent-177",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-072",
+    "entity_id": "ent-080",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-072",
+    "entity_id": "ent-103",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-072",
+    "entity_id": "ent-165",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-073",
+    "entity_id": "ent-026",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-073",
+    "entity_id": "ent-067",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-073",
+    "entity_id": "ent-153",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-074",
+    "entity_id": "ent-088",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-074",
+    "entity_id": "ent-169",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-074",
+    "entity_id": "ent-176",
+    "relation_type": "language"
+  },
+  {
+    "event_id": "evt-075",
+    "entity_id": "ent-040",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-075",
+    "entity_id": "ent-056",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-075",
+    "entity_id": "ent-148",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-076",
+    "entity_id": "ent-009",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-076",
+    "entity_id": "ent-055",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-076",
+    "entity_id": "ent-090",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-077",
+    "entity_id": "ent-095",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-077",
+    "entity_id": "ent-079",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-078",
+    "entity_id": "ent-073",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-078",
+    "entity_id": "ent-104",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-078",
+    "entity_id": "ent-070",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-079",
+    "entity_id": "ent-030",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-079",
+    "entity_id": "ent-045",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-079",
+    "entity_id": "ent-083",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-080",
+    "entity_id": "ent-011",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-080",
+    "entity_id": "ent-051",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-080",
+    "entity_id": "ent-151",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-081",
+    "entity_id": "ent-092",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-081",
+    "entity_id": "ent-094",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-081",
+    "entity_id": "ent-150",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-082",
+    "entity_id": "ent-022",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-082",
+    "entity_id": "ent-113",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-082",
+    "entity_id": "ent-042",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-082",
+    "entity_id": "ent-090",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-083",
+    "entity_id": "ent-032",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-083",
+    "entity_id": "ent-186",
+    "relation_type": "equipment"
+  },
+  {
+    "event_id": "evt-083",
+    "entity_id": "ent-146",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-084",
+    "entity_id": "ent-040",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-084",
+    "entity_id": "ent-041",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-084",
+    "entity_id": "ent-145",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-085",
+    "entity_id": "ent-016",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-085",
+    "entity_id": "ent-179",
+    "relation_type": "language"
+  },
+  {
+    "event_id": "evt-085",
+    "entity_id": "ent-172",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-086",
+    "entity_id": "ent-038",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-086",
+    "entity_id": "ent-050",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-086",
+    "entity_id": "ent-075",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-086",
+    "entity_id": "ent-194",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-087",
+    "entity_id": "ent-100",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-087",
+    "entity_id": "ent-075",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-087",
+    "entity_id": "ent-043",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-088",
+    "entity_id": "ent-021",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-088",
+    "entity_id": "ent-044",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-088",
+    "entity_id": "ent-138",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-088",
+    "entity_id": "ent-147",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-089",
+    "entity_id": "ent-086",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-089",
+    "entity_id": "ent-085",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-090",
+    "entity_id": "ent-026",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-090",
+    "entity_id": "ent-187",
+    "relation_type": "equipment"
+  },
+  {
+    "event_id": "evt-090",
+    "entity_id": "ent-157",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-091",
+    "entity_id": "ent-017",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-091",
+    "entity_id": "ent-059",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-091",
+    "entity_id": "ent-134",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-092",
+    "entity_id": "ent-089",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-092",
+    "entity_id": "ent-115",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-092",
+    "entity_id": "ent-041",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-092",
+    "entity_id": "ent-130",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-093",
+    "entity_id": "ent-025",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-093",
+    "entity_id": "ent-050",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-093",
+    "entity_id": "ent-153",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-094",
+    "entity_id": "ent-085",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-094",
+    "entity_id": "ent-117",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-094",
+    "entity_id": "ent-063",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-095",
+    "entity_id": "ent-020",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-095",
+    "entity_id": "ent-055",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-095",
+    "entity_id": "ent-139",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-096",
+    "entity_id": "ent-073",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-096",
+    "entity_id": "ent-062",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-096",
+    "entity_id": "ent-166",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-097",
+    "entity_id": "ent-085",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-097",
+    "entity_id": "ent-084",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-097",
+    "entity_id": "ent-049",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-098",
+    "entity_id": "ent-039",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-098",
+    "entity_id": "ent-099",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-099",
+    "entity_id": "ent-077",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-099",
+    "entity_id": "ent-087",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-099",
+    "entity_id": "ent-141",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-100",
+    "entity_id": "ent-097",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-100",
+    "entity_id": "ent-047",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-101",
+    "entity_id": "ent-084",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-101",
+    "entity_id": "ent-089",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-102",
+    "entity_id": "ent-029",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-102",
+    "entity_id": "ent-046",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-102",
+    "entity_id": "ent-090",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-103",
+    "entity_id": "ent-006",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-103",
+    "entity_id": "ent-011",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-103",
+    "entity_id": "ent-175",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-103",
+    "entity_id": "ent-158",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-104",
+    "entity_id": "ent-024",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-104",
+    "entity_id": "ent-189",
+    "relation_type": "device"
+  },
+  {
+    "event_id": "evt-104",
+    "entity_id": "ent-145",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-105",
+    "entity_id": "ent-009",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-105",
+    "entity_id": "ent-061",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-105",
+    "entity_id": "ent-137",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-106",
+    "entity_id": "ent-007",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-106",
+    "entity_id": "ent-012",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-106",
+    "entity_id": "ent-158",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-107",
+    "entity_id": "ent-005",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-107",
+    "entity_id": "ent-187",
+    "relation_type": "device"
+  },
+  {
+    "event_id": "evt-107",
+    "entity_id": "ent-149",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-108",
+    "entity_id": "ent-034",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-108",
+    "entity_id": "ent-057",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-108",
+    "entity_id": "ent-134",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-108",
+    "entity_id": "ent-145",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-109",
+    "entity_id": "ent-011",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-109",
+    "entity_id": "ent-120",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-109",
+    "entity_id": "ent-093",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-110",
+    "entity_id": "ent-017",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-110",
+    "entity_id": "ent-108",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-110",
+    "entity_id": "ent-059",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-110",
+    "entity_id": "ent-097",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-111",
+    "entity_id": "ent-086",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-111",
+    "entity_id": "ent-118",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-111",
+    "entity_id": "ent-046",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-112",
+    "entity_id": "ent-015",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-112",
+    "entity_id": "ent-184",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-112",
+    "entity_id": "ent-172",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-113",
+    "entity_id": "ent-005",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-113",
+    "entity_id": "ent-055",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-113",
+    "entity_id": "ent-130",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-113",
+    "entity_id": "ent-146",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-114",
+    "entity_id": "ent-025",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-114",
+    "entity_id": "ent-113",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-114",
+    "entity_id": "ent-096",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-115",
+    "entity_id": "ent-088",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-115",
+    "entity_id": "ent-114",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-115",
+    "entity_id": "ent-165",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-116",
+    "entity_id": "ent-028",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-116",
+    "entity_id": "ent-103",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-116",
+    "entity_id": "ent-068",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-116",
+    "entity_id": "ent-091",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-117",
+    "entity_id": "ent-079",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-117",
+    "entity_id": "ent-119",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-117",
+    "entity_id": "ent-165",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-118",
+    "entity_id": "ent-040",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-118",
+    "entity_id": "ent-113",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-118",
+    "entity_id": "ent-062",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-118",
+    "entity_id": "ent-099",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-119",
+    "entity_id": "ent-008",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-119",
+    "entity_id": "ent-111",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-119",
+    "entity_id": "ent-085",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-120",
+    "entity_id": "ent-091",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-120",
+    "entity_id": "ent-174",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-120",
+    "entity_id": "ent-181",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-121",
+    "entity_id": "ent-027",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-121",
+    "entity_id": "ent-055",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-121",
+    "entity_id": "ent-154",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-122",
+    "entity_id": "ent-083",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-122",
+    "entity_id": "ent-143",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-122",
+    "entity_id": "ent-170",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-123",
+    "entity_id": "ent-097",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-123",
+    "entity_id": "ent-116",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-123",
+    "entity_id": "ent-181",
+    "relation_type": "language"
+  },
+  {
+    "event_id": "evt-124",
+    "entity_id": "ent-026",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-124",
+    "entity_id": "ent-113",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-124",
+    "entity_id": "ent-061",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-124",
+    "entity_id": "ent-076",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-125",
+    "entity_id": "ent-028",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-125",
+    "entity_id": "ent-102",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-125",
+    "entity_id": "ent-062",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-125",
+    "entity_id": "ent-077",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-126",
+    "entity_id": "ent-029",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-126",
+    "entity_id": "ent-070",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-126",
+    "entity_id": "ent-150",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-127",
+    "entity_id": "ent-090",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-127",
+    "entity_id": "ent-044",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-128",
+    "entity_id": "ent-073",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-128",
+    "entity_id": "ent-113",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-128",
+    "entity_id": "ent-046",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-128",
+    "entity_id": "ent-137",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-129",
+    "entity_id": "ent-081",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-129",
+    "entity_id": "ent-117",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-129",
+    "entity_id": "ent-125",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-129",
+    "entity_id": "ent-004",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-130",
+    "entity_id": "ent-099",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-130",
+    "entity_id": "ent-109",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-130",
+    "entity_id": "ent-069",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-131",
+    "entity_id": "ent-038",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-131",
+    "entity_id": "ent-099",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-132",
+    "entity_id": "ent-035",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-132",
+    "entity_id": "ent-059",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-132",
+    "entity_id": "ent-141",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-133",
+    "entity_id": "ent-009",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-133",
+    "entity_id": "ent-104",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-133",
+    "entity_id": "ent-056",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-133",
+    "entity_id": "ent-078",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-134",
+    "entity_id": "ent-037",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-134",
+    "entity_id": "ent-061",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-134",
+    "entity_id": "ent-088",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-134",
+    "entity_id": "ent-195",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-135",
+    "entity_id": "ent-026",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-135",
+    "entity_id": "ent-042",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-135",
+    "entity_id": "ent-122",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-135",
+    "entity_id": "ent-154",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-136",
+    "entity_id": "ent-072",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-136",
+    "entity_id": "ent-116",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-136",
+    "entity_id": "ent-184",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-137",
+    "entity_id": "ent-096",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-137",
+    "entity_id": "ent-162",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-137",
+    "entity_id": "ent-177",
+    "relation_type": "software"
+  },
+  {
+    "event_id": "evt-138",
+    "entity_id": "ent-035",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-138",
+    "entity_id": "ent-065",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-138",
+    "entity_id": "ent-088",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-139",
+    "entity_id": "ent-074",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-139",
+    "entity_id": "ent-069",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-139",
+    "entity_id": "ent-164",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-140",
+    "entity_id": "ent-088",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-140",
+    "entity_id": "ent-133",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-141",
+    "entity_id": "ent-021",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-141",
+    "entity_id": "ent-188",
+    "relation_type": "equipment"
+  },
+  {
+    "event_id": "evt-141",
+    "entity_id": "ent-148",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-142",
+    "entity_id": "ent-038",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-142",
+    "entity_id": "ent-117",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-142",
+    "entity_id": "ent-092",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-143",
+    "entity_id": "ent-010",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-143",
+    "entity_id": "ent-104",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-143",
+    "entity_id": "ent-051",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-143",
+    "entity_id": "ent-080",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-144",
+    "entity_id": "ent-094",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-144",
+    "entity_id": "ent-087",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-144",
+    "entity_id": "ent-065",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-145",
+    "entity_id": "ent-078",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-145",
+    "entity_id": "ent-100",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-145",
+    "entity_id": "ent-052",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-146",
+    "entity_id": "ent-008",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-146",
+    "entity_id": "ent-041",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-146",
+    "entity_id": "ent-091",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-146",
+    "entity_id": "ent-192",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-147",
+    "entity_id": "ent-034",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-147",
+    "entity_id": "ent-025",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-147",
+    "entity_id": "ent-146",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-148",
+    "entity_id": "ent-079",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-148",
+    "entity_id": "ent-193",
+    "relation_type": "reference"
+  },
+  {
+    "event_id": "evt-148",
+    "entity_id": "ent-157",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-149",
+    "entity_id": "ent-086",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-149",
+    "entity_id": "ent-119",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-149",
+    "entity_id": "ent-057",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-149",
+    "entity_id": "ent-126",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-150",
+    "entity_id": "ent-081",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-150",
+    "entity_id": "ent-055",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-150",
+    "entity_id": "ent-174",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-151",
+    "entity_id": "ent-088",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-151",
+    "entity_id": "ent-193",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-151",
+    "entity_id": "ent-144",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-152",
+    "entity_id": "ent-006",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-152",
+    "entity_id": "ent-044",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-152",
+    "entity_id": "ent-077",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-153",
+    "entity_id": "ent-083",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-153",
+    "entity_id": "ent-159",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-153",
+    "entity_id": "ent-163",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-154",
+    "entity_id": "ent-088",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-154",
+    "entity_id": "ent-144",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-154",
+    "entity_id": "ent-166",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-155",
+    "entity_id": "ent-093",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-155",
+    "entity_id": "ent-111",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-155",
+    "entity_id": "ent-166",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-156",
+    "entity_id": "ent-038",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-156",
+    "entity_id": "ent-108",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-156",
+    "entity_id": "ent-085",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-157",
+    "entity_id": "ent-013",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-157",
+    "entity_id": "ent-069",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-157",
+    "entity_id": "ent-141",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-158",
+    "entity_id": "ent-033",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-158",
+    "entity_id": "ent-049",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-158",
+    "entity_id": "ent-150",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-159",
+    "entity_id": "ent-035",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-159",
+    "entity_id": "ent-182",
+    "relation_type": "language"
+  },
+  {
+    "event_id": "evt-159",
+    "entity_id": "ent-173",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-160",
+    "entity_id": "ent-085",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-160",
+    "entity_id": "ent-115",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-160",
+    "entity_id": "ent-061",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-160",
+    "entity_id": "ent-126",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-161",
+    "entity_id": "ent-088",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-161",
+    "entity_id": "ent-109",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-161",
+    "entity_id": "ent-133",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-161",
+    "entity_id": "ent-011",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-162",
+    "entity_id": "ent-083",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-162",
+    "entity_id": "ent-170",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-162",
+    "entity_id": "ent-184",
+    "relation_type": "language"
+  },
+  {
+    "event_id": "evt-163",
+    "entity_id": "ent-071",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-163",
+    "entity_id": "ent-101",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-163",
+    "entity_id": "ent-042",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-164",
+    "entity_id": "ent-076",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-164",
+    "entity_id": "ent-107",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-164",
+    "entity_id": "ent-047",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-165",
+    "entity_id": "ent-017",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-165",
+    "entity_id": "ent-099",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-166",
+    "entity_id": "ent-078",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-166",
+    "entity_id": "ent-097",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-167",
+    "entity_id": "ent-097",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-167",
+    "entity_id": "ent-063",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-168",
+    "entity_id": "ent-094",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-168",
+    "entity_id": "ent-119",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-168",
+    "entity_id": "ent-068",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-168",
+    "entity_id": "ent-136",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-169",
+    "entity_id": "ent-013",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-169",
+    "entity_id": "ent-041",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-169",
+    "entity_id": "ent-130",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-170",
+    "entity_id": "ent-038",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-170",
+    "entity_id": "ent-058",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-170",
+    "entity_id": "ent-127",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-170",
+    "entity_id": "ent-143",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-171",
+    "entity_id": "ent-022",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-171",
+    "entity_id": "ent-043",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-171",
+    "entity_id": "ent-122",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-171",
+    "entity_id": "ent-150",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-172",
+    "entity_id": "ent-020",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-172",
+    "entity_id": "ent-108",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-172",
+    "entity_id": "ent-064",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-172",
+    "entity_id": "ent-087",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-173",
+    "entity_id": "ent-006",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-173",
+    "entity_id": "ent-179",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-173",
+    "entity_id": "ent-161",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-174",
+    "entity_id": "ent-040",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-174",
+    "entity_id": "ent-179",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-174",
+    "entity_id": "ent-170",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-175",
+    "entity_id": "ent-082",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-175",
+    "entity_id": "ent-195",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-175",
+    "entity_id": "ent-142",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-176",
+    "entity_id": "ent-088",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-176",
+    "entity_id": "ent-104",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-176",
+    "entity_id": "ent-050",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-176",
+    "entity_id": "ent-138",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-177",
+    "entity_id": "ent-002",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-177",
+    "entity_id": "ent-053",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-177",
+    "entity_id": "ent-150",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-178",
+    "entity_id": "ent-086",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-178",
+    "entity_id": "ent-048",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-179",
+    "entity_id": "ent-039",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-179",
+    "entity_id": "ent-036",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-179",
+    "entity_id": "ent-170",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-179",
+    "entity_id": "ent-147",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-180",
+    "entity_id": "ent-021",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-180",
+    "entity_id": "ent-036",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-180",
+    "entity_id": "ent-156",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-181",
+    "entity_id": "ent-005",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-181",
+    "entity_id": "ent-052",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-181",
+    "entity_id": "ent-126",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-181",
+    "entity_id": "ent-142",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-182",
+    "entity_id": "ent-009",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-182",
+    "entity_id": "ent-042",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-182",
+    "entity_id": "ent-090",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-183",
+    "entity_id": "ent-093",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-183",
+    "entity_id": "ent-070",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-184",
+    "entity_id": "ent-009",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-184",
+    "entity_id": "ent-034",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-184",
+    "entity_id": "ent-174",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-184",
+    "entity_id": "ent-150",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-185",
+    "entity_id": "ent-095",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-185",
+    "entity_id": "ent-122",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-186",
+    "entity_id": "ent-023",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-186",
+    "entity_id": "ent-183",
+    "relation_type": "software"
+  },
+  {
+    "event_id": "evt-186",
+    "entity_id": "ent-169",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-187",
+    "entity_id": "ent-005",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-187",
+    "entity_id": "ent-109",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-187",
+    "entity_id": "ent-048",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-187",
+    "entity_id": "ent-074",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-188",
+    "entity_id": "ent-080",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-188",
+    "entity_id": "ent-112",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-188",
+    "entity_id": "ent-047",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-189",
+    "entity_id": "ent-039",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-189",
+    "entity_id": "ent-069",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-189",
+    "entity_id": "ent-142",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-190",
+    "entity_id": "ent-039",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-190",
+    "entity_id": "ent-049",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-190",
+    "entity_id": "ent-143",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-191",
+    "entity_id": "ent-027",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-191",
+    "entity_id": "ent-041",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-191",
+    "entity_id": "ent-091",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-192",
+    "entity_id": "ent-088",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-192",
+    "entity_id": "ent-194",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-192",
+    "entity_id": "ent-156",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-193",
+    "entity_id": "ent-036",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-193",
+    "entity_id": "ent-088",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-194",
+    "entity_id": "ent-005",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-194",
+    "entity_id": "ent-105",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-194",
+    "entity_id": "ent-059",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-194",
+    "entity_id": "ent-092",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-195",
+    "entity_id": "ent-032",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-195",
+    "entity_id": "ent-189",
+    "relation_type": "hardware"
+  },
+  {
+    "event_id": "evt-195",
+    "entity_id": "ent-157",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-196",
+    "entity_id": "ent-083",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-196",
+    "entity_id": "ent-059",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-196",
+    "entity_id": "ent-171",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-197",
+    "entity_id": "ent-002",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-197",
+    "entity_id": "ent-061",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-197",
+    "entity_id": "ent-130",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-197",
+    "entity_id": "ent-146",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-198",
+    "entity_id": "ent-071",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-198",
+    "entity_id": "ent-155",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-198",
+    "entity_id": "ent-169",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-199",
+    "entity_id": "ent-030",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-199",
+    "entity_id": "ent-090",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-200",
+    "entity_id": "ent-025",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-200",
+    "entity_id": "ent-023",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-200",
+    "entity_id": "ent-167",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-200",
+    "entity_id": "ent-146",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-201",
+    "entity_id": "ent-002",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-201",
+    "entity_id": "ent-117",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-201",
+    "entity_id": "ent-058",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-201",
+    "entity_id": "ent-098",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-202",
+    "entity_id": "ent-088",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-202",
+    "entity_id": "ent-173",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-202",
+    "entity_id": "ent-178",
+    "relation_type": "software"
+  },
+  {
+    "event_id": "evt-203",
+    "entity_id": "ent-081",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-203",
+    "entity_id": "ent-093",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-203",
+    "entity_id": "ent-063",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-204",
+    "entity_id": "ent-033",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-204",
+    "entity_id": "ent-068",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-204",
+    "entity_id": "ent-126",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-205",
+    "entity_id": "ent-090",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-205",
+    "entity_id": "ent-109",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-205",
+    "entity_id": "ent-048",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-205",
+    "entity_id": "ent-131",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-206",
+    "entity_id": "ent-026",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-206",
+    "entity_id": "ent-039",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-206",
+    "entity_id": "ent-163",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-206",
+    "entity_id": "ent-144",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-207",
+    "entity_id": "ent-080",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-207",
+    "entity_id": "ent-077",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-207",
+    "entity_id": "ent-046",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-208",
+    "entity_id": "ent-014",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-208",
+    "entity_id": "ent-020",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-208",
+    "entity_id": "ent-161",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-208",
+    "entity_id": "ent-155",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-209",
+    "entity_id": "ent-097",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-209",
+    "entity_id": "ent-077",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-209",
+    "entity_id": "ent-058",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-210",
+    "entity_id": "ent-003",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-210",
+    "entity_id": "ent-066",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-210",
+    "entity_id": "ent-132",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-210",
+    "entity_id": "ent-141",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-211",
+    "entity_id": "ent-092",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-211",
+    "entity_id": "ent-117",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-211",
+    "entity_id": "ent-126",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-211",
+    "entity_id": "ent-035",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-212",
+    "entity_id": "ent-005",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-212",
+    "entity_id": "ent-028",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-212",
+    "entity_id": "ent-152",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-213",
+    "entity_id": "ent-077",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-213",
+    "entity_id": "ent-112",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-213",
+    "entity_id": "ent-168",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-214",
+    "entity_id": "ent-031",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-214",
+    "entity_id": "ent-106",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-214",
+    "entity_id": "ent-088",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-215",
+    "entity_id": "ent-090",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-215",
+    "entity_id": "ent-191",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-215",
+    "entity_id": "ent-141",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-216",
+    "entity_id": "ent-030",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-216",
+    "entity_id": "ent-069",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-216",
+    "entity_id": "ent-092",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-216",
+    "entity_id": "ent-193",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-217",
+    "entity_id": "ent-100",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-217",
+    "entity_id": "ent-088",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-217",
+    "entity_id": "ent-141",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-218",
+    "entity_id": "ent-030",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-218",
+    "entity_id": "ent-083",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-219",
+    "entity_id": "ent-023",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-219",
+    "entity_id": "ent-044",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-219",
+    "entity_id": "ent-121",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-219",
+    "entity_id": "ent-152",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-220",
+    "entity_id": "ent-028",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-220",
+    "entity_id": "ent-091",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-221",
+    "entity_id": "ent-009",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-221",
+    "entity_id": "ent-045",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-221",
+    "entity_id": "ent-159",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-222",
+    "entity_id": "ent-090",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-222",
+    "entity_id": "ent-121",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-223",
+    "entity_id": "ent-034",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-223",
+    "entity_id": "ent-057",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-223",
+    "entity_id": "ent-079",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-224",
+    "entity_id": "ent-077",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-224",
+    "entity_id": "ent-137",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-225",
+    "entity_id": "ent-024",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-225",
+    "entity_id": "ent-186",
+    "relation_type": "equipment"
+  },
+  {
+    "event_id": "evt-225",
+    "entity_id": "ent-144",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-226",
+    "entity_id": "ent-015",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-226",
+    "entity_id": "ent-111",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-226",
+    "entity_id": "ent-041",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-226",
+    "entity_id": "ent-076",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-227",
+    "entity_id": "ent-098",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-227",
+    "entity_id": "ent-045",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-227",
+    "entity_id": "ent-174",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-228",
+    "entity_id": "ent-021",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-228",
+    "entity_id": "ent-179",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-228",
+    "entity_id": "ent-168",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-229",
+    "entity_id": "ent-086",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-229",
+    "entity_id": "ent-079",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-230",
+    "entity_id": "ent-027",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-230",
+    "entity_id": "ent-111",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-230",
+    "entity_id": "ent-088",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-231",
+    "entity_id": "ent-085",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-231",
+    "entity_id": "ent-071",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-232",
+    "entity_id": "ent-077",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-232",
+    "entity_id": "ent-044",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-232",
+    "entity_id": "ent-175",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-233",
+    "entity_id": "ent-100",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-233",
+    "entity_id": "ent-080",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-233",
+    "entity_id": "ent-049",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-234",
+    "entity_id": "ent-028",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-234",
+    "entity_id": "ent-059",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-234",
+    "entity_id": "ent-096",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-234",
+    "entity_id": "ent-192",
+    "relation_type": "reference"
+  },
+  {
+    "event_id": "evt-235",
+    "entity_id": "ent-100",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-235",
+    "entity_id": "ent-193",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-235",
+    "entity_id": "ent-150",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-236",
+    "entity_id": "ent-091",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-236",
+    "entity_id": "ent-052",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-236",
+    "entity_id": "ent-174",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-237",
+    "entity_id": "ent-027",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-237",
+    "entity_id": "ent-056",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-237",
+    "entity_id": "ent-074",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-238",
+    "entity_id": "ent-098",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-238",
+    "entity_id": "ent-194",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-238",
+    "entity_id": "ent-153",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-239",
+    "entity_id": "ent-097",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-239",
+    "entity_id": "ent-099",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-239",
+    "entity_id": "ent-058",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-240",
+    "entity_id": "ent-029",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-240",
+    "entity_id": "ent-081",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-241",
+    "entity_id": "ent-071",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-241",
+    "entity_id": "ent-074",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-241",
+    "entity_id": "ent-143",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-242",
+    "entity_id": "ent-013",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-242",
+    "entity_id": "ent-042",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-242",
+    "entity_id": "ent-097",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-243",
+    "entity_id": "ent-085",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-243",
+    "entity_id": "ent-081",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-244",
+    "entity_id": "ent-038",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-244",
+    "entity_id": "ent-012",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-244",
+    "entity_id": "ent-167",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-244",
+    "entity_id": "ent-148",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-245",
+    "entity_id": "ent-077",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-245",
+    "entity_id": "ent-092",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-245",
+    "entity_id": "ent-051",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-246",
+    "entity_id": "ent-037",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-246",
+    "entity_id": "ent-106",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-246",
+    "entity_id": "ent-044",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-246",
+    "entity_id": "ent-076",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-247",
+    "entity_id": "ent-074",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-247",
+    "entity_id": "ent-107",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-247",
+    "entity_id": "ent-057",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-248",
+    "entity_id": "ent-034",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-248",
+    "entity_id": "ent-081",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-249",
+    "entity_id": "ent-083",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-249",
+    "entity_id": "ent-113",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-249",
+    "entity_id": "ent-041",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-249",
+    "entity_id": "ent-127",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-250",
+    "entity_id": "ent-026",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-250",
+    "entity_id": "ent-077",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-251",
+    "entity_id": "ent-036",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-251",
+    "entity_id": "ent-060",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-251",
+    "entity_id": "ent-141",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-252",
+    "entity_id": "ent-007",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-252",
+    "entity_id": "ent-064",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-252",
+    "entity_id": "ent-090",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-253",
+    "entity_id": "ent-099",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-253",
+    "entity_id": "ent-052",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-254",
+    "entity_id": "ent-077",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-254",
+    "entity_id": "ent-055",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-255",
+    "entity_id": "ent-011",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-255",
+    "entity_id": "ent-057",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-255",
+    "entity_id": "ent-128",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-256",
+    "entity_id": "ent-021",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-256",
+    "entity_id": "ent-181",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-256",
+    "entity_id": "ent-169",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-257",
+    "entity_id": "ent-076",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-257",
+    "entity_id": "ent-171",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-257",
+    "entity_id": "ent-178",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-258",
+    "entity_id": "ent-038",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-258",
+    "entity_id": "ent-095",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-259",
+    "entity_id": "ent-008",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-259",
+    "entity_id": "ent-063",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-259",
+    "entity_id": "ent-134",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-259",
+    "entity_id": "ent-149",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-260",
+    "entity_id": "ent-076",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-260",
+    "entity_id": "ent-115",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-260",
+    "entity_id": "ent-061",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-261",
+    "entity_id": "ent-078",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-261",
+    "entity_id": "ent-058",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-262",
+    "entity_id": "ent-071",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-262",
+    "entity_id": "ent-108",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-262",
+    "entity_id": "ent-047",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-263",
+    "entity_id": "ent-084",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-263",
+    "entity_id": "ent-192",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-263",
+    "entity_id": "ent-148",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-264",
+    "entity_id": "ent-098",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-264",
+    "entity_id": "ent-132",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-265",
+    "entity_id": "ent-005",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-265",
+    "entity_id": "ent-103",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-265",
+    "entity_id": "ent-067",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-265",
+    "entity_id": "ent-082",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-266",
+    "entity_id": "ent-072",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-266",
+    "entity_id": "ent-194",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-266",
+    "entity_id": "ent-160",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-267",
+    "entity_id": "ent-015",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-267",
+    "entity_id": "ent-108",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-267",
+    "entity_id": "ent-048",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-267",
+    "entity_id": "ent-079",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-268",
+    "entity_id": "ent-005",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-268",
+    "entity_id": "ent-046",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-268",
+    "entity_id": "ent-075",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-268",
+    "entity_id": "ent-193",
+    "relation_type": "reference"
+  },
+  {
+    "event_id": "evt-269",
+    "entity_id": "ent-019",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-269",
+    "entity_id": "ent-188",
+    "relation_type": "equipment"
+  },
+  {
+    "event_id": "evt-269",
+    "entity_id": "ent-148",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-270",
+    "entity_id": "ent-030",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-270",
+    "entity_id": "ent-184",
+    "relation_type": "software"
+  },
+  {
+    "event_id": "evt-270",
+    "entity_id": "ent-164",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-271",
+    "entity_id": "ent-014",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-271",
+    "entity_id": "ent-111",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-271",
+    "entity_id": "ent-089",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-272",
+    "entity_id": "ent-033",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-272",
+    "entity_id": "ent-097",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-273",
+    "entity_id": "ent-006",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-273",
+    "entity_id": "ent-105",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-273",
+    "entity_id": "ent-048",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-273",
+    "entity_id": "ent-093",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-274",
+    "entity_id": "ent-100",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-274",
+    "entity_id": "ent-143",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-274",
+    "entity_id": "ent-173",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-275",
+    "entity_id": "ent-029",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-275",
+    "entity_id": "ent-044",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-275",
+    "entity_id": "ent-137",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-275",
+    "entity_id": "ent-157",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-276",
+    "entity_id": "ent-026",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-276",
+    "entity_id": "ent-176",
+    "relation_type": "language"
+  },
+  {
+    "event_id": "evt-276",
+    "entity_id": "ent-169",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-277",
+    "entity_id": "ent-028",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-277",
+    "entity_id": "ent-044",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-277",
+    "entity_id": "ent-097",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-277",
+    "entity_id": "ent-191",
+    "relation_type": "reference"
+  },
+  {
+    "event_id": "evt-278",
+    "entity_id": "ent-005",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-278",
+    "entity_id": "ent-021",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-278",
+    "entity_id": "ent-146",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-279",
+    "entity_id": "ent-005",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-279",
+    "entity_id": "ent-069",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-279",
+    "entity_id": "ent-078",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-280",
+    "entity_id": "ent-082",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-280",
+    "entity_id": "ent-101",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-280",
+    "entity_id": "ent-182",
+    "relation_type": "language"
+  },
+  {
+    "event_id": "evt-281",
+    "entity_id": "ent-088",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-281",
+    "entity_id": "ent-101",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-281",
+    "entity_id": "ent-183",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-282",
+    "entity_id": "ent-022",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-282",
+    "entity_id": "ent-051",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-282",
+    "entity_id": "ent-127",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-282",
+    "entity_id": "ent-151",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-283",
+    "entity_id": "ent-098",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-283",
+    "entity_id": "ent-104",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-283",
+    "entity_id": "ent-134",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-283",
+    "entity_id": "ent-013",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-284",
+    "entity_id": "ent-037",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-284",
+    "entity_id": "ent-098",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-285",
+    "entity_id": "ent-080",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-285",
+    "entity_id": "ent-120",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-285",
+    "entity_id": "ent-044",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-286",
+    "entity_id": "ent-013",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-286",
+    "entity_id": "ent-184",
+    "relation_type": "language"
+  },
+  {
+    "event_id": "evt-286",
+    "entity_id": "ent-167",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-287",
+    "entity_id": "ent-029",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-287",
+    "entity_id": "ent-103",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-287",
+    "entity_id": "ent-095",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-288",
+    "entity_id": "ent-009",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-288",
+    "entity_id": "ent-051",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-288",
+    "entity_id": "ent-087",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-289",
+    "entity_id": "ent-007",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-289",
+    "entity_id": "ent-179",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-289",
+    "entity_id": "ent-169",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-290",
+    "entity_id": "ent-090",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-290",
+    "entity_id": "ent-109",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-290",
+    "entity_id": "ent-178",
+    "relation_type": "language"
+  },
+  {
+    "event_id": "evt-291",
+    "entity_id": "ent-079",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-291",
+    "entity_id": "ent-070",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-292",
+    "entity_id": "ent-025",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-292",
+    "entity_id": "ent-059",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-292",
+    "entity_id": "ent-085",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-292",
+    "entity_id": "ent-194",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-293",
+    "entity_id": "ent-017",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-293",
+    "entity_id": "ent-007",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-293",
+    "entity_id": "ent-156",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-294",
+    "entity_id": "ent-090",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-294",
+    "entity_id": "ent-193",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-294",
+    "entity_id": "ent-146",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-295",
+    "entity_id": "ent-006",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-295",
+    "entity_id": "ent-106",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-295",
+    "entity_id": "ent-061",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-295",
+    "entity_id": "ent-079",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-296",
+    "entity_id": "ent-079",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-296",
+    "entity_id": "ent-083",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-297",
+    "entity_id": "ent-098",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-297",
+    "entity_id": "ent-063",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-298",
+    "entity_id": "ent-081",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-298",
+    "entity_id": "ent-191",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-298",
+    "entity_id": "ent-144",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-299",
+    "entity_id": "ent-007",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-299",
+    "entity_id": "ent-113",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-299",
+    "entity_id": "ent-065",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-299",
+    "entity_id": "ent-075",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-300",
+    "entity_id": "ent-071",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-300",
+    "entity_id": "ent-105",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-300",
+    "entity_id": "ent-122",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-300",
+    "entity_id": "ent-039",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-301",
+    "entity_id": "ent-089",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-301",
+    "entity_id": "ent-191",
+    "relation_type": "reference"
+  },
+  {
+    "event_id": "evt-301",
+    "entity_id": "ent-157",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-302",
+    "entity_id": "ent-078",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-302",
+    "entity_id": "ent-173",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-302",
+    "entity_id": "ent-178",
+    "relation_type": "software"
+  },
+  {
+    "event_id": "evt-303",
+    "entity_id": "ent-026",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-303",
+    "entity_id": "ent-120",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-303",
+    "entity_id": "ent-051",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-303",
+    "entity_id": "ent-091",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-304",
+    "entity_id": "ent-077",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-304",
+    "entity_id": "ent-044",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-304",
+    "entity_id": "ent-166",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-305",
+    "entity_id": "ent-094",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-305",
+    "entity_id": "ent-093",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-306",
+    "entity_id": "ent-038",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-306",
+    "entity_id": "ent-030",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-306",
+    "entity_id": "ent-161",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-306",
+    "entity_id": "ent-160",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-307",
+    "entity_id": "ent-074",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-307",
+    "entity_id": "ent-067",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-307",
+    "entity_id": "ent-168",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-308",
+    "entity_id": "ent-093",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-308",
+    "entity_id": "ent-104",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-308",
+    "entity_id": "ent-057",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-308",
+    "entity_id": "ent-134",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-309",
+    "entity_id": "ent-074",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-309",
+    "entity_id": "ent-153",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-309",
+    "entity_id": "ent-169",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-310",
+    "entity_id": "ent-099",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-310",
+    "entity_id": "ent-108",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-310",
+    "entity_id": "ent-065",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-310",
+    "entity_id": "ent-138",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-311",
+    "entity_id": "ent-071",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-311",
+    "entity_id": "ent-149",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-311",
+    "entity_id": "ent-172",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-312",
+    "entity_id": "ent-081",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-312",
+    "entity_id": "ent-108",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-312",
+    "entity_id": "ent-061",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-312",
+    "entity_id": "ent-124",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-313",
+    "entity_id": "ent-085",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-313",
+    "entity_id": "ent-191",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-313",
+    "entity_id": "ent-142",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-314",
+    "entity_id": "ent-016",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-314",
+    "entity_id": "ent-093",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-315",
+    "entity_id": "ent-087",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-315",
+    "entity_id": "ent-193",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-315",
+    "entity_id": "ent-159",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-316",
+    "entity_id": "ent-093",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-316",
+    "entity_id": "ent-100",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-316",
+    "entity_id": "ent-142",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-317",
+    "entity_id": "ent-023",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-317",
+    "entity_id": "ent-112",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-317",
+    "entity_id": "ent-049",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-317",
+    "entity_id": "ent-071",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-318",
+    "entity_id": "ent-077",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-318",
+    "entity_id": "ent-097",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-318",
+    "entity_id": "ent-045",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-319",
+    "entity_id": "ent-080",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-319",
+    "entity_id": "ent-113",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-319",
+    "entity_id": "ent-070",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-320",
+    "entity_id": "ent-092",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-320",
+    "entity_id": "ent-042",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-320",
+    "entity_id": "ent-168",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-321",
+    "entity_id": "ent-028",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-321",
+    "entity_id": "ent-079",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-322",
+    "entity_id": "ent-005",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-322",
+    "entity_id": "ent-055",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-322",
+    "entity_id": "ent-095",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-322",
+    "entity_id": "ent-195",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-323",
+    "entity_id": "ent-076",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-323",
+    "entity_id": "ent-082",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-324",
+    "entity_id": "ent-093",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-324",
+    "entity_id": "ent-116",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-324",
+    "entity_id": "ent-051",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-325",
+    "entity_id": "ent-038",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-325",
+    "entity_id": "ent-119",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-325",
+    "entity_id": "ent-062",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-325",
+    "entity_id": "ent-082",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-326",
+    "entity_id": "ent-011",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-326",
+    "entity_id": "ent-020",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-326",
+    "entity_id": "ent-175",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-326",
+    "entity_id": "ent-152",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-327",
+    "entity_id": "ent-088",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-327",
+    "entity_id": "ent-118",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-327",
+    "entity_id": "ent-067",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-327",
+    "entity_id": "ent-137",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-328",
+    "entity_id": "ent-071",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-328",
+    "entity_id": "ent-122",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-329",
+    "entity_id": "ent-072",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-329",
+    "entity_id": "ent-168",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-329",
+    "entity_id": "ent-182",
+    "relation_type": "software"
+  },
+  {
+    "event_id": "evt-330",
+    "entity_id": "ent-020",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-330",
+    "entity_id": "ent-178",
+    "relation_type": "software"
+  },
+  {
+    "event_id": "evt-330",
+    "entity_id": "ent-174",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-331",
+    "entity_id": "ent-079",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-331",
+    "entity_id": "ent-155",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-331",
+    "entity_id": "ent-172",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-332",
+    "entity_id": "ent-077",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-332",
+    "entity_id": "ent-090",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-332",
+    "entity_id": "ent-052",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-333",
+    "entity_id": "ent-027",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-333",
+    "entity_id": "ent-114",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-333",
+    "entity_id": "ent-042",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-333",
+    "entity_id": "ent-100",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-334",
+    "entity_id": "ent-018",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-334",
+    "entity_id": "ent-065",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-334",
+    "entity_id": "ent-122",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-335",
+    "entity_id": "ent-029",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-335",
+    "entity_id": "ent-118",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-335",
+    "entity_id": "ent-044",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-335",
+    "entity_id": "ent-083",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-336",
+    "entity_id": "ent-085",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-336",
+    "entity_id": "ent-104",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-336",
+    "entity_id": "ent-059",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-337",
+    "entity_id": "ent-021",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-337",
+    "entity_id": "ent-069",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-337",
+    "entity_id": "ent-143",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-338",
+    "entity_id": "ent-032",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-338",
+    "entity_id": "ent-111",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-338",
+    "entity_id": "ent-079",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-339",
+    "entity_id": "ent-011",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-339",
+    "entity_id": "ent-114",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-339",
+    "entity_id": "ent-065",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-339",
+    "entity_id": "ent-079",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-340",
+    "entity_id": "ent-037",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-340",
+    "entity_id": "ent-044",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-340",
+    "entity_id": "ent-098",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-340",
+    "entity_id": "ent-191",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-341",
+    "entity_id": "ent-011",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-341",
+    "entity_id": "ent-176",
+    "relation_type": "software"
+  },
+  {
+    "event_id": "evt-341",
+    "entity_id": "ent-174",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-342",
+    "entity_id": "ent-074",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-342",
+    "entity_id": "ent-167",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-342",
+    "entity_id": "ent-176",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-343",
+    "entity_id": "ent-077",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-343",
+    "entity_id": "ent-080",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-344",
+    "entity_id": "ent-091",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-344",
+    "entity_id": "ent-103",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-344",
+    "entity_id": "ent-064",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-345",
+    "entity_id": "ent-008",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-345",
+    "entity_id": "ent-053",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-345",
+    "entity_id": "ent-085",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-346",
+    "entity_id": "ent-083",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-346",
+    "entity_id": "ent-052",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-346",
+    "entity_id": "ent-168",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-347",
+    "entity_id": "ent-005",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-347",
+    "entity_id": "ent-186",
+    "relation_type": "equipment"
+  },
+  {
+    "event_id": "evt-347",
+    "entity_id": "ent-158",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-348",
+    "entity_id": "ent-034",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-348",
+    "entity_id": "ent-063",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-348",
+    "entity_id": "ent-145",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-349",
+    "entity_id": "ent-097",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-349",
+    "entity_id": "ent-136",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-350",
+    "entity_id": "ent-018",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-350",
+    "entity_id": "ent-178",
+    "relation_type": "software"
+  },
+  {
+    "event_id": "evt-350",
+    "entity_id": "ent-167",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-351",
+    "entity_id": "ent-100",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-351",
+    "entity_id": "ent-065",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-352",
+    "entity_id": "ent-093",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-352",
+    "entity_id": "ent-086",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-352",
+    "entity_id": "ent-053",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-353",
+    "entity_id": "ent-018",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-353",
+    "entity_id": "ent-057",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-353",
+    "entity_id": "ent-098",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-353",
+    "entity_id": "ent-194",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-354",
+    "entity_id": "ent-011",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-354",
+    "entity_id": "ent-052",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-354",
+    "entity_id": "ent-075",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-354",
+    "entity_id": "ent-194",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-355",
+    "entity_id": "ent-092",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-355",
+    "entity_id": "ent-064",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-355",
+    "entity_id": "ent-162",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-356",
+    "entity_id": "ent-002",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-356",
+    "entity_id": "ent-182",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-356",
+    "entity_id": "ent-161",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-357",
+    "entity_id": "ent-015",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-357",
+    "entity_id": "ent-066",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-357",
+    "entity_id": "ent-155",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-358",
+    "entity_id": "ent-006",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-358",
+    "entity_id": "ent-051",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-358",
+    "entity_id": "ent-138",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-358",
+    "entity_id": "ent-159",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-359",
+    "entity_id": "ent-086",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-359",
+    "entity_id": "ent-096",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-360",
+    "entity_id": "ent-024",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-360",
+    "entity_id": "ent-113",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-360",
+    "entity_id": "ent-093",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-361",
+    "entity_id": "ent-095",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-361",
+    "entity_id": "ent-099",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-361",
+    "entity_id": "ent-156",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-362",
+    "entity_id": "ent-040",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-362",
+    "entity_id": "ent-190",
+    "relation_type": "hardware"
+  },
+  {
+    "event_id": "evt-362",
+    "entity_id": "ent-159",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-363",
+    "entity_id": "ent-097",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-363",
+    "entity_id": "ent-114",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-363",
+    "entity_id": "ent-070",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-364",
+    "entity_id": "ent-096",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-364",
+    "entity_id": "ent-104",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-364",
+    "entity_id": "ent-043",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-364",
+    "entity_id": "ent-133",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-365",
+    "entity_id": "ent-033",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-365",
+    "entity_id": "ent-189",
+    "relation_type": "hardware"
+  },
+  {
+    "event_id": "evt-365",
+    "entity_id": "ent-141",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-366",
+    "entity_id": "ent-100",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-366",
+    "entity_id": "ent-074",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-366",
+    "entity_id": "ent-159",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-367",
+    "entity_id": "ent-010",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-367",
+    "entity_id": "ent-016",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-367",
+    "entity_id": "ent-153",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-368",
+    "entity_id": "ent-074",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-368",
+    "entity_id": "ent-075",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-369",
+    "entity_id": "ent-003",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-369",
+    "entity_id": "ent-063",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-369",
+    "entity_id": "ent-138",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-369",
+    "entity_id": "ent-145",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-370",
+    "entity_id": "ent-016",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-370",
+    "entity_id": "ent-021",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-370",
+    "entity_id": "ent-150",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-371",
+    "entity_id": "ent-099",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-371",
+    "entity_id": "ent-195",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-371",
+    "entity_id": "ent-158",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-372",
+    "entity_id": "ent-007",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-372",
+    "entity_id": "ent-178",
+    "relation_type": "language"
+  },
+  {
+    "event_id": "evt-372",
+    "entity_id": "ent-162",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-373",
+    "entity_id": "ent-079",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-373",
+    "entity_id": "ent-066",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-374",
+    "entity_id": "ent-100",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-374",
+    "entity_id": "ent-105",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-374",
+    "entity_id": "ent-166",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-375",
+    "entity_id": "ent-006",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-375",
+    "entity_id": "ent-087",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-376",
+    "entity_id": "ent-029",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-376",
+    "entity_id": "ent-051",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-376",
+    "entity_id": "ent-143",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-377",
+    "entity_id": "ent-087",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-377",
+    "entity_id": "ent-160",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-377",
+    "entity_id": "ent-165",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-378",
+    "entity_id": "ent-031",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-378",
+    "entity_id": "ent-042",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-378",
+    "entity_id": "ent-141",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-379",
+    "entity_id": "ent-030",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-379",
+    "entity_id": "ent-004",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-379",
+    "entity_id": "ent-149",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-380",
+    "entity_id": "ent-092",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-380",
+    "entity_id": "ent-116",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-380",
+    "entity_id": "ent-065",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-381",
+    "entity_id": "ent-026",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-381",
+    "entity_id": "ent-104",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-381",
+    "entity_id": "ent-059",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-381",
+    "entity_id": "ent-078",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-382",
+    "entity_id": "ent-008",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-382",
+    "entity_id": "ent-072",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-383",
+    "entity_id": "ent-020",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-383",
+    "entity_id": "ent-081",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-384",
+    "entity_id": "ent-081",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-384",
+    "entity_id": "ent-074",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-385",
+    "entity_id": "ent-093",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-385",
+    "entity_id": "ent-067",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-385",
+    "entity_id": "ent-168",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-386",
+    "entity_id": "ent-092",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-386",
+    "entity_id": "ent-153",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-386",
+    "entity_id": "ent-166",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-387",
+    "entity_id": "ent-084",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-387",
+    "entity_id": "ent-090",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-388",
+    "entity_id": "ent-002",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-388",
+    "entity_id": "ent-176",
+    "relation_type": "language"
+  },
+  {
+    "event_id": "evt-388",
+    "entity_id": "ent-167",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-389",
+    "entity_id": "ent-023",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-389",
+    "entity_id": "ent-038",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-389",
+    "entity_id": "ent-142",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-390",
+    "entity_id": "ent-040",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-390",
+    "entity_id": "ent-061",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-390",
+    "entity_id": "ent-140",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-391",
+    "entity_id": "ent-029",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-391",
+    "entity_id": "ent-119",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-391",
+    "entity_id": "ent-076",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-392",
+    "entity_id": "ent-099",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-392",
+    "entity_id": "ent-125",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-393",
+    "entity_id": "ent-018",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-393",
+    "entity_id": "ent-051",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-393",
+    "entity_id": "ent-096",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-393",
+    "entity_id": "ent-191",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-394",
+    "entity_id": "ent-099",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-394",
+    "entity_id": "ent-116",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-394",
+    "entity_id": "ent-054",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-395",
+    "entity_id": "ent-012",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-395",
+    "entity_id": "ent-115",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-395",
+    "entity_id": "ent-098",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-396",
+    "entity_id": "ent-011",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-396",
+    "entity_id": "ent-188",
+    "relation_type": "device"
+  },
+  {
+    "event_id": "evt-396",
+    "entity_id": "ent-146",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-397",
+    "entity_id": "ent-025",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-397",
+    "entity_id": "ent-106",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-397",
+    "entity_id": "ent-061",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-397",
+    "entity_id": "ent-092",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-398",
+    "entity_id": "ent-088",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-398",
+    "entity_id": "ent-096",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-399",
+    "entity_id": "ent-081",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-399",
+    "entity_id": "ent-106",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-399",
+    "entity_id": "ent-136",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-399",
+    "entity_id": "ent-018",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-400",
+    "entity_id": "ent-028",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-400",
+    "entity_id": "ent-054",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-400",
+    "entity_id": "ent-130",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-400",
+    "entity_id": "ent-141",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-401",
+    "entity_id": "ent-038",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-401",
+    "entity_id": "ent-066",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-401",
+    "entity_id": "ent-129",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-402",
+    "entity_id": "ent-098",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-402",
+    "entity_id": "ent-119",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-402",
+    "entity_id": "ent-175",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-403",
+    "entity_id": "ent-031",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-403",
+    "entity_id": "ent-005",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-403",
+    "entity_id": "ent-156",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-404",
+    "entity_id": "ent-003",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-404",
+    "entity_id": "ent-048",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-404",
+    "entity_id": "ent-081",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-404",
+    "entity_id": "ent-194",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-405",
+    "entity_id": "ent-082",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-405",
+    "entity_id": "ent-117",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-405",
+    "entity_id": "ent-136",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-405",
+    "entity_id": "ent-037",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-406",
+    "entity_id": "ent-008",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-406",
+    "entity_id": "ent-054",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-406",
+    "entity_id": "ent-100",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-406",
+    "entity_id": "ent-194",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-407",
+    "entity_id": "ent-100",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-407",
+    "entity_id": "ent-061",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-408",
+    "entity_id": "ent-025",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-408",
+    "entity_id": "ent-065",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-408",
+    "entity_id": "ent-124",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-409",
+    "entity_id": "ent-082",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-409",
+    "entity_id": "ent-114",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-409",
+    "entity_id": "ent-130",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-409",
+    "entity_id": "ent-026",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-410",
+    "entity_id": "ent-019",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-410",
+    "entity_id": "ent-066",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-410",
+    "entity_id": "ent-071",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-411",
+    "entity_id": "ent-033",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-411",
+    "entity_id": "ent-053",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-411",
+    "entity_id": "ent-136",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-411",
+    "entity_id": "ent-147",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-412",
+    "entity_id": "ent-096",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-412",
+    "entity_id": "ent-099",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-412",
+    "entity_id": "ent-150",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-413",
+    "entity_id": "ent-023",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-413",
+    "entity_id": "ent-062",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-413",
+    "entity_id": "ent-099",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-413",
+    "entity_id": "ent-193",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-414",
+    "entity_id": "ent-039",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-414",
+    "entity_id": "ent-106",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-414",
+    "entity_id": "ent-041",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-414",
+    "entity_id": "ent-077",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-415",
+    "entity_id": "ent-032",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-415",
+    "entity_id": "ent-103",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-415",
+    "entity_id": "ent-048",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-415",
+    "entity_id": "ent-083",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-416",
+    "entity_id": "ent-004",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-416",
+    "entity_id": "ent-061",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-416",
+    "entity_id": "ent-073",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-416",
+    "entity_id": "ent-192",
+    "relation_type": "reference"
+  },
+  {
+    "event_id": "evt-417",
+    "entity_id": "ent-086",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-417",
+    "entity_id": "ent-056",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-418",
+    "entity_id": "ent-080",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-418",
+    "entity_id": "ent-164",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-418",
+    "entity_id": "ent-183",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-419",
+    "entity_id": "ent-028",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-419",
+    "entity_id": "ent-118",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-419",
+    "entity_id": "ent-063",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-419",
+    "entity_id": "ent-077",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-420",
+    "entity_id": "ent-023",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-420",
+    "entity_id": "ent-041",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-420",
+    "entity_id": "ent-073",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-420",
+    "entity_id": "ent-195",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-421",
+    "entity_id": "ent-036",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-421",
+    "entity_id": "ent-186",
+    "relation_type": "device"
+  },
+  {
+    "event_id": "evt-421",
+    "entity_id": "ent-149",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-422",
+    "entity_id": "ent-098",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-422",
+    "entity_id": "ent-147",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-422",
+    "entity_id": "ent-162",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-423",
+    "entity_id": "ent-006",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-423",
+    "entity_id": "ent-088",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-424",
+    "entity_id": "ent-006",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-424",
+    "entity_id": "ent-042",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-424",
+    "entity_id": "ent-094",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-425",
+    "entity_id": "ent-027",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-425",
+    "entity_id": "ent-109",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-425",
+    "entity_id": "ent-051",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-425",
+    "entity_id": "ent-087",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-426",
+    "entity_id": "ent-089",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-426",
+    "entity_id": "ent-120",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-426",
+    "entity_id": "ent-059",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-426",
+    "entity_id": "ent-134",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-427",
+    "entity_id": "ent-038",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-427",
+    "entity_id": "ent-106",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-427",
+    "entity_id": "ent-069",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-427",
+    "entity_id": "ent-075",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-428",
+    "entity_id": "ent-100",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-428",
+    "entity_id": "ent-113",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-428",
+    "entity_id": "ent-169",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-429",
+    "entity_id": "ent-095",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-429",
+    "entity_id": "ent-057",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-430",
+    "entity_id": "ent-078",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-430",
+    "entity_id": "ent-048",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-431",
+    "entity_id": "ent-087",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-431",
+    "entity_id": "ent-098",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-431",
+    "entity_id": "ent-148",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-432",
+    "entity_id": "ent-024",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-432",
+    "entity_id": "ent-064",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-432",
+    "entity_id": "ent-154",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-433",
+    "entity_id": "ent-004",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-433",
+    "entity_id": "ent-106",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-433",
+    "entity_id": "ent-081",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-434",
+    "entity_id": "ent-019",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-434",
+    "entity_id": "ent-047",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-434",
+    "entity_id": "ent-155",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-435",
+    "entity_id": "ent-028",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-435",
+    "entity_id": "ent-047",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-435",
+    "entity_id": "ent-157",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-436",
+    "entity_id": "ent-009",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-436",
+    "entity_id": "ent-078",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-437",
+    "entity_id": "ent-098",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-437",
+    "entity_id": "ent-097",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-437",
+    "entity_id": "ent-063",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-438",
+    "entity_id": "ent-026",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-438",
+    "entity_id": "ent-030",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-438",
+    "entity_id": "ent-149",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-439",
+    "entity_id": "ent-010",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-439",
+    "entity_id": "ent-060",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-439",
+    "entity_id": "ent-149",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-440",
+    "entity_id": "ent-017",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-440",
+    "entity_id": "ent-186",
+    "relation_type": "device"
+  },
+  {
+    "event_id": "evt-440",
+    "entity_id": "ent-155",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-441",
+    "entity_id": "ent-084",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-441",
+    "entity_id": "ent-088",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-442",
+    "entity_id": "ent-034",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-442",
+    "entity_id": "ent-103",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-442",
+    "entity_id": "ent-058",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-442",
+    "entity_id": "ent-082",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-443",
+    "entity_id": "ent-039",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-443",
+    "entity_id": "ent-027",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-443",
+    "entity_id": "ent-151",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-444",
+    "entity_id": "ent-094",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-444",
+    "entity_id": "ent-065",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-444",
+    "entity_id": "ent-174",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-445",
+    "entity_id": "ent-072",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-445",
+    "entity_id": "ent-088",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-445",
+    "entity_id": "ent-155",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-446",
+    "entity_id": "ent-083",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-446",
+    "entity_id": "ent-195",
+    "relation_type": "specification"
+  },
+  {
+    "event_id": "evt-446",
+    "entity_id": "ent-156",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-447",
+    "entity_id": "ent-029",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-447",
+    "entity_id": "ent-107",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-447",
+    "entity_id": "ent-043",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-447",
+    "entity_id": "ent-080",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-448",
+    "entity_id": "ent-008",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-448",
+    "entity_id": "ent-094",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-449",
+    "entity_id": "ent-035",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-449",
+    "entity_id": "ent-013",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-449",
+    "entity_id": "ent-175",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-449",
+    "entity_id": "ent-151",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-450",
+    "entity_id": "ent-020",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-450",
+    "entity_id": "ent-116",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-450",
+    "entity_id": "ent-070",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-450",
+    "entity_id": "ent-077",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-451",
+    "entity_id": "ent-031",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-451",
+    "entity_id": "ent-120",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-451",
+    "entity_id": "ent-068",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-451",
+    "entity_id": "ent-091",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-452",
+    "entity_id": "ent-077",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-452",
+    "entity_id": "ent-065",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-452",
+    "entity_id": "ent-167",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-453",
+    "entity_id": "ent-090",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-453",
+    "entity_id": "ent-101",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-453",
+    "entity_id": "ent-060",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-453",
+    "entity_id": "ent-136",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-454",
+    "entity_id": "ent-092",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-454",
+    "entity_id": "ent-152",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-454",
+    "entity_id": "ent-170",
+    "relation_type": "tool"
+  },
+  {
+    "event_id": "evt-455",
+    "entity_id": "ent-082",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-455",
+    "entity_id": "ent-120",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-455",
+    "entity_id": "ent-066",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-455",
+    "entity_id": "ent-135",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-456",
+    "entity_id": "ent-094",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-456",
+    "entity_id": "ent-091",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-456",
+    "entity_id": "ent-144",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-457",
+    "entity_id": "ent-084",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-457",
+    "entity_id": "ent-097",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-457",
+    "entity_id": "ent-043",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-458",
+    "entity_id": "ent-035",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-458",
+    "entity_id": "ent-108",
+    "relation_type": "occurrence_time"
+  },
+  {
+    "event_id": "evt-458",
+    "entity_id": "ent-059",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-458",
+    "entity_id": "ent-089",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-459",
+    "entity_id": "ent-040",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-459",
+    "entity_id": "ent-189",
+    "relation_type": "hardware"
+  },
+  {
+    "event_id": "evt-459",
+    "entity_id": "ent-160",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-460",
+    "entity_id": "ent-030",
+    "relation_type": "author"
+  },
+  {
+    "event_id": "evt-460",
+    "entity_id": "ent-083",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-461",
+    "entity_id": "ent-089",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-461",
+    "entity_id": "ent-117",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-461",
+    "entity_id": "ent-043",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-462",
+    "entity_id": "ent-038",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-462",
+    "entity_id": "ent-008",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-462",
+    "entity_id": "ent-154",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-463",
+    "entity_id": "ent-073",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-463",
+    "entity_id": "ent-114",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-463",
+    "entity_id": "ent-178",
+    "relation_type": "framework"
+  },
+  {
+    "event_id": "evt-464",
+    "entity_id": "ent-028",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-464",
+    "entity_id": "ent-065",
+    "relation_type": "headquarters"
+  },
+  {
+    "event_id": "evt-464",
+    "entity_id": "ent-078",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-464",
+    "entity_id": "ent-194",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-465",
+    "entity_id": "ent-084",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-465",
+    "entity_id": "ent-086",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-465",
+    "entity_id": "ent-061",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-466",
+    "entity_id": "ent-086",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-466",
+    "entity_id": "ent-071",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-466",
+    "entity_id": "ent-056",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-467",
+    "entity_id": "ent-073",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-467",
+    "entity_id": "ent-048",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-468",
+    "entity_id": "ent-021",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-468",
+    "entity_id": "ent-094",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-469",
+    "entity_id": "ent-095",
+    "relation_type": "acquirer"
+  },
+  {
+    "event_id": "evt-469",
+    "entity_id": "ent-128",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-470",
+    "entity_id": "ent-071",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-470",
+    "entity_id": "ent-080",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-471",
+    "entity_id": "ent-081",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-471",
+    "entity_id": "ent-052",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-471",
+    "entity_id": "ent-172",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-472",
+    "entity_id": "ent-099",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-472",
+    "entity_id": "ent-105",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-472",
+    "entity_id": "ent-130",
+    "relation_type": "category"
+  },
+  {
+    "event_id": "evt-472",
+    "entity_id": "ent-025",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-473",
+    "entity_id": "ent-003",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-473",
+    "entity_id": "ent-060",
+    "relation_type": "venue"
+  },
+  {
+    "event_id": "evt-473",
+    "entity_id": "ent-077",
+    "relation_type": "sponsor"
+  },
+  {
+    "event_id": "evt-473",
+    "entity_id": "ent-192",
+    "relation_type": "document"
+  },
+  {
+    "event_id": "evt-474",
+    "entity_id": "ent-092",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-474",
+    "entity_id": "ent-048",
+    "relation_type": "location"
+  },
+  {
+    "event_id": "evt-475",
+    "entity_id": "ent-019",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-475",
+    "entity_id": "ent-036",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-475",
+    "entity_id": "ent-156",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-476",
+    "entity_id": "ent-081",
+    "relation_type": "investor"
+  },
+  {
+    "event_id": "evt-476",
+    "entity_id": "ent-104",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-476",
+    "entity_id": "ent-163",
+    "relation_type": "platform"
+  },
+  {
+    "event_id": "evt-477",
+    "entity_id": "ent-017",
+    "relation_type": "subject"
+  },
+  {
+    "event_id": "evt-477",
+    "entity_id": "ent-061",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-477",
+    "entity_id": "ent-155",
+    "relation_type": "technology"
+  },
+  {
+    "event_id": "evt-478",
+    "entity_id": "ent-029",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-478",
+    "entity_id": "ent-049",
+    "relation_type": "target_location"
+  },
+  {
+    "event_id": "evt-478",
+    "entity_id": "ent-134",
+    "relation_type": "event_type"
+  },
+  {
+    "event_id": "evt-478",
+    "entity_id": "ent-149",
+    "relation_type": "topic"
+  },
+  {
+    "event_id": "evt-479",
+    "entity_id": "ent-095",
+    "relation_type": "host"
+  },
+  {
+    "event_id": "evt-479",
+    "entity_id": "ent-107",
+    "relation_type": "time"
+  },
+  {
+    "event_id": "evt-479",
+    "entity_id": "ent-173",
+    "relation_type": "product"
+  },
+  {
+    "event_id": "evt-480",
+    "entity_id": "ent-038",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-480",
+    "entity_id": "ent-103",
+    "relation_type": "period"
+  },
+  {
+    "event_id": "evt-480",
+    "entity_id": "ent-088",
+    "relation_type": "organization"
+  },
+  {
+    "event_id": "evt-481",
+    "entity_id": "ent-010",
+    "relation_type": "agent"
+  },
+  {
+    "event_id": "evt-481",
+    "entity_id": "ent-017",
+    "relation_type": "speaker"
+  },
+  {
+    "event_id": "evt-481",
+    "entity_id": "ent-154",
+    "relation_type": "concept"
+  },
+  {
+    "event_id": "evt-482",
+    "entity_id": "ent-005",
+    "relation_type": "participant"
+  },
+  {
+    "event_id": "evt-482",
+    "entity_id": "ent-117",
+    "relation_type": "period"
+  }
+]

@@ -1,0 +1,5058 @@
+[
+  {
+    "id": "evt-001",
+    "content": "张三在北京参加了腾讯的产品发布会。",
+    "entities": [
+      "ent-001",
+      "ent-041",
+      "ent-071"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-002",
+    "content": "张三于2023年在北京出席腾讯的年度大会。",
+    "entities": [
+      "ent-001",
+      "ent-104",
+      "ent-041",
+      "ent-071"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-003",
+    "content": "张三加入腾讯担任核心工程师。",
+    "entities": [
+      "ent-001",
+      "ent-071"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-004",
+    "content": "张三与李四联合发起大模型开源项目。",
+    "entities": [
+      "ent-001",
+      "ent-002",
+      "ent-142"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-005",
+    "content": "张三在2023年调任北京负责字节跳动业务。",
+    "entities": [
+      "ent-001",
+      "ent-104",
+      "ent-041",
+      "ent-073"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-006",
+    "content": "张三在北京的腾讯发表设计文档。",
+    "entities": [
+      "ent-001",
+      "ent-041",
+      "ent-071",
+      "ent-192"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-007",
+    "content": "张三与李四通过飞书协作完成大模型项目。",
+    "entities": [
+      "ent-001",
+      "ent-002",
+      "ent-163",
+      "ent-142"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-008",
+    "content": "张三使用SparkFox开发微信。",
+    "entities": [
+      "ent-001",
+      "ent-176",
+      "ent-161"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-009",
+    "content": "腾讯发布README文档规范向量数据库技术。",
+    "entities": [
+      "ent-071",
+      "ent-191",
+      "ent-146"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-010",
+    "content": "比亚迪于春季开源PostgreSQL项目。",
+    "entities": [
+      "ent-090",
+      "ent-107",
+      "ent-185"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-011",
+    "content": "周鸿祎在2021年参与理想汽车组织的技术峰会。",
+    "entities": [
+      "ent-033",
+      "ent-102",
+      "ent-088"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-012",
+    "content": "联想于七月开源Git项目。",
+    "entities": [
+      "ent-084",
+      "ent-118",
+      "ent-183"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-013",
+    "content": "百度在十月上市昆明证券交易所。",
+    "entities": [
+      "ent-074",
+      "ent-119",
+      "ent-065"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-014",
+    "content": "商汤科技与阿里巴巴联合投资模型评测初创公司。",
+    "entities": [
+      "ent-091",
+      "ent-072",
+      "ent-160"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-015",
+    "content": "杨光在海口参加了腾讯的产品发布会。",
+    "entities": [
+      "ent-014",
+      "ent-070",
+      "ent-071"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-016",
+    "content": "周八在苏州参加了华为的产品发布会。",
+    "entities": [
+      "ent-006",
+      "ent-050",
+      "ent-081"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-017",
+    "content": "李彦宏在福州参加生态大会并演讲知识图谱。",
+    "entities": [
+      "ent-027",
+      "ent-060",
+      "ent-140",
+      "ent-153"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-018",
+    "content": "王五在郑州的三六零发表API文档。",
+    "entities": [
+      "ent-003",
+      "ent-055",
+      "ent-099",
+      "ent-195"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-019",
+    "content": "阿里巴巴与哔哩哔哩联合投资倒数排名融合初创公司。",
+    "entities": [
+      "ent-072",
+      "ent-096",
+      "ent-155"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-020",
+    "content": "滴滴出行发布用户手册规范强化学习技术。",
+    "entities": [
+      "ent-078",
+      "ent-194",
+      "ent-152"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-021",
+    "content": "字节跳动在2024年于北京举办媒体沟通会。",
+    "entities": [
+      "ent-073",
+      "ent-105",
+      "ent-041",
+      "ent-134"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-022",
+    "content": "丁磊与马化腾通过淘宝协作完成检索增强生成项目。",
+    "entities": [
+      "ent-031",
+      "ent-029",
+      "ent-167",
+      "ent-145"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-023",
+    "content": "程维在广州的美团发表技术规范。",
+    "entities": [
+      "ent-032",
+      "ent-043",
+      "ent-075",
+      "ent-193"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-024",
+    "content": "赵六在七月参与哔哩哔哩组织的技术峰会。",
+    "entities": [
+      "ent-004",
+      "ent-118",
+      "ent-096"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-025",
+    "content": "华为在杭州发布微信新一代版本。",
+    "entities": [
+      "ent-081",
+      "ent-045",
+      "ent-161"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-026",
+    "content": "林明于一月在重庆出席小鹏汽车的年度大会。",
+    "entities": [
+      "ent-017",
+      "ent-116",
+      "ent-049",
+      "ent-089"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-027",
+    "content": "阿里巴巴发布用户手册规范Transformer架构技术。",
+    "entities": [
+      "ent-072",
+      "ent-194",
+      "ent-148"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-028",
+    "content": "华为在2023年升级百度搜索到新版本。",
+    "entities": [
+      "ent-081",
+      "ent-104",
+      "ent-175"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-029",
+    "content": "蔚来汽车与京东在青岛达成战略合作。",
+    "entities": [
+      "ent-087",
+      "ent-076",
+      "ent-054"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-030",
+    "content": "vivo在合肥发布知乎App新一代版本。",
+    "entities": [
+      "ent-083",
+      "ent-061",
+      "ent-172"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-031",
+    "content": "何小鹏使用服务器训练模型微调模型。",
+    "entities": [
+      "ent-040",
+      "ent-189",
+      "ent-151"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-032",
+    "content": "周鸿祎离开商汤科技创立新公司。",
+    "entities": [
+      "ent-033",
+      "ent-091"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-033",
+    "content": "黄敏在重庆主持新品发布会。",
+    "entities": [
+      "ent-016",
+      "ent-049",
+      "ent-128"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-034",
+    "content": "黄敏在郑州参加新品发布会并演讲知识图谱。",
+    "entities": [
+      "ent-016",
+      "ent-055",
+      "ent-128",
+      "ent-153"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-035",
+    "content": "海康威视在2018年举办并购重组，黄敏担任主讲。",
+    "entities": [
+      "ent-093",
+      "ent-111",
+      "ent-131",
+      "ent-016"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-036",
+    "content": "张涛在夏季调任沈阳负责小米业务。",
+    "entities": [
+      "ent-038",
+      "ent-108",
+      "ent-063",
+      "ent-080"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-037",
+    "content": "快手推出基于知识图谱的新产品百度搜索。",
+    "entities": [
+      "ent-095",
+      "ent-153",
+      "ent-175"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-038",
+    "content": "孙佳使用Preact开发哔哩哔哩App。",
+    "entities": [
+      "ent-021",
+      "ent-180",
+      "ent-173"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-039",
+    "content": "浪潮信息发布技术规范规范F1分数技术。",
+    "entities": [
+      "ent-100",
+      "ent-193",
+      "ent-158"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-040",
+    "content": "王五离开OPPO创立新公司。",
+    "entities": [
+      "ent-003",
+      "ent-082"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-041",
+    "content": "黄峥使用React开发飞书。",
+    "entities": [
+      "ent-035",
+      "ent-181",
+      "ent-163"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-042",
+    "content": "张涛与郑文博联合发起准确率开源项目。",
+    "entities": [
+      "ent-038",
+      "ent-020",
+      "ent-157"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-043",
+    "content": "马化腾在2016年访问南京的蔚来汽车总部。",
+    "entities": [
+      "ent-029",
+      "ent-114",
+      "ent-048",
+      "ent-087"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-044",
+    "content": "快手在2023年于哈尔滨举办并购重组。",
+    "entities": [
+      "ent-095",
+      "ent-104",
+      "ent-064",
+      "ent-131"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-045",
+    "content": "黄峥在昆明主持并购重组。",
+    "entities": [
+      "ent-035",
+      "ent-065",
+      "ent-131"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-046",
+    "content": "商汤科技完成公司上市轮次融资。",
+    "entities": [
+      "ent-091",
+      "ent-125"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-047",
+    "content": "李开复与刘洋通过淘宝协作完成召回率项目。",
+    "entities": [
+      "ent-023",
+      "ent-012",
+      "ent-167",
+      "ent-156"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-048",
+    "content": "张伟使用iPhone训练嵌入向量模型。",
+    "entities": [
+      "ent-009",
+      "ent-186",
+      "ent-147"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-049",
+    "content": "李开复在上半年调任重庆负责小红书业务。",
+    "entities": [
+      "ent-023",
+      "ent-120",
+      "ent-049",
+      "ent-098"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-050",
+    "content": "联想与小米联合投资向量数据库初创公司。",
+    "entities": [
+      "ent-084",
+      "ent-080",
+      "ent-146"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-051",
+    "content": "百度与蔚来汽车联合投资基准测试初创公司。",
+    "entities": [
+      "ent-074",
+      "ent-087",
+      "ent-159"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-052",
+    "content": "李四使用PostgreSQL开发飞书。",
+    "entities": [
+      "ent-002",
+      "ent-185",
+      "ent-163"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-053",
+    "content": "周鸿祎离开中兴通讯创立新公司。",
+    "entities": [
+      "ent-033",
+      "ent-085"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-054",
+    "content": "旷视科技与滴滴出行联合投资大模型初创公司。",
+    "entities": [
+      "ent-092",
+      "ent-078",
+      "ent-142"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-055",
+    "content": "孙佳在2024年访问长沙的联想总部。",
+    "entities": [
+      "ent-021",
+      "ent-105",
+      "ent-053",
+      "ent-084"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-056",
+    "content": "网易与商汤科技联合投资多模态初创公司。",
+    "entities": [
+      "ent-077",
+      "ent-091",
+      "ent-149"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-057",
+    "content": "王芳在珠海调研倒数排名融合应用。",
+    "entities": [
+      "ent-010",
+      "ent-066",
+      "ent-155"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-058",
+    "content": "知乎发布技术规范规范模型评测技术。",
+    "entities": [
+      "ent-097",
+      "ent-193",
+      "ent-160"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-059",
+    "content": "马云使用Visual Studio Code开发淘宝。",
+    "entities": [
+      "ent-030",
+      "ent-182",
+      "ent-167"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-060",
+    "content": "联想推出基于人工智能的新产品抖音。",
+    "entities": [
+      "ent-084",
+      "ent-141",
+      "ent-162"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-061",
+    "content": "周鸿祎在济南的腾讯发表README文档。",
+    "entities": [
+      "ent-033",
+      "ent-062",
+      "ent-071",
+      "ent-191"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-062",
+    "content": "孙七与杨光联合发起人工智能开源项目。",
+    "entities": [
+      "ent-005",
+      "ent-014",
+      "ent-141"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-063",
+    "content": "王五加入蔚来汽车担任核心工程师。",
+    "entities": [
+      "ent-003",
+      "ent-087"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-064",
+    "content": "刘洋在长沙发表F1分数主题演讲。",
+    "entities": [
+      "ent-012",
+      "ent-053",
+      "ent-158"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-065",
+    "content": "vivo宣布收购快手。",
+    "entities": [
+      "ent-083",
+      "ent-095"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-066",
+    "content": "王慧文与林明通过百度搜索协作完成检索增强生成项目。",
+    "entities": [
+      "ent-037",
+      "ent-017",
+      "ent-175",
+      "ent-145"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-067",
+    "content": "字节跳动在2020年上市武汉证券交易所。",
+    "entities": [
+      "ent-073",
+      "ent-101",
+      "ent-047"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-068",
+    "content": "钱学森在2015年调任重庆负责腾讯业务。",
+    "entities": [
+      "ent-022",
+      "ent-115",
+      "ent-049",
+      "ent-071"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-069",
+    "content": "百度在沈阳设立研发中心。",
+    "entities": [
+      "ent-074",
+      "ent-063"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-070",
+    "content": "程维使用Linux开发百度搜索。",
+    "entities": [
+      "ent-032",
+      "ent-184",
+      "ent-175"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-071",
+    "content": "知乎于2018年开源Tauri项目。",
+    "entities": [
+      "ent-097",
+      "ent-111",
+      "ent-177"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-072",
+    "content": "小米在2022年升级企业微信到新版本。",
+    "entities": [
+      "ent-080",
+      "ent-103",
+      "ent-165"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-073",
+    "content": "王兴在东莞发表知识图谱主题演讲。",
+    "entities": [
+      "ent-026",
+      "ent-067",
+      "ent-153"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-074",
+    "content": "理想汽车发布美团外卖集成SparkFox。",
+    "entities": [
+      "ent-088",
+      "ent-169",
+      "ent-176"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-075",
+    "content": "何小鹏在大连发表Transformer架构主题演讲。",
+    "entities": [
+      "ent-040",
+      "ent-056",
+      "ent-148"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-076",
+    "content": "张伟在郑州参加了比亚迪的产品发布会。",
+    "entities": [
+      "ent-009",
+      "ent-055",
+      "ent-090"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-077",
+    "content": "快手宣布收购拼多多。",
+    "entities": [
+      "ent-095",
+      "ent-079"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-078",
+    "content": "字节跳动在2023年上市海口证券交易所。",
+    "entities": [
+      "ent-073",
+      "ent-104",
+      "ent-070"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-079",
+    "content": "马云在杭州参加了vivo的产品发布会。",
+    "entities": [
+      "ent-030",
+      "ent-045",
+      "ent-083"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-080",
+    "content": "李娜在天津调研模型微调应用。",
+    "entities": [
+      "ent-011",
+      "ent-051",
+      "ent-151"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-081",
+    "content": "旷视科技与科大讯飞联合投资推理能力初创公司。",
+    "entities": [
+      "ent-092",
+      "ent-094",
+      "ent-150"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-082",
+    "content": "钱学森在2017年访问上海的比亚迪总部。",
+    "entities": [
+      "ent-022",
+      "ent-113",
+      "ent-042",
+      "ent-090"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-083",
+    "content": "程维使用iPhone训练向量数据库模型。",
+    "entities": [
+      "ent-032",
+      "ent-186",
+      "ent-146"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-084",
+    "content": "何小鹏在北京发表检索增强生成主题演讲。",
+    "entities": [
+      "ent-040",
+      "ent-041",
+      "ent-145"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-085",
+    "content": "黄敏使用TypeScript开发知乎App。",
+    "entities": [
+      "ent-016",
+      "ent-179",
+      "ent-172"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-086",
+    "content": "张涛在苏州的美团发表用户手册。",
+    "entities": [
+      "ent-038",
+      "ent-050",
+      "ent-075",
+      "ent-194"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-087",
+    "content": "浪潮信息与美团在广州达成战略合作。",
+    "entities": [
+      "ent-100",
+      "ent-075",
+      "ent-043"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-088",
+    "content": "孙佳在深圳参加用户大会并演讲嵌入向量。",
+    "entities": [
+      "ent-021",
+      "ent-044",
+      "ent-138",
+      "ent-147"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-089",
+    "content": "大疆创新宣布收购中兴通讯。",
+    "entities": [
+      "ent-086",
+      "ent-085"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-090",
+    "content": "王兴使用Mac训练准确率模型。",
+    "entities": [
+      "ent-026",
+      "ent-187",
+      "ent-157"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-091",
+    "content": "林明在无锡主持媒体沟通会。",
+    "entities": [
+      "ent-017",
+      "ent-059",
+      "ent-134"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-092",
+    "content": "小鹏汽车在2015年于北京举办对外投资。",
+    "entities": [
+      "ent-089",
+      "ent-115",
+      "ent-041",
+      "ent-130"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-093",
+    "content": "张一鸣在苏州调研知识图谱应用。",
+    "entities": [
+      "ent-025",
+      "ent-050",
+      "ent-153"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-094",
+    "content": "中兴通讯在四月上市沈阳证券交易所。",
+    "entities": [
+      "ent-085",
+      "ent-117",
+      "ent-063"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-095",
+    "content": "郑文博在郑州主持开源发布。",
+    "entities": [
+      "ent-020",
+      "ent-055",
+      "ent-139"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-096",
+    "content": "字节跳动在济南发布支付宝新一代版本。",
+    "entities": [
+      "ent-073",
+      "ent-062",
+      "ent-166"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-097",
+    "content": "中兴通讯与联想在重庆达成战略合作。",
+    "entities": [
+      "ent-085",
+      "ent-084",
+      "ent-049"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-098",
+    "content": "李斌离开三六零创立新公司。",
+    "entities": [
+      "ent-039",
+      "ent-099"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-099",
+    "content": "网易与蔚来汽车联合投资人工智能初创公司。",
+    "entities": [
+      "ent-077",
+      "ent-087",
+      "ent-141"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-100",
+    "content": "知乎在武汉设立研发中心。",
+    "entities": [
+      "ent-097",
+      "ent-047"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-101",
+    "content": "联想宣布收购小鹏汽车。",
+    "entities": [
+      "ent-084",
+      "ent-089"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-102",
+    "content": "马化腾在成都参加了比亚迪的产品发布会。",
+    "entities": [
+      "ent-029",
+      "ent-046",
+      "ent-090"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-103",
+    "content": "周八与李娜通过百度搜索协作完成F1分数项目。",
+    "entities": [
+      "ent-006",
+      "ent-011",
+      "ent-175",
+      "ent-158"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-104",
+    "content": "张朝阳使用服务器训练检索增强生成模型。",
+    "entities": [
+      "ent-024",
+      "ent-189",
+      "ent-145"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-105",
+    "content": "张伟在合肥主持财报发布。",
+    "entities": [
+      "ent-009",
+      "ent-061",
+      "ent-137"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-106",
+    "content": "吴九与刘洋联合发起F1分数开源项目。",
+    "entities": [
+      "ent-007",
+      "ent-012",
+      "ent-158"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-107",
+    "content": "孙七使用Mac训练多模态模型。",
+    "entities": [
+      "ent-005",
+      "ent-187",
+      "ent-149"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-108",
+    "content": "刘强东在厦门参加媒体沟通会并演讲检索增强生成。",
+    "entities": [
+      "ent-034",
+      "ent-057",
+      "ent-134",
+      "ent-145"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-109",
+    "content": "李娜在上半年参与海康威视组织的技术峰会。",
+    "entities": [
+      "ent-011",
+      "ent-120",
+      "ent-093"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-110",
+    "content": "林明于夏季在无锡出席知乎的年度大会。",
+    "entities": [
+      "ent-017",
+      "ent-108",
+      "ent-059",
+      "ent-097"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-111",
+    "content": "大疆创新在七月上市成都证券交易所。",
+    "entities": [
+      "ent-086",
+      "ent-118",
+      "ent-046"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-112",
+    "content": "赵磊使用Linux开发知乎App。",
+    "entities": [
+      "ent-015",
+      "ent-184",
+      "ent-172"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-113",
+    "content": "孙七在郑州参加对外投资并演讲向量数据库。",
+    "entities": [
+      "ent-005",
+      "ent-055",
+      "ent-130",
+      "ent-146"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-114",
+    "content": "张一鸣在2017年参与哔哩哔哩组织的技术峰会。",
+    "entities": [
+      "ent-025",
+      "ent-113",
+      "ent-096"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-115",
+    "content": "理想汽车在2016年升级企业微信到新版本。",
+    "entities": [
+      "ent-088",
+      "ent-114",
+      "ent-165"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-116",
+    "content": "雷军在2022年访问佛山的商汤科技总部。",
+    "entities": [
+      "ent-028",
+      "ent-103",
+      "ent-068",
+      "ent-091"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-117",
+    "content": "拼多多在十月升级企业微信到新版本。",
+    "entities": [
+      "ent-079",
+      "ent-119",
+      "ent-165"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-118",
+    "content": "何小鹏于2017年在济南出席三六零的年度大会。",
+    "entities": [
+      "ent-040",
+      "ent-113",
+      "ent-062",
+      "ent-099"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-119",
+    "content": "郑十在2018年参与中兴通讯组织的技术峰会。",
+    "entities": [
+      "ent-008",
+      "ent-111",
+      "ent-085"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-120",
+    "content": "商汤科技发布快手App集成React。",
+    "entities": [
+      "ent-091",
+      "ent-174",
+      "ent-181"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-121",
+    "content": "李彦宏在郑州调研多跳检索应用。",
+    "entities": [
+      "ent-027",
+      "ent-055",
+      "ent-154"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-122",
+    "content": "vivo推出基于智能体的新产品滴滴出行App。",
+    "entities": [
+      "ent-083",
+      "ent-143",
+      "ent-170"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-123",
+    "content": "知乎于一月开源React项目。",
+    "entities": [
+      "ent-097",
+      "ent-116",
+      "ent-181"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-124",
+    "content": "王兴于2017年在合肥出席京东的年度大会。",
+    "entities": [
+      "ent-026",
+      "ent-113",
+      "ent-061",
+      "ent-076"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-125",
+    "content": "雷军于2021年在济南出席网易的年度大会。",
+    "entities": [
+      "ent-028",
+      "ent-102",
+      "ent-062",
+      "ent-077"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-126",
+    "content": "马化腾在海口发表推理能力主题演讲。",
+    "entities": [
+      "ent-029",
+      "ent-070",
+      "ent-150"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-127",
+    "content": "比亚迪在深圳设立研发中心。",
+    "entities": [
+      "ent-090",
+      "ent-044"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-128",
+    "content": "字节跳动在2017年于成都举办财报发布。",
+    "entities": [
+      "ent-073",
+      "ent-113",
+      "ent-046",
+      "ent-137"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-129",
+    "content": "华为在四月举办公司上市，赵六担任主讲。",
+    "entities": [
+      "ent-081",
+      "ent-117",
+      "ent-125",
+      "ent-004"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-130",
+    "content": "三六零在秋季上市贵阳证券交易所。",
+    "entities": [
+      "ent-099",
+      "ent-109",
+      "ent-069"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-131",
+    "content": "张涛加入三六零担任核心工程师。",
+    "entities": [
+      "ent-038",
+      "ent-099"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-132",
+    "content": "黄峥在无锡发表人工智能主题演讲。",
+    "entities": [
+      "ent-035",
+      "ent-059",
+      "ent-141"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-133",
+    "content": "张伟于2023年在大连出席滴滴出行的年度大会。",
+    "entities": [
+      "ent-009",
+      "ent-104",
+      "ent-056",
+      "ent-078"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-134",
+    "content": "王慧文在合肥的理想汽车发表API文档。",
+    "entities": [
+      "ent-037",
+      "ent-061",
+      "ent-088",
+      "ent-195"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-135",
+    "content": "王兴在上海参加年度大会并演讲多跳检索。",
+    "entities": [
+      "ent-026",
+      "ent-042",
+      "ent-122",
+      "ent-154"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-136",
+    "content": "阿里巴巴于一月开源Linux项目。",
+    "entities": [
+      "ent-072",
+      "ent-116",
+      "ent-184"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-137",
+    "content": "哔哩哔哩发布抖音集成Tauri。",
+    "entities": [
+      "ent-096",
+      "ent-162",
+      "ent-177"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-138",
+    "content": "黄峥在昆明参加了理想汽车的产品发布会。",
+    "entities": [
+      "ent-035",
+      "ent-065",
+      "ent-088"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-139",
+    "content": "百度在贵阳发布钉钉新一代版本。",
+    "entities": [
+      "ent-074",
+      "ent-069",
+      "ent-164"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-140",
+    "content": "理想汽车完成黑客松轮次融资。",
+    "entities": [
+      "ent-088",
+      "ent-133"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-141",
+    "content": "孙佳使用个人电脑训练Transformer架构模型。",
+    "entities": [
+      "ent-021",
+      "ent-188",
+      "ent-148"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-142",
+    "content": "张涛在四月参与旷视科技组织的技术峰会。",
+    "entities": [
+      "ent-038",
+      "ent-117",
+      "ent-092"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-143",
+    "content": "王芳在2023年访问天津的小米总部。",
+    "entities": [
+      "ent-010",
+      "ent-104",
+      "ent-051",
+      "ent-080"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-144",
+    "content": "科大讯飞与蔚来汽车在昆明达成战略合作。",
+    "entities": [
+      "ent-094",
+      "ent-087",
+      "ent-065"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-145",
+    "content": "滴滴出行与浪潮信息在西安达成战略合作。",
+    "entities": [
+      "ent-078",
+      "ent-100",
+      "ent-052"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-146",
+    "content": "郑十在北京的商汤科技发表设计文档。",
+    "entities": [
+      "ent-008",
+      "ent-041",
+      "ent-091",
+      "ent-192"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-147",
+    "content": "刘强东与张一鸣联合发起向量数据库开源项目。",
+    "entities": [
+      "ent-034",
+      "ent-025",
+      "ent-146"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-148",
+    "content": "拼多多发布技术规范规范准确率技术。",
+    "entities": [
+      "ent-079",
+      "ent-193",
+      "ent-157"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-149",
+    "content": "大疆创新在十月于厦门举办团队招聘。",
+    "entities": [
+      "ent-086",
+      "ent-119",
+      "ent-057",
+      "ent-126"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-150",
+    "content": "华为在郑州发布快手App新一代版本。",
+    "entities": [
+      "ent-081",
+      "ent-055",
+      "ent-174"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-151",
+    "content": "理想汽车发布技术规范规范记忆系统技术。",
+    "entities": [
+      "ent-088",
+      "ent-193",
+      "ent-144"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-152",
+    "content": "周八在深圳参加了网易的产品发布会。",
+    "entities": [
+      "ent-006",
+      "ent-044",
+      "ent-077"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-153",
+    "content": "vivo推出基于基准测试的新产品飞书。",
+    "entities": [
+      "ent-083",
+      "ent-159",
+      "ent-163"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-154",
+    "content": "理想汽车推出基于记忆系统的新产品支付宝。",
+    "entities": [
+      "ent-088",
+      "ent-144",
+      "ent-166"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-155",
+    "content": "海康威视在2018年升级支付宝到新版本。",
+    "entities": [
+      "ent-093",
+      "ent-111",
+      "ent-166"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-156",
+    "content": "张涛在夏季参与中兴通讯组织的技术峰会。",
+    "entities": [
+      "ent-038",
+      "ent-108",
+      "ent-085"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-157",
+    "content": "陈静在贵阳发表人工智能主题演讲。",
+    "entities": [
+      "ent-013",
+      "ent-069",
+      "ent-141"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-158",
+    "content": "周鸿祎在重庆发表推理能力主题演讲。",
+    "entities": [
+      "ent-033",
+      "ent-049",
+      "ent-150"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-159",
+    "content": "黄峥使用Visual Studio Code开发哔哩哔哩App。",
+    "entities": [
+      "ent-035",
+      "ent-182",
+      "ent-173"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-160",
+    "content": "中兴通讯在2015年于合肥举办团队招聘。",
+    "entities": [
+      "ent-085",
+      "ent-115",
+      "ent-061",
+      "ent-126"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-161",
+    "content": "理想汽车在秋季举办黑客松，李娜担任主讲。",
+    "entities": [
+      "ent-088",
+      "ent-109",
+      "ent-133",
+      "ent-011"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-162",
+    "content": "vivo发布滴滴出行App集成Linux。",
+    "entities": [
+      "ent-083",
+      "ent-170",
+      "ent-184"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-163",
+    "content": "腾讯在2020年上市上海证券交易所。",
+    "entities": [
+      "ent-071",
+      "ent-101",
+      "ent-042"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-164",
+    "content": "京东在春季上市武汉证券交易所。",
+    "entities": [
+      "ent-076",
+      "ent-107",
+      "ent-047"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-165",
+    "content": "林明加入三六零担任核心工程师。",
+    "entities": [
+      "ent-017",
+      "ent-099"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-166",
+    "content": "滴滴出行宣布收购知乎。",
+    "entities": [
+      "ent-078",
+      "ent-097"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-167",
+    "content": "知乎在沈阳设立研发中心。",
+    "entities": [
+      "ent-097",
+      "ent-063"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-168",
+    "content": "科大讯飞在十月于佛山举办组织调整。",
+    "entities": [
+      "ent-094",
+      "ent-119",
+      "ent-068",
+      "ent-136"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-169",
+    "content": "陈静在北京主持对外投资。",
+    "entities": [
+      "ent-013",
+      "ent-041",
+      "ent-130"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-170",
+    "content": "张涛在宁波参加高管离职并演讲智能体。",
+    "entities": [
+      "ent-038",
+      "ent-058",
+      "ent-127",
+      "ent-143"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-171",
+    "content": "钱学森在广州参加年度大会并演讲推理能力。",
+    "entities": [
+      "ent-022",
+      "ent-043",
+      "ent-122",
+      "ent-150"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-172",
+    "content": "郑文博在夏季访问哈尔滨的蔚来汽车总部。",
+    "entities": [
+      "ent-020",
+      "ent-108",
+      "ent-064",
+      "ent-087"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-173",
+    "content": "周八使用TypeScript开发微信。",
+    "entities": [
+      "ent-006",
+      "ent-179",
+      "ent-161"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-174",
+    "content": "何小鹏使用TypeScript开发滴滴出行App。",
+    "entities": [
+      "ent-040",
+      "ent-179",
+      "ent-170"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-175",
+    "content": "OPPO发布API文档规范大模型技术。",
+    "entities": [
+      "ent-082",
+      "ent-195",
+      "ent-142"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-176",
+    "content": "理想汽车在2023年于苏州举办用户大会。",
+    "entities": [
+      "ent-088",
+      "ent-104",
+      "ent-050",
+      "ent-138"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-177",
+    "content": "李四在长沙调研推理能力应用。",
+    "entities": [
+      "ent-002",
+      "ent-053",
+      "ent-150"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-178",
+    "content": "大疆创新在南京设立研发中心。",
+    "entities": [
+      "ent-086",
+      "ent-048"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-179",
+    "content": "李斌与梁建章通过滴滴出行App协作完成嵌入向量项目。",
+    "entities": [
+      "ent-039",
+      "ent-036",
+      "ent-170",
+      "ent-147"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-180",
+    "content": "孙佳与梁建章联合发起召回率开源项目。",
+    "entities": [
+      "ent-021",
+      "ent-036",
+      "ent-156"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-181",
+    "content": "孙七在西安参加团队招聘并演讲大模型。",
+    "entities": [
+      "ent-005",
+      "ent-052",
+      "ent-126",
+      "ent-142"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-182",
+    "content": "张伟在上海参加了比亚迪的产品发布会。",
+    "entities": [
+      "ent-009",
+      "ent-042",
+      "ent-090"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-183",
+    "content": "海康威视在海口设立研发中心。",
+    "entities": [
+      "ent-093",
+      "ent-070"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-184",
+    "content": "张伟与刘强东通过快手App协作完成推理能力项目。",
+    "entities": [
+      "ent-009",
+      "ent-034",
+      "ent-174",
+      "ent-150"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-185",
+    "content": "快手完成年度大会轮次融资。",
+    "entities": [
+      "ent-095",
+      "ent-122"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-186",
+    "content": "李开复使用Git开发美团外卖。",
+    "entities": [
+      "ent-023",
+      "ent-183",
+      "ent-169"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-187",
+    "content": "孙七在秋季调任南京负责百度业务。",
+    "entities": [
+      "ent-005",
+      "ent-109",
+      "ent-048",
+      "ent-074"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-188",
+    "content": "小米在2019年上市武汉证券交易所。",
+    "entities": [
+      "ent-080",
+      "ent-112",
+      "ent-047"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-189",
+    "content": "李斌在贵阳发表大模型主题演讲。",
+    "entities": [
+      "ent-039",
+      "ent-069",
+      "ent-142"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-190",
+    "content": "李斌在重庆调研智能体应用。",
+    "entities": [
+      "ent-039",
+      "ent-049",
+      "ent-143"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-191",
+    "content": "李彦宏在北京参加了商汤科技的产品发布会。",
+    "entities": [
+      "ent-027",
+      "ent-041",
+      "ent-091"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-192",
+    "content": "理想汽车发布用户手册规范召回率技术。",
+    "entities": [
+      "ent-088",
+      "ent-194",
+      "ent-156"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-193",
+    "content": "梁建章加入理想汽车担任核心工程师。",
+    "entities": [
+      "ent-036",
+      "ent-088"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-194",
+    "content": "孙七在2024年调任无锡负责旷视科技业务。",
+    "entities": [
+      "ent-005",
+      "ent-105",
+      "ent-059",
+      "ent-092"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-195",
+    "content": "程维使用服务器训练准确率模型。",
+    "entities": [
+      "ent-032",
+      "ent-189",
+      "ent-157"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-196",
+    "content": "vivo在无锡发布小红书App新一代版本。",
+    "entities": [
+      "ent-083",
+      "ent-059",
+      "ent-171"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-197",
+    "content": "李四在合肥参加对外投资并演讲向量数据库。",
+    "entities": [
+      "ent-002",
+      "ent-061",
+      "ent-130",
+      "ent-146"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-198",
+    "content": "腾讯推出基于倒数排名融合的新产品美团外卖。",
+    "entities": [
+      "ent-071",
+      "ent-155",
+      "ent-169"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-199",
+    "content": "马云离开比亚迪创立新公司。",
+    "entities": [
+      "ent-030",
+      "ent-090"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-200",
+    "content": "张一鸣与李开复通过淘宝协作完成向量数据库项目。",
+    "entities": [
+      "ent-025",
+      "ent-023",
+      "ent-167",
+      "ent-146"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-201",
+    "content": "李四于四月在宁波出席小红书的年度大会。",
+    "entities": [
+      "ent-002",
+      "ent-117",
+      "ent-058",
+      "ent-098"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-202",
+    "content": "理想汽车发布哔哩哔哩App集成Rust。",
+    "entities": [
+      "ent-088",
+      "ent-173",
+      "ent-178"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-203",
+    "content": "华为与海康威视在沈阳达成战略合作。",
+    "entities": [
+      "ent-081",
+      "ent-093",
+      "ent-063"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-204",
+    "content": "周鸿祎在佛山主持团队招聘。",
+    "entities": [
+      "ent-033",
+      "ent-068",
+      "ent-126"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-205",
+    "content": "比亚迪在秋季于南京举办并购重组。",
+    "entities": [
+      "ent-090",
+      "ent-109",
+      "ent-048",
+      "ent-131"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-206",
+    "content": "王兴与李斌通过飞书协作完成记忆系统项目。",
+    "entities": [
+      "ent-026",
+      "ent-039",
+      "ent-163",
+      "ent-144"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-207",
+    "content": "小米与网易在成都达成战略合作。",
+    "entities": [
+      "ent-080",
+      "ent-077",
+      "ent-046"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-208",
+    "content": "杨光与郑文博通过微信协作完成倒数排名融合项目。",
+    "entities": [
+      "ent-014",
+      "ent-020",
+      "ent-161",
+      "ent-155"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-209",
+    "content": "知乎与网易在宁波达成战略合作。",
+    "entities": [
+      "ent-097",
+      "ent-077",
+      "ent-058"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-210",
+    "content": "王五在珠海参加技术峰会并演讲人工智能。",
+    "entities": [
+      "ent-003",
+      "ent-066",
+      "ent-132",
+      "ent-141"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-211",
+    "content": "旷视科技在四月举办团队招聘，黄峥担任主讲。",
+    "entities": [
+      "ent-092",
+      "ent-117",
+      "ent-126",
+      "ent-035"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-212",
+    "content": "孙七与雷军联合发起强化学习开源项目。",
+    "entities": [
+      "ent-005",
+      "ent-028",
+      "ent-152"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-213",
+    "content": "网易在2019年升级京东商城到新版本。",
+    "entities": [
+      "ent-077",
+      "ent-112",
+      "ent-168"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-214",
+    "content": "丁磊在2025年参与理想汽车组织的技术峰会。",
+    "entities": [
+      "ent-031",
+      "ent-106",
+      "ent-088"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-215",
+    "content": "比亚迪发布README文档规范人工智能技术。",
+    "entities": [
+      "ent-090",
+      "ent-191",
+      "ent-141"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-216",
+    "content": "马云在贵阳的旷视科技发表技术规范。",
+    "entities": [
+      "ent-030",
+      "ent-069",
+      "ent-092",
+      "ent-193"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-217",
+    "content": "浪潮信息与理想汽车联合投资人工智能初创公司。",
+    "entities": [
+      "ent-100",
+      "ent-088",
+      "ent-141"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-218",
+    "content": "马云加入vivo担任核心工程师。",
+    "entities": [
+      "ent-030",
+      "ent-083"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-219",
+    "content": "李开复在深圳参加产品发布并演讲强化学习。",
+    "entities": [
+      "ent-023",
+      "ent-044",
+      "ent-121",
+      "ent-152"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-220",
+    "content": "雷军离开商汤科技创立新公司。",
+    "entities": [
+      "ent-028",
+      "ent-091"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-221",
+    "content": "张伟在杭州调研基准测试应用。",
+    "entities": [
+      "ent-009",
+      "ent-045",
+      "ent-159"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-222",
+    "content": "比亚迪完成产品发布轮次融资。",
+    "entities": [
+      "ent-090",
+      "ent-121"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-223",
+    "content": "刘强东在厦门参加了拼多多的产品发布会。",
+    "entities": [
+      "ent-034",
+      "ent-057",
+      "ent-079"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-224",
+    "content": "网易完成财报发布轮次融资。",
+    "entities": [
+      "ent-077",
+      "ent-137"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-225",
+    "content": "张朝阳使用iPhone训练记忆系统模型。",
+    "entities": [
+      "ent-024",
+      "ent-186",
+      "ent-144"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-226",
+    "content": "赵磊在2018年调任北京负责京东业务。",
+    "entities": [
+      "ent-015",
+      "ent-111",
+      "ent-041",
+      "ent-076"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-227",
+    "content": "小红书在杭州发布快手App新一代版本。",
+    "entities": [
+      "ent-098",
+      "ent-045",
+      "ent-174"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-228",
+    "content": "孙佳使用TypeScript开发京东商城。",
+    "entities": [
+      "ent-021",
+      "ent-179",
+      "ent-168"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-229",
+    "content": "大疆创新宣布收购拼多多。",
+    "entities": [
+      "ent-086",
+      "ent-079"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-230",
+    "content": "李彦宏在2018年参与理想汽车组织的技术峰会。",
+    "entities": [
+      "ent-027",
+      "ent-111",
+      "ent-088"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-231",
+    "content": "中兴通讯宣布收购腾讯。",
+    "entities": [
+      "ent-085",
+      "ent-071"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-232",
+    "content": "网易在深圳发布百度搜索新一代版本。",
+    "entities": [
+      "ent-077",
+      "ent-044",
+      "ent-175"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-233",
+    "content": "浪潮信息与小米在重庆达成战略合作。",
+    "entities": [
+      "ent-100",
+      "ent-080",
+      "ent-049"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-234",
+    "content": "雷军在无锡的哔哩哔哩发表设计文档。",
+    "entities": [
+      "ent-028",
+      "ent-059",
+      "ent-096",
+      "ent-192"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-235",
+    "content": "浪潮信息发布技术规范规范推理能力技术。",
+    "entities": [
+      "ent-100",
+      "ent-193",
+      "ent-150"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-236",
+    "content": "商汤科技在西安发布快手App新一代版本。",
+    "entities": [
+      "ent-091",
+      "ent-052",
+      "ent-174"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-237",
+    "content": "李彦宏在大连参加了百度的产品发布会。",
+    "entities": [
+      "ent-027",
+      "ent-056",
+      "ent-074"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-238",
+    "content": "小红书发布用户手册规范知识图谱技术。",
+    "entities": [
+      "ent-098",
+      "ent-194",
+      "ent-153"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-239",
+    "content": "知乎与三六零在宁波达成战略合作。",
+    "entities": [
+      "ent-097",
+      "ent-099",
+      "ent-058"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-240",
+    "content": "马化腾加入华为担任核心工程师。",
+    "entities": [
+      "ent-029",
+      "ent-081"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-241",
+    "content": "腾讯与百度联合投资智能体初创公司。",
+    "entities": [
+      "ent-071",
+      "ent-074",
+      "ent-143"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-242",
+    "content": "陈静在上海参加了知乎的产品发布会。",
+    "entities": [
+      "ent-013",
+      "ent-042",
+      "ent-097"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-243",
+    "content": "中兴通讯宣布收购华为。",
+    "entities": [
+      "ent-085",
+      "ent-081"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-244",
+    "content": "张涛与刘洋通过淘宝协作完成Transformer架构项目。",
+    "entities": [
+      "ent-038",
+      "ent-012",
+      "ent-167",
+      "ent-148"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-245",
+    "content": "网易与旷视科技在天津达成战略合作。",
+    "entities": [
+      "ent-077",
+      "ent-092",
+      "ent-051"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-246",
+    "content": "王慧文在2025年调任深圳负责京东业务。",
+    "entities": [
+      "ent-037",
+      "ent-106",
+      "ent-044",
+      "ent-076"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-247",
+    "content": "百度在春季上市厦门证券交易所。",
+    "entities": [
+      "ent-074",
+      "ent-107",
+      "ent-057"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-248",
+    "content": "刘强东离开华为创立新公司。",
+    "entities": [
+      "ent-034",
+      "ent-081"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-249",
+    "content": "vivo在2017年于北京举办高管离职。",
+    "entities": [
+      "ent-083",
+      "ent-113",
+      "ent-041",
+      "ent-127"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-250",
+    "content": "王兴离开网易创立新公司。",
+    "entities": [
+      "ent-026",
+      "ent-077"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-251",
+    "content": "梁建章在福州调研人工智能应用。",
+    "entities": [
+      "ent-036",
+      "ent-060",
+      "ent-141"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-252",
+    "content": "吴九在哈尔滨参加了比亚迪的产品发布会。",
+    "entities": [
+      "ent-007",
+      "ent-064",
+      "ent-090"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-253",
+    "content": "三六零在西安设立研发中心。",
+    "entities": [
+      "ent-099",
+      "ent-052"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-254",
+    "content": "网易在郑州设立研发中心。",
+    "entities": [
+      "ent-077",
+      "ent-055"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-255",
+    "content": "李娜在厦门主持新品发布会。",
+    "entities": [
+      "ent-011",
+      "ent-057",
+      "ent-128"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-256",
+    "content": "孙佳使用React开发美团外卖。",
+    "entities": [
+      "ent-021",
+      "ent-181",
+      "ent-169"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-257",
+    "content": "京东发布小红书App集成Rust。",
+    "entities": [
+      "ent-076",
+      "ent-171",
+      "ent-178"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-258",
+    "content": "张涛离开快手创立新公司。",
+    "entities": [
+      "ent-038",
+      "ent-095"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-259",
+    "content": "郑十在沈阳参加媒体沟通会并演讲多模态。",
+    "entities": [
+      "ent-008",
+      "ent-063",
+      "ent-134",
+      "ent-149"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-260",
+    "content": "京东在2015年上市合肥证券交易所。",
+    "entities": [
+      "ent-076",
+      "ent-115",
+      "ent-061"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-261",
+    "content": "滴滴出行在宁波设立研发中心。",
+    "entities": [
+      "ent-078",
+      "ent-058"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-262",
+    "content": "腾讯在夏季上市武汉证券交易所。",
+    "entities": [
+      "ent-071",
+      "ent-108",
+      "ent-047"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-263",
+    "content": "联想发布设计文档规范Transformer架构技术。",
+    "entities": [
+      "ent-084",
+      "ent-192",
+      "ent-148"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-264",
+    "content": "小红书完成技术峰会轮次融资。",
+    "entities": [
+      "ent-098",
+      "ent-132"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-265",
+    "content": "孙七于2022年在东莞出席OPPO的年度大会。",
+    "entities": [
+      "ent-005",
+      "ent-103",
+      "ent-067",
+      "ent-082"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-266",
+    "content": "阿里巴巴发布用户手册规范模型评测技术。",
+    "entities": [
+      "ent-072",
+      "ent-194",
+      "ent-160"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-267",
+    "content": "赵磊在夏季访问南京的拼多多总部。",
+    "entities": [
+      "ent-015",
+      "ent-108",
+      "ent-048",
+      "ent-079"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-268",
+    "content": "孙七在成都的美团发表技术规范。",
+    "entities": [
+      "ent-005",
+      "ent-046",
+      "ent-075",
+      "ent-193"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-269",
+    "content": "吴志远使用个人电脑训练Transformer架构模型。",
+    "entities": [
+      "ent-019",
+      "ent-188",
+      "ent-148"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-270",
+    "content": "马云使用Linux开发钉钉。",
+    "entities": [
+      "ent-030",
+      "ent-184",
+      "ent-164"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-271",
+    "content": "杨光在2018年参与小鹏汽车组织的技术峰会。",
+    "entities": [
+      "ent-014",
+      "ent-111",
+      "ent-089"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-272",
+    "content": "周鸿祎加入知乎担任核心工程师。",
+    "entities": [
+      "ent-033",
+      "ent-097"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-273",
+    "content": "周八于2024年在南京出席海康威视的年度大会。",
+    "entities": [
+      "ent-006",
+      "ent-105",
+      "ent-048",
+      "ent-093"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-274",
+    "content": "浪潮信息推出基于智能体的新产品哔哩哔哩App。",
+    "entities": [
+      "ent-100",
+      "ent-143",
+      "ent-173"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-275",
+    "content": "马化腾在深圳参加财报发布并演讲准确率。",
+    "entities": [
+      "ent-029",
+      "ent-044",
+      "ent-137",
+      "ent-157"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-276",
+    "content": "王兴使用SparkFox开发美团外卖。",
+    "entities": [
+      "ent-026",
+      "ent-176",
+      "ent-169"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-277",
+    "content": "雷军在深圳的知乎发表README文档。",
+    "entities": [
+      "ent-028",
+      "ent-044",
+      "ent-097",
+      "ent-191"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-278",
+    "content": "孙七与孙佳联合发起向量数据库开源项目。",
+    "entities": [
+      "ent-005",
+      "ent-021",
+      "ent-146"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-279",
+    "content": "孙七在贵阳参加了滴滴出行的产品发布会。",
+    "entities": [
+      "ent-005",
+      "ent-069",
+      "ent-078"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-280",
+    "content": "OPPO于2020年开源Visual Studio Code项目。",
+    "entities": [
+      "ent-082",
+      "ent-101",
+      "ent-182"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-281",
+    "content": "理想汽车于2020年开源Git项目。",
+    "entities": [
+      "ent-088",
+      "ent-101",
+      "ent-183"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-282",
+    "content": "钱学森在天津参加高管离职并演讲模型微调。",
+    "entities": [
+      "ent-022",
+      "ent-051",
+      "ent-127",
+      "ent-151"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-283",
+    "content": "小红书在2023年举办媒体沟通会，陈静担任主讲。",
+    "entities": [
+      "ent-098",
+      "ent-104",
+      "ent-134",
+      "ent-013"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-284",
+    "content": "王慧文离开小红书创立新公司。",
+    "entities": [
+      "ent-037",
+      "ent-098"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-285",
+    "content": "小米在上半年上市深圳证券交易所。",
+    "entities": [
+      "ent-080",
+      "ent-120",
+      "ent-044"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-286",
+    "content": "陈静使用Linux开发淘宝。",
+    "entities": [
+      "ent-013",
+      "ent-184",
+      "ent-167"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-287",
+    "content": "马化腾在2022年参与快手组织的技术峰会。",
+    "entities": [
+      "ent-029",
+      "ent-103",
+      "ent-095"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-288",
+    "content": "张伟在天津参加了蔚来汽车的产品发布会。",
+    "entities": [
+      "ent-009",
+      "ent-051",
+      "ent-087"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-289",
+    "content": "吴九使用TypeScript开发美团外卖。",
+    "entities": [
+      "ent-007",
+      "ent-179",
+      "ent-169"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-290",
+    "content": "比亚迪于秋季开源Rust项目。",
+    "entities": [
+      "ent-090",
+      "ent-109",
+      "ent-178"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-291",
+    "content": "拼多多在海口设立研发中心。",
+    "entities": [
+      "ent-079",
+      "ent-070"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-292",
+    "content": "张一鸣在无锡的中兴通讯发表用户手册。",
+    "entities": [
+      "ent-025",
+      "ent-059",
+      "ent-085",
+      "ent-194"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-293",
+    "content": "林明与吴九联合发起召回率开源项目。",
+    "entities": [
+      "ent-017",
+      "ent-007",
+      "ent-156"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-294",
+    "content": "比亚迪发布技术规范规范向量数据库技术。",
+    "entities": [
+      "ent-090",
+      "ent-193",
+      "ent-146"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-295",
+    "content": "周八在2025年访问合肥的拼多多总部。",
+    "entities": [
+      "ent-006",
+      "ent-106",
+      "ent-061",
+      "ent-079"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-296",
+    "content": "拼多多宣布收购vivo。",
+    "entities": [
+      "ent-079",
+      "ent-083"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-297",
+    "content": "小红书在沈阳设立研发中心。",
+    "entities": [
+      "ent-098",
+      "ent-063"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-298",
+    "content": "华为发布README文档规范记忆系统技术。",
+    "entities": [
+      "ent-081",
+      "ent-191",
+      "ent-144"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-299",
+    "content": "吴九于2017年在昆明出席美团的年度大会。",
+    "entities": [
+      "ent-007",
+      "ent-113",
+      "ent-065",
+      "ent-075"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-300",
+    "content": "腾讯在2024年举办年度大会，李斌担任主讲。",
+    "entities": [
+      "ent-071",
+      "ent-105",
+      "ent-122",
+      "ent-039"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-301",
+    "content": "小鹏汽车发布README文档规范准确率技术。",
+    "entities": [
+      "ent-089",
+      "ent-191",
+      "ent-157"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-302",
+    "content": "滴滴出行发布哔哩哔哩App集成Rust。",
+    "entities": [
+      "ent-078",
+      "ent-173",
+      "ent-178"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-303",
+    "content": "王兴在上半年访问天津的商汤科技总部。",
+    "entities": [
+      "ent-026",
+      "ent-120",
+      "ent-051",
+      "ent-091"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-304",
+    "content": "网易在深圳发布支付宝新一代版本。",
+    "entities": [
+      "ent-077",
+      "ent-044",
+      "ent-166"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-305",
+    "content": "科大讯飞宣布收购海康威视。",
+    "entities": [
+      "ent-094",
+      "ent-093"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-306",
+    "content": "张涛与马云通过微信协作完成模型评测项目。",
+    "entities": [
+      "ent-038",
+      "ent-030",
+      "ent-161",
+      "ent-160"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-307",
+    "content": "百度在东莞发布京东商城新一代版本。",
+    "entities": [
+      "ent-074",
+      "ent-067",
+      "ent-168"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-308",
+    "content": "海康威视在2023年于厦门举办媒体沟通会。",
+    "entities": [
+      "ent-093",
+      "ent-104",
+      "ent-057",
+      "ent-134"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-309",
+    "content": "百度推出基于知识图谱的新产品美团外卖。",
+    "entities": [
+      "ent-074",
+      "ent-153",
+      "ent-169"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-310",
+    "content": "三六零在夏季于昆明举办用户大会。",
+    "entities": [
+      "ent-099",
+      "ent-108",
+      "ent-065",
+      "ent-138"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-311",
+    "content": "腾讯推出基于多模态的新产品知乎App。",
+    "entities": [
+      "ent-071",
+      "ent-149",
+      "ent-172"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-312",
+    "content": "华为在夏季于合肥举办融资轮次。",
+    "entities": [
+      "ent-081",
+      "ent-108",
+      "ent-061",
+      "ent-124"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-313",
+    "content": "中兴通讯发布README文档规范大模型技术。",
+    "entities": [
+      "ent-085",
+      "ent-191",
+      "ent-142"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-314",
+    "content": "黄敏加入海康威视担任核心工程师。",
+    "entities": [
+      "ent-016",
+      "ent-093"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-315",
+    "content": "蔚来汽车发布技术规范规范基准测试技术。",
+    "entities": [
+      "ent-087",
+      "ent-193",
+      "ent-159"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-316",
+    "content": "海康威视与浪潮信息联合投资大模型初创公司。",
+    "entities": [
+      "ent-093",
+      "ent-100",
+      "ent-142"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-317",
+    "content": "李开复在2019年访问重庆的腾讯总部。",
+    "entities": [
+      "ent-023",
+      "ent-112",
+      "ent-049",
+      "ent-071"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-318",
+    "content": "网易与知乎在杭州达成战略合作。",
+    "entities": [
+      "ent-077",
+      "ent-097",
+      "ent-045"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-319",
+    "content": "小米在2017年上市海口证券交易所。",
+    "entities": [
+      "ent-080",
+      "ent-113",
+      "ent-070"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-320",
+    "content": "旷视科技在上海发布京东商城新一代版本。",
+    "entities": [
+      "ent-092",
+      "ent-042",
+      "ent-168"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-321",
+    "content": "雷军离开拼多多创立新公司。",
+    "entities": [
+      "ent-028",
+      "ent-079"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-322",
+    "content": "孙七在郑州的快手发表API文档。",
+    "entities": [
+      "ent-005",
+      "ent-055",
+      "ent-095",
+      "ent-195"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-323",
+    "content": "京东宣布收购OPPO。",
+    "entities": [
+      "ent-076",
+      "ent-082"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-324",
+    "content": "海康威视在一月上市天津证券交易所。",
+    "entities": [
+      "ent-093",
+      "ent-116",
+      "ent-051"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-325",
+    "content": "张涛在十月调任济南负责OPPO业务。",
+    "entities": [
+      "ent-038",
+      "ent-119",
+      "ent-062",
+      "ent-082"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-326",
+    "content": "李娜与郑文博通过百度搜索协作完成强化学习项目。",
+    "entities": [
+      "ent-011",
+      "ent-020",
+      "ent-175",
+      "ent-152"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-327",
+    "content": "理想汽车在七月于东莞举办财报发布。",
+    "entities": [
+      "ent-088",
+      "ent-118",
+      "ent-067",
+      "ent-137"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-328",
+    "content": "腾讯完成年度大会轮次融资。",
+    "entities": [
+      "ent-071",
+      "ent-122"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-329",
+    "content": "阿里巴巴发布京东商城集成Visual Studio Code。",
+    "entities": [
+      "ent-072",
+      "ent-168",
+      "ent-182"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-330",
+    "content": "郑文博使用Rust开发快手App。",
+    "entities": [
+      "ent-020",
+      "ent-178",
+      "ent-174"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-331",
+    "content": "拼多多推出基于倒数排名融合的新产品知乎App。",
+    "entities": [
+      "ent-079",
+      "ent-155",
+      "ent-172"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-332",
+    "content": "网易与比亚迪在西安达成战略合作。",
+    "entities": [
+      "ent-077",
+      "ent-090",
+      "ent-052"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-333",
+    "content": "李彦宏于2016年在上海出席浪潮信息的年度大会。",
+    "entities": [
+      "ent-027",
+      "ent-114",
+      "ent-042",
+      "ent-100"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-334",
+    "content": "周晓东在昆明主持年度大会。",
+    "entities": [
+      "ent-018",
+      "ent-065",
+      "ent-122"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-335",
+    "content": "马化腾于七月在深圳出席vivo的年度大会。",
+    "entities": [
+      "ent-029",
+      "ent-118",
+      "ent-044",
+      "ent-083"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-336",
+    "content": "中兴通讯在2023年上市无锡证券交易所。",
+    "entities": [
+      "ent-085",
+      "ent-104",
+      "ent-059"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-337",
+    "content": "孙佳在贵阳调研智能体应用。",
+    "entities": [
+      "ent-021",
+      "ent-069",
+      "ent-143"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-338",
+    "content": "程维在2018年参与拼多多组织的技术峰会。",
+    "entities": [
+      "ent-032",
+      "ent-111",
+      "ent-079"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-339",
+    "content": "李娜在2016年调任昆明负责拼多多业务。",
+    "entities": [
+      "ent-011",
+      "ent-114",
+      "ent-065",
+      "ent-079"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-340",
+    "content": "王慧文在深圳的小红书发表README文档。",
+    "entities": [
+      "ent-037",
+      "ent-044",
+      "ent-098",
+      "ent-191"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-341",
+    "content": "李娜使用SparkFox开发快手App。",
+    "entities": [
+      "ent-011",
+      "ent-176",
+      "ent-174"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-342",
+    "content": "百度发布淘宝集成SparkFox。",
+    "entities": [
+      "ent-074",
+      "ent-167",
+      "ent-176"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-343",
+    "content": "网易宣布收购小米。",
+    "entities": [
+      "ent-077",
+      "ent-080"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-344",
+    "content": "商汤科技在2022年上市哈尔滨证券交易所。",
+    "entities": [
+      "ent-091",
+      "ent-103",
+      "ent-064"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-345",
+    "content": "郑十在长沙参加了中兴通讯的产品发布会。",
+    "entities": [
+      "ent-008",
+      "ent-053",
+      "ent-085"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-346",
+    "content": "vivo在西安发布京东商城新一代版本。",
+    "entities": [
+      "ent-083",
+      "ent-052",
+      "ent-168"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-347",
+    "content": "孙七使用iPhone训练F1分数模型。",
+    "entities": [
+      "ent-005",
+      "ent-186",
+      "ent-158"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-348",
+    "content": "刘强东在沈阳发表检索增强生成主题演讲。",
+    "entities": [
+      "ent-034",
+      "ent-063",
+      "ent-145"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-349",
+    "content": "知乎完成组织调整轮次融资。",
+    "entities": [
+      "ent-097",
+      "ent-136"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-350",
+    "content": "周晓东使用Rust开发淘宝。",
+    "entities": [
+      "ent-018",
+      "ent-178",
+      "ent-167"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-351",
+    "content": "浪潮信息在昆明设立研发中心。",
+    "entities": [
+      "ent-100",
+      "ent-065"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-352",
+    "content": "海康威视与大疆创新在长沙达成战略合作。",
+    "entities": [
+      "ent-093",
+      "ent-086",
+      "ent-053"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-353",
+    "content": "周晓东在厦门的小红书发表用户手册。",
+    "entities": [
+      "ent-018",
+      "ent-057",
+      "ent-098",
+      "ent-194"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-354",
+    "content": "李娜在西安的美团发表用户手册。",
+    "entities": [
+      "ent-011",
+      "ent-052",
+      "ent-075",
+      "ent-194"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-355",
+    "content": "旷视科技在哈尔滨发布抖音新一代版本。",
+    "entities": [
+      "ent-092",
+      "ent-064",
+      "ent-162"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-356",
+    "content": "李四使用Visual Studio Code开发微信。",
+    "entities": [
+      "ent-002",
+      "ent-182",
+      "ent-161"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-357",
+    "content": "赵磊在珠海调研倒数排名融合应用。",
+    "entities": [
+      "ent-015",
+      "ent-066",
+      "ent-155"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-358",
+    "content": "周八在天津参加用户大会并演讲基准测试。",
+    "entities": [
+      "ent-006",
+      "ent-051",
+      "ent-138",
+      "ent-159"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-359",
+    "content": "大疆创新宣布收购哔哩哔哩。",
+    "entities": [
+      "ent-086",
+      "ent-096"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-360",
+    "content": "张朝阳在2017年参与海康威视组织的技术峰会。",
+    "entities": [
+      "ent-024",
+      "ent-113",
+      "ent-093"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-361",
+    "content": "快手与三六零联合投资召回率初创公司。",
+    "entities": [
+      "ent-095",
+      "ent-099",
+      "ent-156"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-362",
+    "content": "何小鹏使用GPU加速卡训练基准测试模型。",
+    "entities": [
+      "ent-040",
+      "ent-190",
+      "ent-159"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-363",
+    "content": "知乎在2016年上市海口证券交易所。",
+    "entities": [
+      "ent-097",
+      "ent-114",
+      "ent-070"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-364",
+    "content": "哔哩哔哩在2023年于广州举办黑客松。",
+    "entities": [
+      "ent-096",
+      "ent-104",
+      "ent-043",
+      "ent-133"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-365",
+    "content": "周鸿祎使用服务器训练人工智能模型。",
+    "entities": [
+      "ent-033",
+      "ent-189",
+      "ent-141"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-366",
+    "content": "浪潮信息与百度联合投资基准测试初创公司。",
+    "entities": [
+      "ent-100",
+      "ent-074",
+      "ent-159"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-367",
+    "content": "王芳与黄敏联合发起知识图谱开源项目。",
+    "entities": [
+      "ent-010",
+      "ent-016",
+      "ent-153"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-368",
+    "content": "百度宣布收购美团。",
+    "entities": [
+      "ent-074",
+      "ent-075"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-369",
+    "content": "王五在沈阳参加用户大会并演讲检索增强生成。",
+    "entities": [
+      "ent-003",
+      "ent-063",
+      "ent-138",
+      "ent-145"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-370",
+    "content": "黄敏与孙佳联合发起推理能力开源项目。",
+    "entities": [
+      "ent-016",
+      "ent-021",
+      "ent-150"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-371",
+    "content": "三六零发布API文档规范F1分数技术。",
+    "entities": [
+      "ent-099",
+      "ent-195",
+      "ent-158"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-372",
+    "content": "吴九使用Rust开发抖音。",
+    "entities": [
+      "ent-007",
+      "ent-178",
+      "ent-162"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-373",
+    "content": "拼多多在珠海设立研发中心。",
+    "entities": [
+      "ent-079",
+      "ent-066"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-374",
+    "content": "浪潮信息在2024年升级支付宝到新版本。",
+    "entities": [
+      "ent-100",
+      "ent-105",
+      "ent-166"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-375",
+    "content": "周八加入蔚来汽车担任核心工程师。",
+    "entities": [
+      "ent-006",
+      "ent-087"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-376",
+    "content": "马化腾在天津调研智能体应用。",
+    "entities": [
+      "ent-029",
+      "ent-051",
+      "ent-143"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-377",
+    "content": "蔚来汽车推出基于模型评测的新产品企业微信。",
+    "entities": [
+      "ent-087",
+      "ent-160",
+      "ent-165"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-378",
+    "content": "丁磊在上海发表人工智能主题演讲。",
+    "entities": [
+      "ent-031",
+      "ent-042",
+      "ent-141"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-379",
+    "content": "马云与赵六联合发起多模态开源项目。",
+    "entities": [
+      "ent-030",
+      "ent-004",
+      "ent-149"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-380",
+    "content": "旷视科技在一月上市昆明证券交易所。",
+    "entities": [
+      "ent-092",
+      "ent-116",
+      "ent-065"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-381",
+    "content": "王兴于2023年在无锡出席滴滴出行的年度大会。",
+    "entities": [
+      "ent-026",
+      "ent-104",
+      "ent-059",
+      "ent-078"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-382",
+    "content": "郑十离开阿里巴巴创立新公司。",
+    "entities": [
+      "ent-008",
+      "ent-072"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-383",
+    "content": "郑文博离开华为创立新公司。",
+    "entities": [
+      "ent-020",
+      "ent-081"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-384",
+    "content": "华为宣布收购百度。",
+    "entities": [
+      "ent-081",
+      "ent-074"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-385",
+    "content": "海康威视在东莞发布京东商城新一代版本。",
+    "entities": [
+      "ent-093",
+      "ent-067",
+      "ent-168"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-386",
+    "content": "旷视科技推出基于知识图谱的新产品支付宝。",
+    "entities": [
+      "ent-092",
+      "ent-153",
+      "ent-166"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-387",
+    "content": "联想宣布收购比亚迪。",
+    "entities": [
+      "ent-084",
+      "ent-090"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-388",
+    "content": "李四使用SparkFox开发淘宝。",
+    "entities": [
+      "ent-002",
+      "ent-176",
+      "ent-167"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-389",
+    "content": "李开复与张涛联合发起大模型开源项目。",
+    "entities": [
+      "ent-023",
+      "ent-038",
+      "ent-142"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-390",
+    "content": "何小鹏在合肥主持生态大会。",
+    "entities": [
+      "ent-040",
+      "ent-061",
+      "ent-140"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-391",
+    "content": "马化腾在十月参与京东组织的技术峰会。",
+    "entities": [
+      "ent-029",
+      "ent-119",
+      "ent-076"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-392",
+    "content": "三六零完成公司上市轮次融资。",
+    "entities": [
+      "ent-099",
+      "ent-125"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-393",
+    "content": "周晓东在天津的哔哩哔哩发表README文档。",
+    "entities": [
+      "ent-018",
+      "ent-051",
+      "ent-096",
+      "ent-191"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-394",
+    "content": "三六零在一月上市青岛证券交易所。",
+    "entities": [
+      "ent-099",
+      "ent-116",
+      "ent-054"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-395",
+    "content": "刘洋在2015年参与小红书组织的技术峰会。",
+    "entities": [
+      "ent-012",
+      "ent-115",
+      "ent-098"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-396",
+    "content": "李娜使用个人电脑训练向量数据库模型。",
+    "entities": [
+      "ent-011",
+      "ent-188",
+      "ent-146"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-397",
+    "content": "张一鸣在2025年调任合肥负责旷视科技业务。",
+    "entities": [
+      "ent-025",
+      "ent-106",
+      "ent-061",
+      "ent-092"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-398",
+    "content": "理想汽车宣布收购哔哩哔哩。",
+    "entities": [
+      "ent-088",
+      "ent-096"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-399",
+    "content": "华为在2025年举办组织调整，周晓东担任主讲。",
+    "entities": [
+      "ent-081",
+      "ent-106",
+      "ent-136",
+      "ent-018"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-400",
+    "content": "雷军在青岛参加对外投资并演讲人工智能。",
+    "entities": [
+      "ent-028",
+      "ent-054",
+      "ent-130",
+      "ent-141"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-401",
+    "content": "张涛在珠海主持战略合作。",
+    "entities": [
+      "ent-038",
+      "ent-066",
+      "ent-129"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-402",
+    "content": "小红书在十月升级百度搜索到新版本。",
+    "entities": [
+      "ent-098",
+      "ent-119",
+      "ent-175"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-403",
+    "content": "丁磊与孙七联合发起召回率开源项目。",
+    "entities": [
+      "ent-031",
+      "ent-005",
+      "ent-156"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-404",
+    "content": "王五在南京的华为发表用户手册。",
+    "entities": [
+      "ent-003",
+      "ent-048",
+      "ent-081",
+      "ent-194"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-405",
+    "content": "OPPO在四月举办组织调整，王慧文担任主讲。",
+    "entities": [
+      "ent-082",
+      "ent-117",
+      "ent-136",
+      "ent-037"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-406",
+    "content": "郑十在青岛的浪潮信息发表用户手册。",
+    "entities": [
+      "ent-008",
+      "ent-054",
+      "ent-100",
+      "ent-194"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-407",
+    "content": "浪潮信息在合肥设立研发中心。",
+    "entities": [
+      "ent-100",
+      "ent-061"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-408",
+    "content": "张一鸣在昆明主持融资轮次。",
+    "entities": [
+      "ent-025",
+      "ent-065",
+      "ent-124"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-409",
+    "content": "OPPO在2016年举办对外投资，王兴担任主讲。",
+    "entities": [
+      "ent-082",
+      "ent-114",
+      "ent-130",
+      "ent-026"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-410",
+    "content": "吴志远在珠海参加了腾讯的产品发布会。",
+    "entities": [
+      "ent-019",
+      "ent-066",
+      "ent-071"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-411",
+    "content": "周鸿祎在长沙参加组织调整并演讲嵌入向量。",
+    "entities": [
+      "ent-033",
+      "ent-053",
+      "ent-136",
+      "ent-147"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-412",
+    "content": "哔哩哔哩与三六零联合投资推理能力初创公司。",
+    "entities": [
+      "ent-096",
+      "ent-099",
+      "ent-150"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-413",
+    "content": "李开复在济南的三六零发表技术规范。",
+    "entities": [
+      "ent-023",
+      "ent-062",
+      "ent-099",
+      "ent-193"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-414",
+    "content": "李斌在2025年访问北京的网易总部。",
+    "entities": [
+      "ent-039",
+      "ent-106",
+      "ent-041",
+      "ent-077"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-415",
+    "content": "程维在2022年访问南京的vivo总部。",
+    "entities": [
+      "ent-032",
+      "ent-103",
+      "ent-048",
+      "ent-083"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-416",
+    "content": "赵六在合肥的字节跳动发表设计文档。",
+    "entities": [
+      "ent-004",
+      "ent-061",
+      "ent-073",
+      "ent-192"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-417",
+    "content": "大疆创新在大连设立研发中心。",
+    "entities": [
+      "ent-086",
+      "ent-056"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-418",
+    "content": "小米发布钉钉集成Git。",
+    "entities": [
+      "ent-080",
+      "ent-164",
+      "ent-183"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-419",
+    "content": "雷军于七月在沈阳出席网易的年度大会。",
+    "entities": [
+      "ent-028",
+      "ent-118",
+      "ent-063",
+      "ent-077"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-420",
+    "content": "李开复在北京的字节跳动发表API文档。",
+    "entities": [
+      "ent-023",
+      "ent-041",
+      "ent-073",
+      "ent-195"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-421",
+    "content": "梁建章使用iPhone训练多模态模型。",
+    "entities": [
+      "ent-036",
+      "ent-186",
+      "ent-149"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-422",
+    "content": "小红书推出基于嵌入向量的新产品抖音。",
+    "entities": [
+      "ent-098",
+      "ent-147",
+      "ent-162"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-423",
+    "content": "周八加入理想汽车担任核心工程师。",
+    "entities": [
+      "ent-006",
+      "ent-088"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-424",
+    "content": "周八在上海参加了科大讯飞的产品发布会。",
+    "entities": [
+      "ent-006",
+      "ent-042",
+      "ent-094"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-425",
+    "content": "李彦宏在秋季访问天津的蔚来汽车总部。",
+    "entities": [
+      "ent-027",
+      "ent-109",
+      "ent-051",
+      "ent-087"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-426",
+    "content": "小鹏汽车在上半年于无锡举办媒体沟通会。",
+    "entities": [
+      "ent-089",
+      "ent-120",
+      "ent-059",
+      "ent-134"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-427",
+    "content": "张涛于2025年在贵阳出席美团的年度大会。",
+    "entities": [
+      "ent-038",
+      "ent-106",
+      "ent-069",
+      "ent-075"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-428",
+    "content": "浪潮信息在2017年升级美团外卖到新版本。",
+    "entities": [
+      "ent-100",
+      "ent-113",
+      "ent-169"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-429",
+    "content": "快手在厦门设立研发中心。",
+    "entities": [
+      "ent-095",
+      "ent-057"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-430",
+    "content": "滴滴出行在南京设立研发中心。",
+    "entities": [
+      "ent-078",
+      "ent-048"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-431",
+    "content": "蔚来汽车与小红书联合投资Transformer架构初创公司。",
+    "entities": [
+      "ent-087",
+      "ent-098",
+      "ent-148"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-432",
+    "content": "张朝阳在哈尔滨调研多跳检索应用。",
+    "entities": [
+      "ent-024",
+      "ent-064",
+      "ent-154"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-433",
+    "content": "赵六在2025年参与华为组织的技术峰会。",
+    "entities": [
+      "ent-004",
+      "ent-106",
+      "ent-081"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-434",
+    "content": "吴志远在武汉发表倒数排名融合主题演讲。",
+    "entities": [
+      "ent-019",
+      "ent-047",
+      "ent-155"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-435",
+    "content": "雷军在武汉发表准确率主题演讲。",
+    "entities": [
+      "ent-028",
+      "ent-047",
+      "ent-157"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-436",
+    "content": "张伟加入滴滴出行担任核心工程师。",
+    "entities": [
+      "ent-009",
+      "ent-078"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-437",
+    "content": "小红书与知乎在沈阳达成战略合作。",
+    "entities": [
+      "ent-098",
+      "ent-097",
+      "ent-063"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-438",
+    "content": "王兴与马云联合发起多模态开源项目。",
+    "entities": [
+      "ent-026",
+      "ent-030",
+      "ent-149"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-439",
+    "content": "王芳在福州调研多模态应用。",
+    "entities": [
+      "ent-010",
+      "ent-060",
+      "ent-149"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-440",
+    "content": "林明使用iPhone训练倒数排名融合模型。",
+    "entities": [
+      "ent-017",
+      "ent-186",
+      "ent-155"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-441",
+    "content": "联想宣布收购理想汽车。",
+    "entities": [
+      "ent-084",
+      "ent-088"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-442",
+    "content": "刘强东在2022年调任宁波负责OPPO业务。",
+    "entities": [
+      "ent-034",
+      "ent-103",
+      "ent-058",
+      "ent-082"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-443",
+    "content": "李斌与李彦宏联合发起模型微调开源项目。",
+    "entities": [
+      "ent-039",
+      "ent-027",
+      "ent-151"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-444",
+    "content": "科大讯飞在昆明发布快手App新一代版本。",
+    "entities": [
+      "ent-094",
+      "ent-065",
+      "ent-174"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-445",
+    "content": "阿里巴巴与理想汽车联合投资倒数排名融合初创公司。",
+    "entities": [
+      "ent-072",
+      "ent-088",
+      "ent-155"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-446",
+    "content": "vivo发布API文档规范召回率技术。",
+    "entities": [
+      "ent-083",
+      "ent-195",
+      "ent-156"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-447",
+    "content": "马化腾在春季调任广州负责小米业务。",
+    "entities": [
+      "ent-029",
+      "ent-107",
+      "ent-043",
+      "ent-080"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-448",
+    "content": "郑十加入科大讯飞担任核心工程师。",
+    "entities": [
+      "ent-008",
+      "ent-094"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-449",
+    "content": "黄峥与陈静通过百度搜索协作完成模型微调项目。",
+    "entities": [
+      "ent-035",
+      "ent-013",
+      "ent-175",
+      "ent-151"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-450",
+    "content": "郑文博在一月调任海口负责网易业务。",
+    "entities": [
+      "ent-020",
+      "ent-116",
+      "ent-070",
+      "ent-077"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-451",
+    "content": "丁磊于上半年在佛山出席商汤科技的年度大会。",
+    "entities": [
+      "ent-031",
+      "ent-120",
+      "ent-068",
+      "ent-091"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-452",
+    "content": "网易在昆明发布淘宝新一代版本。",
+    "entities": [
+      "ent-077",
+      "ent-065",
+      "ent-167"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-453",
+    "content": "比亚迪在2020年于福州举办组织调整。",
+    "entities": [
+      "ent-090",
+      "ent-101",
+      "ent-060",
+      "ent-136"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-454",
+    "content": "旷视科技推出基于强化学习的新产品滴滴出行App。",
+    "entities": [
+      "ent-092",
+      "ent-152",
+      "ent-170"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-455",
+    "content": "OPPO在上半年于珠海举办战略升级。",
+    "entities": [
+      "ent-082",
+      "ent-120",
+      "ent-066",
+      "ent-135"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-456",
+    "content": "科大讯飞与商汤科技联合投资记忆系统初创公司。",
+    "entities": [
+      "ent-094",
+      "ent-091",
+      "ent-144"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-457",
+    "content": "联想与知乎在广州达成战略合作。",
+    "entities": [
+      "ent-084",
+      "ent-097",
+      "ent-043"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-458",
+    "content": "黄峥于夏季在无锡出席小鹏汽车的年度大会。",
+    "entities": [
+      "ent-035",
+      "ent-108",
+      "ent-059",
+      "ent-089"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-459",
+    "content": "何小鹏使用服务器训练模型评测模型。",
+    "entities": [
+      "ent-040",
+      "ent-189",
+      "ent-160"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-460",
+    "content": "马云离开vivo创立新公司。",
+    "entities": [
+      "ent-030",
+      "ent-083"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-461",
+    "content": "小鹏汽车在四月上市广州证券交易所。",
+    "entities": [
+      "ent-089",
+      "ent-117",
+      "ent-043"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-462",
+    "content": "张涛与郑十联合发起多跳检索开源项目。",
+    "entities": [
+      "ent-038",
+      "ent-008",
+      "ent-154"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-463",
+    "content": "字节跳动于2016年开源Rust项目。",
+    "entities": [
+      "ent-073",
+      "ent-114",
+      "ent-178"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-464",
+    "content": "雷军在昆明的滴滴出行发表用户手册。",
+    "entities": [
+      "ent-028",
+      "ent-065",
+      "ent-078",
+      "ent-194"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-465",
+    "content": "联想与大疆创新在合肥达成战略合作。",
+    "entities": [
+      "ent-084",
+      "ent-086",
+      "ent-061"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-466",
+    "content": "大疆创新与腾讯在大连达成战略合作。",
+    "entities": [
+      "ent-086",
+      "ent-071",
+      "ent-056"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-467",
+    "content": "字节跳动在南京设立研发中心。",
+    "entities": [
+      "ent-073",
+      "ent-048"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-468",
+    "content": "孙佳加入科大讯飞担任核心工程师。",
+    "entities": [
+      "ent-021",
+      "ent-094"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-469",
+    "content": "快手完成新品发布会轮次融资。",
+    "entities": [
+      "ent-095",
+      "ent-128"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-470",
+    "content": "腾讯宣布收购小米。",
+    "entities": [
+      "ent-071",
+      "ent-080"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-471",
+    "content": "华为在西安发布知乎App新一代版本。",
+    "entities": [
+      "ent-081",
+      "ent-052",
+      "ent-172"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-472",
+    "content": "三六零在2024年举办对外投资，张一鸣担任主讲。",
+    "entities": [
+      "ent-099",
+      "ent-105",
+      "ent-130",
+      "ent-025"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-473",
+    "content": "王五在福州的网易发表设计文档。",
+    "entities": [
+      "ent-003",
+      "ent-060",
+      "ent-077",
+      "ent-192"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-474",
+    "content": "旷视科技在南京设立研发中心。",
+    "entities": [
+      "ent-092",
+      "ent-048"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-475",
+    "content": "吴志远与梁建章联合发起召回率开源项目。",
+    "entities": [
+      "ent-019",
+      "ent-036",
+      "ent-156"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-476",
+    "content": "华为在2023年升级飞书到新版本。",
+    "entities": [
+      "ent-081",
+      "ent-104",
+      "ent-163"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-477",
+    "content": "林明在合肥调研倒数排名融合应用。",
+    "entities": [
+      "ent-017",
+      "ent-061",
+      "ent-155"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-478",
+    "content": "马化腾在重庆参加媒体沟通会并演讲多模态。",
+    "entities": [
+      "ent-029",
+      "ent-049",
+      "ent-134",
+      "ent-149"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-479",
+    "content": "快手在春季升级哔哩哔哩App到新版本。",
+    "entities": [
+      "ent-095",
+      "ent-107",
+      "ent-173"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-480",
+    "content": "张涛在2022年参与理想汽车组织的技术峰会。",
+    "entities": [
+      "ent-038",
+      "ent-103",
+      "ent-088"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-481",
+    "content": "王芳与林明联合发起多跳检索开源项目。",
+    "entities": [
+      "ent-010",
+      "ent-017",
+      "ent-154"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-482",
+    "content": "孙七在四月参与小鹏汽车组织的技术峰会。",
+    "entities": [
+      "ent-005",
+      "ent-117"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-483",
+    "content": "比亚迪宣布收购快手。",
+    "entities": [
+      "ent-090",
+      "ent-095"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-484",
+    "content": "雷军在沈阳参加新品发布会并演讲大模型。",
+    "entities": [
+      "ent-028",
+      "ent-063",
+      "ent-128",
+      "ent-142"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-485",
+    "content": "华为与理想汽车在佛山达成战略合作。",
+    "entities": [
+      "ent-081",
+      "ent-088",
+      "ent-068"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-486",
+    "content": "张三在郑州主持媒体沟通会。",
+    "entities": [
+      "ent-001",
+      "ent-055",
+      "ent-134"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-487",
+    "content": "王兴加入大疆创新担任核心工程师。",
+    "entities": [
+      "ent-026",
+      "ent-086"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-488",
+    "content": "滴滴出行与腾讯联合投资倒数排名融合初创公司。",
+    "entities": [
+      "ent-078",
+      "ent-071",
+      "ent-155"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-489",
+    "content": "王兴与李开复联合发起多模态开源项目。",
+    "entities": [
+      "ent-026",
+      "ent-023",
+      "ent-149"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-490",
+    "content": "孙佳在贵阳主持媒体沟通会。",
+    "entities": [
+      "ent-021",
+      "ent-069",
+      "ent-134"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-491",
+    "content": "张朝阳加入vivo担任核心工程师。",
+    "entities": [
+      "ent-024",
+      "ent-083"
+    ],
+    "hop": 1
+  },
+  {
+    "id": "evt-492",
+    "content": "钱学森在长沙参加战略收购并演讲记忆系统。",
+    "entities": [
+      "ent-022",
+      "ent-053",
+      "ent-123",
+      "ent-144"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-493",
+    "content": "张朝阳在海口参加了滴滴出行的产品发布会。",
+    "entities": [
+      "ent-024",
+      "ent-070",
+      "ent-078"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-494",
+    "content": "三六零推出基于强化学习的新产品微信。",
+    "entities": [
+      "ent-099",
+      "ent-152",
+      "ent-161"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-495",
+    "content": "黄峥在武汉主持开源发布。",
+    "entities": [
+      "ent-035",
+      "ent-047",
+      "ent-139"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-496",
+    "content": "美团在2019年升级微信到新版本。",
+    "entities": [
+      "ent-075",
+      "ent-112",
+      "ent-161"
+    ],
+    "hop": 2
+  },
+  {
+    "id": "evt-497",
+    "content": "李娜在2024年访问苏州的美团总部。",
+    "entities": [
+      "ent-011",
+      "ent-105",
+      "ent-050",
+      "ent-075"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-498",
+    "content": "周鸿祎在上海的京东发表设计文档。",
+    "entities": [
+      "ent-033",
+      "ent-042",
+      "ent-076",
+      "ent-192"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-499",
+    "content": "吴九在西安参加融资轮次并演讲嵌入向量。",
+    "entities": [
+      "ent-007",
+      "ent-052",
+      "ent-124",
+      "ent-147"
+    ],
+    "hop": 3
+  },
+  {
+    "id": "evt-500",
+    "content": "美团与知乎联合投资Transformer架构初创公司。",
+    "entities": [
+      "ent-075",
+      "ent-097",
+      "ent-148"
+    ],
+    "hop": 2
+  }
+]

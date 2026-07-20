@@ -34,6 +34,7 @@
 
 pub mod atomic;
 pub mod multi;
+pub mod multi_es;
 pub mod multi_step;
 mod types;
 
@@ -123,4 +124,5 @@ pub struct SearchHit {
 
 pub use atomic::AtomicStrategy;
 pub use multi::MultiStrategy;
+pub use multi_es::MultiEsStrategy;
 
