@@ -34,6 +34,8 @@ const PublicCompanionRosterPage = React.lazy(() => import('@renderer/pages/publi
 const PublicAgentDetailPage = React.lazy(() => import('@renderer/pages/publicCompanion/PublicAgentDetailPage'));
 const KnowledgeListPage = React.lazy(() => import('@renderer/pages/knowledge/KnowledgeListPage'));
 const KnowledgeDetailPage = React.lazy(() => import('@renderer/pages/knowledge/KnowledgeDetailPage'));
+// SparkFox v1.1.0 第 12 波 / spec §三 11.3.1：知识图谱视图入口
+const KnowledgeGraphView = React.lazy(() => import('@renderer/views/KnowledgeGraphView'));
 const WorkshopListPage = React.lazy(() => import('@renderer/pages/workshop'));
 const WorkshopCanvasPage = React.lazy(() => import('@renderer/pages/workshop/CanvasPage'));
 const AssetLibraryPage = React.lazy(() => import('@renderer/pages/assets'));
@@ -254,6 +256,8 @@ const PanelRoute: React.FC<{ layout: React.ReactElement }> = ({ layout }) => {
           <Route path='/public-companions/:id' element={withRouteFallback(PublicAgentDetailPage)} />
           <Route path='/knowledge' element={withRouteFallback(KnowledgeListPage)} />
           <Route path='/knowledge/:id' element={withRouteFallback(KnowledgeDetailPage)} />
+          {/* SparkFox v1.1.0 第 12 波 / spec §三 11.3.1：知识图谱视图入口路由 */}
+          <Route path='/kb/:id/graph' element={withRouteFallback(KnowledgeGraphView)} />
           {/* 资产库 (Asset Library) — platform-level management of workshop assets. */}
           <Route path='/assets' element={withRouteFallback(AssetLibraryPage)} />
           {/* 创意工坊 (Creative Workshop) — infinite-canvas AI visual creation. */}

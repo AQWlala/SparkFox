@@ -34,6 +34,7 @@
 
 pub mod atomic;
 pub mod multi;
+pub mod multi_step;
 mod types;
 
 pub use types::EntityRef;

@@ -1,0 +1,41 @@
+/**
+ * KnowledgeGraphView 样式（spec §三 11.3.1 / 第 12 波并行 sub-step B）
+ *
+ * 仅定义图谱视图容器的最小布局：垂直 flex、居中、间距。
+ * 实际图谱节点 / 连线 / 力导布局由 11.3.2 阶段接入 d3 / @xyflow/react 实现。
+ */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100%;
+  box-sizing: border-box;
+  padding: 24px;
+  gap: 16px;
+}
+
+/* 顶部栏：标题 + 返回按钮 */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.title {
+  margin: 0;
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--color-text-1);
+}
+
+/* 占位卡片居中显示提示文案 */
+.placeholder {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-3);
+  font-size: 13px;
+}

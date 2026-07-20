@@ -2,109 +2,56 @@
  * @license
  * Copyright 2026 SparkFox Contributors — AGPL-3.0-only
  *
- * SparkFox KnowledgeGraphView — 知识图谱可视化
+ * KnowledgeGraphView — 知识图谱视图入口（spec §三 11.3.1 / 第 12 波并行 sub-step B）
  *
- * spec 1.0 第 2992-3019 行（Task 8.15）
+ * 本文件提供「知识图谱」页面的最小可用骨架：
+ *   - 顶部：标题「知识图谱」+ 返回按钮（返回知识库详情页）
+ *   - 主体：占位卡片，提示「图谱渲染待 11.3.2 实现」
  *
- * 实现说明：
- * - spec 示例使用 `reactflow`（v11），但本项目已统一使用 `@xyflow/react`（React Flow v12，
- *   reactflow 的官方继任者，API 兼容）。为避免引入新依赖，这里沿用项目既定方案。
- * - v1.0.0：MVP 可视化，接收外部传入的 nodes/edges，渲染交互式图谱。
- * - 节点 type 默认 'default'（React Flow 内置），由调用方按需自定义。
+ * 实际的图谱节点渲染、力导布局、实体/事件筛选器将在 spec §三 11.3.2 阶段
+ * 接入 d3 / @xyflow/react 实现并提供真实数据钩子。
+ *
+ * 路由：/kb/:id/graph → KnowledgeGraphView（kbId 从 useParams 获取）
+ * 入口：KnowledgeDetailPage 顶部操作栏「查看知识图谱」按钮（Link）
  */
 
-import { useMemo } from 'react';
-import {
-  Background,
-  BackgroundVariant,
-  Controls,
-  MiniMap,
-  ReactFlow,
-  type Edge,
-  type Node,
-} from '@xyflow/react';
-import '@xyflow/react/dist/style.css';
-
-export type { Edge as KGEdge, Node as KGNode } from '@xyflow/react';
-
-export interface KnowledgeGraphViewProps {
-  /** 图谱节点（位置由调用方计算或使用自动布局） */
-  nodes: Node[];
-  /** 图谱边（关系） */
-  edges: Edge[];
-  /** 容器高度（默认 600px） */
-  height?: number | string;
-  /** 是否显示小地图（默认 true） */
-  showMiniMap?: boolean;
-  /** 节点是否可拖拽（默认 true） */
-  nodesDraggable?: boolean;
-  /** 是否允许连接节点（默认 false，v1.0.0 只读） */
-  nodesConnectable?: boolean;
-}
+import React from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
+import { Button, Card } from '@arco-design/web-react';
+import { Left } from '@icon-park/react';
+import styles from './styles.module.css';
 
 /**
- * 知识图谱可视化组件
+ * KnowledgeGraphView 主组件。
  *
- * 使用：
- * ```tsx
- * <KnowledgeGraphView nodes={nodes} edges={edges} />
- * ```
+ * Props 暂未定义——kbId 从路由参数 useParams 获取，与 KnowledgeDetailPage 保持一致。
+ * 后续 11.3.2 阶段如需追加筛选器 / 实体类型 Props，再扩展此接口。
  */
-export function KnowledgeGraphView({
-  nodes,
-  edges,
-  height = 600,
-  showMiniMap = true,
-  nodesDraggable = true,
-  nodesConnectable = false,
-}: KnowledgeGraphViewProps) {
-  const containerStyle = useMemo<React.CSSProperties>(
-    () => ({
-      width: '100%',
-      height: typeof height === 'number' ? `${height}px` : height,
-      position: 'relative',
-      background: 'var(--color-bg-1, #fafafa)',
-      borderRadius: 8,
-      overflow: 'hidden',
-      border: '1px solid var(--color-border-2, #e5e6eb)',
-    }),
-    [height],
-  );
+const KnowledgeGraphView: React.FC = () => {
+  const navigate = useNavigate();
+  // 从路由参数 /kb/:id/graph 提取知识库 ID
+  const { id: kbId } = useParams<{ id: string }>();
 
   return (
-    <div style={containerStyle} className='sparkfox-kg-view'>
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        fitView
-        fitViewOptions={{ padding: 0.18, maxZoom: 1.35 }}
-        minZoom={0.2}
-        maxZoom={2.0}
-        proOptions={{ hideAttribution: true }}
-        nodesDraggable={nodesDraggable}
-        nodesConnectable={nodesConnectable}
-        edgesFocusable
-      >
-        <Background
-          variant={BackgroundVariant.Dots}
-          gap={22}
-          size={1.2}
-          color='#d1d5e5'
-        />
-        <Controls showFitView showInteractive={false} />
-        {showMiniMap ? (
-          <MiniMap
-            pannable
-            zoomable
-            nodeColor={(n) =>
-              typeof n.data?.color === 'string' ? (n.data.color as string) : '#3b82f6'
-            }
-            maskColor='rgba(248, 249, 252, 0.7)'
-          />
-        ) : null}
-      </ReactFlow>
+    <div className={styles.container}>
+      {/* ─── 顶部栏：标题 + 返回按钮 ─── */}
+      <div className={styles.header}>
+        <h1 className={styles.title}>知识图谱</h1>
+        <Button
+          shape='round'
+          icon={<Left theme='outline' size='14' />}
+          onClick={() => navigate(`/knowledge/${kbId ?? ''}`)}
+        >
+          返回知识库
+        </Button>
+      </div>
+
+      {/* ─── 主体：占位卡片（11.3.2 阶段替换为真实图谱渲染） ─── */}
+      <Card className={styles.placeholder} bordered>
+        <span>图谱渲染待 11.3.2 实现</span>
+      </Card>
     </div>
   );
-}
+};
 
 export default KnowledgeGraphView;

@@ -17,7 +17,7 @@
 
 import classNames from 'classnames';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { Link, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { parseKnowledgeBaseId } from '@/common/types/ids';
 import { useTranslation } from 'react-i18next';
 import type { TFunction } from 'i18next';
@@ -56,6 +56,7 @@ import {
   Search,
   SettingOne,
   SettingTwo,
+  ShareTwo,
   Upload,
 } from '@icon-park/react';
 import type { IKnowledgeBase, IKnowledgeTag, IKnowledgeTreeEntry } from '@/common/adapter/ipcBridge';
@@ -1067,6 +1068,16 @@ const KnowledgeDetailPage: React.FC = () => {
             >
               {t('knowledge.detail.search', { defaultValue: '检索' })}
             </Button>
+            {/* SparkFox v1.1.0 第 12 波 / spec §三 11.3.1：知识图谱入口按钮 */}
+            <Link to={`/kb/${id ?? ''}/graph`}>
+              <Button
+                shape='round'
+                icon={<ShareTwo theme='outline' size='14' />}
+                disabled={!id}
+              >
+                {t('knowledge.detail.viewGraph', { defaultValue: '查看知识图谱' })}
+              </Button>
+            </Link>
             <Button
               type='primary'
               shape='round'

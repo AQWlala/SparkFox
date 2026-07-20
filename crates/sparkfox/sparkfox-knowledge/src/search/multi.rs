@@ -1,15 +1,19 @@
-//! Sub-Step 10.8.2 — MULTI 检索策略（BFS 多跳扩展，spec §三 11.2.1 简化版）
+//! Sub-Step 10.8.2 + 11.1.1 — MULTI 检索策略（8 步骨架 + BFS 多跳扩展，spec §三 11.1 / 11.2.1）
 //!
-//! ## 设计原理
-//! MULTI 策略基于 SAG 的 `event_entity_relation` 双向索引（P-01），通过 BFS
-//! （广度优先搜索）从 seed entity 出发多跳扩展，发现间接关联的 events。
+//! ## 8 步骨架（11.1.1 引入）
+//! [`MultiStrategy::search`] 调用 [`super::multi_step`] 的 8 步流程：
+//! - **Step1** [`multi_step::step1_vectorize`]：query 向量化（mock embedding）
+//! - **Step2** [`multi_step::step2_extract_entities_with_jieba`]：query 实体抽取（jieba + 正则）
+//! - Step3-4：当前在 search 内部用 SQL 文本匹配代替（11.2.x 接入 HnswIndex + event_entity_relation）
+//! - **Step5**：保留 10.8.2 的 BFS 多跳扩展作为 multi 策略实现
+//! - Step6-7：BFS 内置去重 + 排序（11.2.x 接入 rerank 模型）
+//! - **Step8** [`multi_step::step8_build_result`]：返回 [`SearchResult`]
 //!
-//! ## BFS 多跳扩展流程
-//! 1. **Step 1（实体抽取）**：jieba 从 query 抽取实体文本 → 查 `entity.id`
-//! 2. **Step 2（hop=1）**：seed entity → `event_entity_relation` → 直接关联的 events
-//! 3. **Step 3（hop=2）**：hop1 event → 其他 entity → 这些 entity 的其他 events
-//! 4. **Step 4（hop=3）**：重复 Step 3，直到 `max_hop`（默认 3）
-//! 5. **Step 5（裁剪）**：按 hop 升序排序，取 `top_k`
+//! ## BFS 多跳扩展流程（10.8.2 保留）
+//! 1. **hop=1**：seed entity → `event_entity_relation` → 直接关联的 events
+//! 2. **hop=2**：hop1 event → 其他 entity → 这些 entity 的其他 events
+//! 3. **hop=3**：重复 Step 3，直到 `max_hop`（默认 3）
+//! 4. **裁剪**：按 hop 升序排序，取 `top_k`
 //!
 //! ## hop 含义
 //! - hop=1：seed entity 直接关联的 event（等价于 ATOMIC 检索）
@@ -46,6 +50,9 @@ use rusqlite::Connection;
 use sparkfox_core::{Error, Result};
 
 use crate::jieba_ner::JiebaNer;
+use super::multi_step::{
+    step1_vectorize, step2_extract_entities_with_jieba, step8_build_result, MultiState,
+};
 use super::{EntityRef, SearchHit, SearchResult, SearchStrategy};
 
 /// 查找与给定实体文本匹配的 `entity.id` 列表的 SQL 模板
@@ -148,11 +155,6 @@ impl MultiStrategy {
             top_k,
             max_hop,
         }
-    }
-
-    /// 从 query 提取实体文本（用于 SQL 匹配 `entity.name`）
-    fn extract_query_entities(&self, query: &str) -> Vec<String> {
-        self.jieba.extract(query).into_iter().map(|e| e.text).collect()
     }
 
     /// 查找与给定实体文本匹配的 `entity.id` 列表
@@ -434,37 +436,66 @@ impl SearchStrategy for MultiStrategy {
     async fn search(&self, query: &str) -> Result<SearchResult> {
         let start = Instant::now();
 
-        // 1. 从 query 提取实体文本
-        let entity_texts = self.extract_query_entities(query);
-        if entity_texts.is_empty() {
-            return Ok(SearchResult {
-                hits: Vec::new(),
-                latency_ms: start.elapsed().as_millis() as u64,
-                strategy_name: "multi".to_string(),
-            });
-        }
+        // 8 步流程骨架（spec §三 11.1）
+        //
+        // Step1: query 向量化（mock embedding，384 维）
+        //   - 当前为 mock，11.2.x 接入 bge-small-zh 真实 embedding
+        //   - query_vec 用于后续 Step3 的 HnswIndex 向量检索
+        let state = MultiState::new(query);
+        let state = step1_vectorize(state);
 
-        // 2. 查找匹配的 entity_id（seed entities）
-        let seed_entity_ids = self.find_entity_ids(&entity_texts)?;
-        if seed_entity_ids.is_empty() {
-            return Ok(SearchResult {
-                hits: Vec::new(),
-                latency_ms: start.elapsed().as_millis() as u64,
-                strategy_name: "multi".to_string(),
-            });
-        }
+        // Step2: query 实体抽取（jieba + 正则）
+        //   - 复用 self.jieba 避免每次 search 重新加载 jieba 词典（节省 ~50ms）
+        //   - 输出 Vec<EntityMention>，含 PERSON / ORGANIZATION / LOCATION / TIME / NUMBER
+        let state = step2_extract_entities_with_jieba(state, &self.jieba);
 
-        // 3. BFS 多跳扩展
-        let expansion = self.bfs_expand(&seed_entity_ids)?;
+        // Step3: 实体向量检索 — 当前用 SQL 文本匹配代替（11.2.x 接入 HnswIndex）
+        //   - 取 Step2 实体的 text 字段，在 entity 表中按 name / normalized_name 匹配
+        //   - 返回 entity_id 列表（seed entities）
+        let entity_texts: Vec<String> = state
+            .entities
+            .iter()
+            .map(|e| e.text.clone())
+            .collect();
+        let entity_ids = self.find_entity_ids(&entity_texts)?;
+        let mut state = state;
+        state.entity_ids = entity_ids.clone();
+        state
+            .thought_process
+            .push("Step3: 实体向量检索（text fallback，11.2.x 接入 HnswIndex）".to_string());
 
-        // 4. 构建 SearchHit 列表（按 hop 排序，取 top_k）
+        // Step4: 事件检索 — stub（11.2.x 实施 event_entity_relation 查询得到候选 event_ids）
+        state.candidates = Vec::new();
+        state
+            .thought_process
+            .push("Step4: 事件检索（stub，11.2.x 实施）".to_string());
+
+        // Step5: 三策略占位 — 当前复用 10.8.2 的 BFS 作为 multi 策略实现
+        //   - bfs_expand: 从 seed entities BFS 扩展 max_hop 跳内所有可达 events
+        //   - build_hits: 按 hop 升序排序 + score=1/hop 衰减 + 取 top_k
+        //   - 11.2.x 在此分支调用 multi / multi1 / hopllm 三策略
+        let expansion = self.bfs_expand(&entity_ids)?;
         let hits = self.build_hits(expansion)?;
+        state.hits = hits;
+        state
+            .thought_process
+            .push("Step5: multi 策略（10.8.2 BFS 多跳扩展）".to_string());
 
-        Ok(SearchResult {
-            hits,
-            latency_ms: start.elapsed().as_millis() as u64,
-            strategy_name: "multi".to_string(),
-        })
+        // Step6: 候选合并 + 去重 — BFS 内置 visited_events/visited_entities 去重
+        state
+            .thought_process
+            .push("Step6: 候选合并 + 去重（BFS 内置去重）".to_string());
+
+        // Step7: Rerank 重排 — build_hits 已按 hop 升序排序
+        //   - 11.2.x 接入 bge-reranker 重排模型
+        state
+            .thought_process
+            .push("Step7: Rerank 重排（按 hop 升序，11.2.x 接入 bge-reranker）".to_string());
+
+        // Step8: 返回 SearchResult（latency_ms 由调用方覆写）
+        let mut result = step8_build_result(state);
+        result.latency_ms = start.elapsed().as_millis() as u64;
+        Ok(result)
     }
 
     fn name(&self) -> &str {
