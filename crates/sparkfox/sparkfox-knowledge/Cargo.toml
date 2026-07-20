@@ -34,6 +34,12 @@ env_logger = "0.11"
 # Sub-Step 10.5.1：SearchStrategy trait 需 #[async_trait] 支持 dyn compatibility
 # （Box<dyn SearchStrategy> 要求 trait object-safe；原生 async fn in trait 不支持 dyn）
 async-trait = { workspace = true }
+# Sub-Step 11.6.1：HnswIndex 真实 HNSW 实现（替代/补充 sqlite-vec 作为向量索引引擎）
+# hnsw_rs 是纯 Rust HNSW 实现（无 C++ FFI 依赖），Windows 兼容。
+# 与 sparkfox-store::vector_index::hnsw::HnswIndex（暴力扫描占位）的区别：
+# - sparkfox-store：因 hnswlib-rs (C++ binding) Windows 编译失败，使用 HashMap 暴力扫描占位
+# - sparkfox-knowledge (本 crate)：使用 hnsw_rs 真实 HNSW 算法（pure Rust，Windows 可编译）
+hnsw_rs = "0.3"
 
 # 注意：sparkfox-knowledge 不直接依赖 sparkfox-store / sparkfox-embedding，
 # 因为 sparkfox-store 已依赖 sparkfox-knowledge（用于 ALL_SAG_DDL），

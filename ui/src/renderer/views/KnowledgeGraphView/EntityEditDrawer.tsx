@@ -2,21 +2,23 @@
  * @license
  * Copyright 2026 SparkFox Contributors — AGPL-3.0-only
  *
- * EntityEditDrawer — 实体编辑抽屉（spec §三 11.3.3 / 第 14 波并行 sub-step C）
+ * EntityEditDrawer — 实体编辑抽屉（spec §三 11.3.3 / 11.4.2 IPC 持久化）
  *
  * 本组件实现「实体编辑」抽屉，集成 Arco Design Drawer + Tabs：
  *   - 合并：将当前实体合并到目标实体（输入目标 entity_id）
  *   - 拆分：将当前实体拆分为多个新实体（输入新名称列表，逗号分隔）
  *   - 重命名：修改当前实体的 name（输入新名称）
  *
- * 范围说明：spec §三 11.3.3 原本包含「IPC 调用 + 持久化到 entity 表」，但本波
- * 仅实施前端 UI 部分（Drawer 组件 + 3 操作 tabs + PoC mock 回调），IPC 调用
- * 推迟到 11.4.x（与后端 entity 编辑命令同步实施）。这样本波可独立完成无后端依赖。
+ * 范围说明：spec §三 11.3.3 第 14 波仅实施前端 UI 部分（Drawer + 3 Tabs +
+ * PoC mock 回调）；Sub-Step 11.4.2 将 onMerge/onSplit/onRename 回调接入
+ * Tauri IPC（entity_merge / entity_split / entity_rename 命令），持久化到
+ * entity 表 + event_entity_relation 表。本组件仅触发回调 + console.log
+ * 调试日志，实际 IPC 调用 + 环境检测降级由父组件 index.tsx 实现。
  *
  * 调用契约：
  *   - 父组件传入 visible / entity / onClose / onMerge / onSplit / onRename
- *   - 提交后调用对应回调（PoC：console.log mock + onClose 关闭抽屉）
- *   - 实际持久化由 11.4.x 阶段的 IPC 命令实现（entity 表更新）
+ *   - 提交后调用对应回调（含 console.log 调试日志 + onClose 关闭抽屉）
+ *   - 实际持久化由 11.4.2 阶段的 IPC 命令实现（entity 表更新，父组件负责 invoke）
  */
 
 import React, { useState } from 'react';
@@ -30,9 +32,9 @@ import styles from './EntityEditDrawer.module.css';
  * - visible：抽屉是否可见（受控）
  * - entity：当前选中的节点（GraphNode | null）
  * - onClose：关闭抽屉回调
- * - onMerge：合并回调（sourceId → targetId），PoC 阶段父组件 console.log + 关闭抽屉
- * - onSplit：拆分回调（sourceId → newNames[]），PoC 阶段同上
- * - onRename：重命名回调（entityId → newName），PoC 阶段同上
+ * - onMerge：合并回调（sourceId → targetId），11.4.2 父组件 invoke entity_merge + 刷新图谱
+ * - onSplit：拆分回调（sourceId → newNames[]），11.4.2 父组件 invoke entity_split + 刷新图谱
+ * - onRename：重命名回调（entityId → newName），11.4.2 父组件 invoke entity_rename + 刷新图谱
  */
 export interface EntityEditDrawerProps {
   visible: boolean;
@@ -53,8 +55,8 @@ export interface EntityEditDrawerProps {
  *
  * 提交逻辑（每个 tab）：
  *   - 校验 entity 非空
- *   - 调用对应的 onMerge / onSplit / onRename 回调
- *   - 通过 console.log 打印 PoC 操作日志（11.4.x 阶段替换为 IPC 调用）
+ *   - 调用对应的 onMerge / onSplit / onRename 回调（父组件 11.4.2 实现 IPC invoke）
+ *   - 通过 console.log 打印调试日志（保留用于追溯 + 测试断言）
  *   - 重置表单 + 关闭抽屉
  */
 const EntityEditDrawer: React.FC<EntityEditDrawerProps> = ({

@@ -3603,10 +3603,10 @@
 | 11.3.2 | 11 类着色 + 图例 | 1.0 | P0 | ✅ | subagent C | 2026-07-20 | 2026-07-20 | 第十三波：ENTITY_TYPE_COLORS 11 类互异 + GraphCanvas SVG 渲染 + 节点上限 1000 |
 | 11.3.3 | EntityEditDrawer 编辑（合并/拆分/重命名） | 2.0 | P0 | ✅ | subagent C | 2026-07-20 | 2026-07-20 | 第十四波：Drawer + 3 Tabs（合并/拆分/重命名）+ onMerge/onSplit/onRename 回调 + KGView 集成 |
 | 11.4.1 | 数据契约 + react-flow | 2.0 | P0 | ✅ | subagent C | 2026-07-20 | 2026-07-20 | 第十五波：graphContract.ts（GraphNodeDTO/GraphEdgeDTO/GraphData）+ GraphFlow.tsx（@xyflow/react v12）+ 渲染模式切换 svg/flow |
-| 11.4.2 | EntityEditDrawer 基础 | 2.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
-| 11.5.1 | 多跳路径渲染 | 1.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
+| 11.4.2 | EntityEditDrawer 基础 | 2.0 | P0 | ✅ | subagent A | 2026-07-20 | 2026-07-20 | 第十六波：entity_ops.rs（merge/split/rename free function）+ sparkfox-ipc 3 Tauri command + 前端 invoke + isTauriRuntime 降级 |
+| 11.5.1 | 多跳路径渲染 | 1.0 | P0 | ✅ | subagent B | 2026-07-20 | 2026-07-20 | 第十六波：MultiHopPathView.tsx（Card+Steps+Tag）+ hop 颜色映射（hop1 蓝/hop2 黄/hop3 灰）+ via_entities Tag + score 显示 + 关闭回调 |
 | 11.5.2 | hop/via_entities 展示 | 1.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
-| 11.6.1 | hnswlib-rs 集成 | 1.5 | P1 | ⬜ | ____ | ____ | ____ | ____ |
+| 11.6.1 | hnswlib-rs 集成 | 1.5 | P1 | ✅ | subagent C | 2026-07-20 | 2026-07-20 | 第十六波：hnsw_rs v0.3.4 纯 Rust（Windows 兼容）+ HnswIndex（M=16/ef_construction=200）+ Step3VectorIndex trait impl + 向量缓存持久化 |
 | 11.6.2 | 双向索引 + 优化 | 1.5 | P1 | ⬜ | ____ | ____ | ____ | ____ |
 | 11.7.1 | 索引优化 | 1.0 | P1 | ⬜ | ____ | ____ | ____ | ____ |
 | 11.7.2 | 端到端 < 1s 二次验证 | 1.0 | P1 | ⬜ | ____ | ____ | ____ | ____ |
@@ -3767,6 +3767,49 @@
 - `cd ui && bun test KnowledgeGraphView`：**23 pass + 0 fail + 124 expect() calls**（4 现有 index + 7 GraphCanvas + 6 EntityEditDrawer + 6 GraphFlow）
 
 **Task 11.x 进度**：12/18 已完成（11.2.1 矩阵修正 + 11.1.1 + 11.3.1 + 11.2.2 + 11.1.2 + 11.3.2 + 11.1.3 + 11.2.3 + 11.3.3 + 11.1.4 + 11.2.4 + 11.4.1），下一步进入第十六波（11.4.2 EntityEditDrawer IPC / 11.5.1 多跳路径渲染 / 11.5.2 hop/via_entities 展示）
+
+##### 第十六波（Task 11.x）完成报告 — 11.4.2 EntityEditDrawer IPC + 11.5.1 多跳路径渲染 + 11.6.1 hnswlib-rs 集成（3 路并行）
+
+> **完成日**：2026-07-20
+> **验收人**：主 agent
+> **执行方式**：3 个 subagent 并行（11.4.2 全栈 IPC / 11.5.1 前端多跳路径 / 11.6.1 后端 hnswlib-rs），目标隔离无文件冲突；同时主 agent 创建 GitHub Actions CI workflow
+
+| Sub-Step | 类型 | 文件 | 关键产出 | 状态 |
+|---|---|---|---|---|
+| 11.4.2 | 后端 / entity_ops | [crates/sparkfox/sparkfox-knowledge/src/entity_ops.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/src/entity_ops.rs) | 3 个 free function：`merge_entities`（事务原子性 + 转移关系 + 删除 source）/ `split_entity`（新建实体 + 继承 entity_type_id + round-robin 分配）/ `rename_entity`（更新 name + normalized_name） | ✅ |
+| 11.4.2 | 后端 / Tauri command | [crates/sparkfox/sparkfox-ipc/src/commands.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-ipc/src/commands.rs) | 3 个 `#[tauri::command] async fn`：`entity_merge` / `entity_split` / `entity_rename`，通过 `tauri::State<Mutex<Connection>>` 注入 SQLite | ✅ |
+| 11.4.2 | 后端 / TDD 测试 | [crates/sparkfox/sparkfox-knowledge/tests/entity_commands_test.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/tests/entity_commands_test.rs) | 6 测试：合并转移关系 / 合并删除 source / 拆分新建实体 / 拆分 round-robin 分配 / 重命名更新 name / 重命名保留 id | ✅ |
+| 11.4.2 | 前端 / invoke 调用 | [ui/src/renderer/views/KnowledgeGraphView/index.tsx](file:///d:/xin%20kaifa/SparkFox/ui/src/renderer/views/KnowledgeGraphView/index.tsx) | 3 个 handle 回调改为 `async` + `invoke()` + `isTauriRuntime()` 环境检测降级（dev 环境无 Tauri runtime 时降级到 console.log） | ✅ |
+| 11.5.1 | 前端 / 多跳路径组件 | [ui/src/renderer/views/KnowledgeGraphView/MultiHopPathView.tsx](file:///d:/xin%20kaifa/SparkFox/ui/src/renderer/views/KnowledgeGraphView/MultiHopPathView.tsx) | Card + Steps + Tag + Button + 关闭回调 + hop 颜色映射（hop1 蓝 #007aff / hop2 黄 #ff9500 / hop3 灰 #6e6e73）+ 内部 export 的 SearchHit / EntityRef 类型 | ✅ |
+| 11.5.1 | 前端 / 样式 | [ui/src/renderer/views/KnowledgeGraphView/MultiHopPathView.module.css](file:///d:/xin%20kaifa/SparkFox/ui/src/renderer/views/KnowledgeGraphView/MultiHopPathView.module.css) | hop 三色样式 + 占位 + Steps + score + via_entities 样式 | ✅ |
+| 11.5.1 | 前端 / TDD 测试 | [ui/src/renderer/views/KnowledgeGraphView/MultiHopPathView.test.tsx](file:///d:/xin%20kaifa/SparkFox/ui/src/renderer/views/KnowledgeGraphView/MultiHopPathView.test.tsx) | 6 测试：无 hit 占位 / Steps 渲染 / via_entities Tag / hop 颜色映射 / score 显示 / onClose 回调 | ✅ |
+| 11.5.1 | 前端 / KGView 集成 | [ui/src/renderer/views/KnowledgeGraphView/index.tsx](file:///d:/xin%20kaifa/SparkFox/ui/src/renderer/views/KnowledgeGraphView/index.tsx) | 新增 selectedHit / showPathView state + mockHitsByNodeId PoC 数据 + handleNodeClick 联动 + GraphFlow 下方渲染 MultiHopPathView | ✅ |
+| 11.6.1 | 后端 / 依赖 | [crates/sparkfox/sparkfox-knowledge/Cargo.toml](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/Cargo.toml) | 添加 `hnsw_rs = "0.3"` 依赖（实际解析 v0.3.4，纯 Rust 实现，Windows 兼容） | ✅ |
+| 11.6.1 | 后端 / HnswIndex | [crates/sparkfox/sparkfox-knowledge/src/index/hnsw_index.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/src/index/hnsw_index.rs) | HnswIndex struct（M=16 / max_layer=16 / ef_construction=200 / ef_search=max(k*2,100) / DistCosine）+ new/insert/insert_batch/search/save/load/len/is_empty + Step3VectorIndex trait impl | ✅ |
+| 11.6.1 | 后端 / 模块注册 | [crates/sparkfox/sparkfox-knowledge/src/index/mod.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/src/index/mod.rs) | 新建 index 模块 + `pub mod hnsw_index;` + 双引擎策略文档 | ✅ |
+| 11.6.1 | 后端 / TDD 测试 | [crates/sparkfox/sparkfox-knowledge/tests/hnsw_index_test.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/tests/hnsw_index_test.rs) | 6 集成测试 + 5 内联单元测试：空索引 / 单条插入 / 批量插入 / kNN 检索 / 距离升序 / save+load | ✅ |
+| - | DevOps / CI | [.github/workflows/ci.yml](file:///d:/xin%20kaifa/SparkFox/.github/workflows/ci.yml) | GitHub Actions CI workflow（push/PR 触发）— frontend job（typecheck + bun test）+ backend job（cargo test sparkfox-knowledge）+ lint job（clippy） | ✅ |
+
+**第十六波合计**：3 个 sub-step / 8 个新增文件 + 6 个修改文件 + 1 个 CI workflow / 17 个新测试（6 后端 entity_ops + 6 前端 MultiHopPathView + 6 后端 HnswIndex 集成 + 5 HnswIndex 内联单元 = 23 新测试）/ 0 typecheck 错误 / 0 回归测试失败。
+
+**关键设计决策**：
+1. **entity_ops.rs free function 设计**（11.4.2）：3 个公开 free function（不依赖 Tauri runtime），可独立单元测试。`merge_entities` 用事务保证原子性（BEGIN/COMMIT/ROLLBACK），`split_entity` 按 event_id ASC 排序后 round-robin 分配保证可重现
+2. **Tauri command 注册位置**（11.4.2）：原 spec 提到 `sparkfox-be-app/src/commands.rs`，但实际 `sparkfox-be-app/src/commands/` 是 CLI 子命令实现。真正的 Tauri command 在 `sparkfox-ipc/src/commands.rs`（Task 7.1.2 创建的 10 个占位 command 所在地）
+3. **isTauriRuntime 环境检测降级**（11.4.2）：前端 invoke 调用前用 `isTauriRuntime()` 检测，dev 环境（无 Tauri runtime）降级到 console.log，避免 invoke 抛出异常阻塞 UI
+4. **SearchHit 类型在 MultiHopPathView 内部 export**（11.5.1）：避免修改 types.ts（保留并行 subagent 边界），同时通过 export 让父组件 index.tsx 可 `import type { SearchHit }` 共享类型
+5. **HOP_COLOR_MAP 与 ReasoningChainPanel 颜色一致**（11.5.1）：`hop1=#007aff 蓝 / hop2=#ff9500 黄 / hop3=#6e6e73 灰` 完全对齐 ReasoningChainPanel.module.css，跨视图统一视觉记忆
+6. **mockHitsByNodeId useMemo 派生**（11.5.1）：5 个节点对应 5 个 mock hit（hop1/hop2/hop3 各覆盖），与 nodes/edges 在同一组件维护，11.4.2/11.6.x 阶段可直接替换为真实 IPC 数据
+7. **hnsw_rs 纯 Rust 选型**（11.6.1）：spec 提到 hnswlib-rs（C++ binding），但 Windows 编译失败。改用 hnsw_rs v0.3.4（纯 Rust），Windows 兼容、无 C++ FFI 依赖
+8. **Step3VectorIndex trait 集成**（11.6.1）：HnswIndex 实现 Step3VectorIndex trait（定义于 multi_step.rs:204）。语义转换：HnswIndex::search 返回 (entity_id, distance)，trait 期望 (id, score)，转换公式 `similarity = 1.0 - distance`
+9. **向量缓存持久化策略**（11.6.1）：因 `forbid(unsafe_code)` 无法用 unsafe 提升 HnswIo 生命周期，采用「向量缓存 + 重建图」策略。save() 序列化 dim/count/id_map/vectors 到二进制文件（magic=b"SFHW"），load() 重新 insert 所有向量重建 HNSW 图。代价：100k 向量 load 约 1-3s（启动期一次性开销，可接受）
+10. **CI workflow 三 job 设计**（主 agent）：frontend job（typecheck + bun test）/ backend job（cargo test sparkfox-knowledge）/ lint job（clippy）。push/PR 触发，Windows runner 优先（项目主要 Windows 开发）
+
+**回归验证**：
+- `cargo test -p sparkfox-knowledge --tests`：**162 passed + 1 ignored + 0 failed**（含 11.4.2 新增 6 entity_commands + 11.6.1 新增 6 hnsw_index 集成 + 5 hnsw_index 内联单元）
+- `cd SparkFox && bun run typecheck`：**exit code 0，0 个 TS 错误**
+- `cd ui && bun test KnowledgeGraphView`：**29 pass + 0 fail + 147 expect() calls**（4 现有 index + 7 GraphCanvas + 6 EntityEditDrawer + 6 GraphFlow + 6 MultiHopPathView）
+
+**Task 11.x 进度**：15/18 已完成（5/6 进度），下一步进入第十七波（11.5.2 hop/via_entities 展示 / 11.6.2 双向索引 + 优化 / 11.7.1 索引优化 / 11.7.2 端到端 < 1s 二次验证）
 
 #### 4.1.3 Task 12.x 系列（34.0d，17 个 sub-step）
 

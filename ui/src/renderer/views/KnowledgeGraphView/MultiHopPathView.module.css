@@ -1,0 +1,144 @@
+/**
+ * @license
+ * Copyright 2026 SparkFox Contributors — AGPL-3.0-only
+ *
+ * MultiHopPathView 样式（spec §三 11.5.1 / 第 16 波并行 sub-step B）
+ *
+ * 设计要点（与 ReasoningChainPanel.module.css 颜色映射保持一致）：
+ *   - hop1 = 蓝色（ATOMIC 单跳，--sf-primary 系统蓝 #007aff）
+ *   - hop2 = 黄色（MULTI 二跳扩展，--sf-warning 橙黄 #ff9500）
+ *   - hop3 = 灰色（MULTI 三跳及以上，中性灰 #6e6e73）
+ *
+ * 通过 .hop1 / .hop2 / .hop3 三个类名注入 Arco Steps.Step 的 className 实现
+ * hop 步骤的颜色区分。配色与 ReasoningChainPanel 完全对齐，便于用户跨视图
+ * 形成「hop=1 蓝 / hop=2 黄 / hop=3 灰」的统一视觉记忆。
+ */
+
+/* ─── 主容器 ─── */
+
+.pathView {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px 16px;
+  background-color: var(--color-bg-1);
+  border: 1px solid var(--color-border-2);
+  border-radius: 12px;
+}
+
+/* 卡片标题栏：横向 flex（标题 + 关闭按钮） */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--color-border-2);
+  margin-bottom: 12px;
+}
+
+.title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-1);
+  margin: 0;
+}
+
+/* ─── 占位文案（无 hit 时显示） ─── */
+
+.placeholder {
+  text-align: center;
+  color: var(--color-text-3);
+  font-size: 13px;
+  padding: 24px 0;
+  letter-spacing: 0.04em;
+}
+
+/* ─── Arco Steps 容器（hop 步骤横向排列） ─── */
+
+.steps {
+  padding: 4px 0 12px;
+}
+
+/* ─── score 显示 ─── */
+
+.score {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-family: 'SF Mono', Menlo, monospace;
+  color: var(--color-text-2);
+  padding: 2px 8px;
+  background-color: var(--color-fill-2);
+  border-radius: 4px;
+  margin-top: 4px;
+}
+
+/* ─── via_entities Tag 区 ─── */
+
+.viaEntities {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding-top: 12px;
+  margin-top: 8px;
+  border-top: 1px dashed var(--color-border-2);
+}
+
+.viaEntitiesLabel {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-text-2);
+  white-space: nowrap;
+}
+
+.viaEntitiesList {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.viaEntityTag {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ─── hop 颜色：蓝 / 黄 / 灰（与 ReasoningChainPanel 完全一致） ─── */
+
+/* hop1 = 蓝色（ATOMIC 单跳） */
+.hop1 {
+  --hop-color: #007aff;
+  color: #007aff;
+  border-color: rgba(0, 122, 255, 0.4) !important;
+  background: rgba(0, 122, 255, 0.08) !important;
+}
+
+/* hop2 = 黄色（MULTI 二跳扩展） */
+.hop2 {
+  --hop-color: #ff9500;
+  color: #ff9500;
+  border-color: rgba(255, 149, 0, 0.4) !important;
+  background: rgba(255, 149, 0, 0.08) !important;
+}
+
+/* hop3 = 灰色（MULTI 三跳及以上） */
+.hop3 {
+  --hop-color: #6e6e73;
+  color: #6e6e73;
+  border-color: var(--color-border-2) !important;
+  background: var(--color-fill-2) !important;
+}
+
+/* ─── hop 徽章（每个 Step 内嵌的 hop 标识） ─── */
+
+.hopBadge {
+  display: inline-block;
+  font-size: 10px;
+  font-family: 'SF Mono', Menlo, monospace;
+  letter-spacing: 0.06em;
+  padding: 1px 6px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  margin-left: 6px;
+}

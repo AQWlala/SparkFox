@@ -40,6 +40,13 @@
 //!
 //! ## v1.1.0+ 范围
 //! 完整 SAG 5-table schema / 4 检索策略 / MULTI 8-step pipeline / E2EE 同步。
+//!
+//! ## v1.1.0 Sub-Step 11.4.2（EntityEditDrawer IPC 持久化）
+//! - [`entity_ops`]：3 个 free function（[`entity_ops::merge_entities`] /
+//!   [`entity_ops::split_entity`] / [`entity_ops::rename_entity`]），
+//!   直接操作 entity 表 + event_entity_relation 表，不依赖 Tauri runtime。
+//!   由 `sparkfox-ipc::commands` 的 3 个 `#[tauri::command]` 调用，
+//!   前端 `EntityEditDrawer.tsx` 通过 `invoke('entity_merge' | 'entity_split' | 'entity_rename')` 触发。
 
 #![forbid(unsafe_code)]
 
@@ -47,8 +54,12 @@ pub mod alias_table;
 pub mod chunk;
 pub mod citation;
 pub mod config;
+// Sub-Step 11.4.2: 实体编辑操作（merge / split / rename）free function 模块
+pub mod entity_ops;
 pub mod entity_normalize;
 pub mod extractor;
+// Sub-Step 11.6.1: HnswIndex（hnsw_rs 真实 HNSW 实现，替代/补充 sqlite-vec）
+pub mod index;
 pub mod jieba_ner;
 pub mod parser;
 pub mod processor;

@@ -3,9 +3,16 @@
 //! Task 7.1.2：定义约 10 个 Tauri command，覆盖 6 个 store（agentStore /
 //! memoryStore / monitorStore / hotspotStore / sceneStore + ChatView）。
 //!
+//! Sub-Step 11.4.2：新增 3 个 entity 编辑 command（`entity_merge` /
+//! `entity_split` / `entity_rename`），调用 `sparkfox_knowledge::entity_ops`
+//! free function，持久化到 entity 表 + event_entity_relation 表。
+//!
 //! # 设计原则
-//! - **占位实现**：不实际调用 sparkfox-knowledge / sparkfox-memory 等业务 crate，
-//!   避免循环依赖。仅定义 command 签名 + 返回占位结果。
+//! - **占位实现**：Task 7.1 的 10 个 command 不实际调用 sparkfox-knowledge /
+//!   sparkfox-memory 等业务 crate，避免循环依赖。仅定义 command 签名 + 返回占位结果。
+//! - **11.4.2 实装**：3 个 entity command 不再是占位，直接调用
+//!   `sparkfox_knowledge::entity_ops::{merge_entities, split_entity, rename_entity}`，
+//!   通过 `tauri::State<Mutex<rusqlite::Connection>>` 注入 SQLite 连接。
 //! - **标准签名**：所有 command 返回 `Result<T, String>`（Tauri 2 命令标准签名）。
 //! - **异步**：所有 command 为 `async fn`，便于后续接入真实异步业务逻辑。
 //!
@@ -22,10 +29,16 @@
 //! | `monitor_ack`         | monitorStore     | 确认告警                    |
 //! | `hotspot_track`       | hotspotStore     | 上报热点事件                |
 //! | `hotspot_list`        | hotspotStore     | 列出近期热点                |
+//! | `entity_merge`        | KnowledgeGraph   | 合并实体（11.4.2 实装）     |
+//! | `entity_split`        | KnowledgeGraph   | 拆分实体（11.4.2 实装）     |
+//! | `entity_rename`       | KnowledgeGraph   | 重命名实体（11.4.2 实装）   |
 
 #![forbid(unsafe_code)]
 
 use serde_json::Value;
+
+// Sub-Step 11.4.2: entity 编辑命令直接调用 sparkfox-knowledge::entity_ops free function
+use sparkfox_knowledge::entity_ops;
 
 /// 知识库检索 — 调用 sparkfox-knowledge::RagEngine（占位）
 ///
@@ -164,6 +177,91 @@ pub async fn hotspot_list() -> Result<Vec<Value>, String> {
     log::debug!("hotspot_list");
     // 占位：Phase 1 阶段接入 sparkfox-hotspot
     Ok(vec![])
+}
+
+// ============================================================================
+// Sub-Step 11.4.2 — entity 编辑命令（实装，非占位）
+// ============================================================================
+
+/// 合并实体 — 将 source_entity 的所有 event_entity_relation 关系转移到
+/// target_entity，然后删除 source_entity（含其残留 relations）。
+///
+/// # 参数
+/// - `db`: Tauri managed state（`Mutex<rusqlite::Connection>`）
+/// - `source_entity_id`: 被合并的源实体 id（合并后删除）
+/// - `target_entity_id`: 合并目标实体 id（保留并接收关系）
+///
+/// # 返回
+/// 成功返回 `Ok(())`；失败返回 `Err(String)`（含错误原因）
+///
+/// # 设计
+/// 直接调用 [`entity_ops::merge_entities`] free function，避免在 Tauri command
+/// 层重复实现 SQL 逻辑。事务原子性由 entity_ops 保证（BEGIN/COMMIT/ROLLBACK）。
+#[tauri::command]
+pub async fn entity_merge(
+    db: tauri::State<'_, std::sync::Mutex<rusqlite::Connection>>,
+    source_entity_id: String,
+    target_entity_id: String,
+) -> Result<(), String> {
+    log::debug!(
+        "entity_merge: source={source_entity_id}, target={target_entity_id}"
+    );
+    let conn = db.lock().map_err(|e| format!("Mutex lock 失败: {e}"))?;
+    entity_ops::merge_entities(&conn, &source_entity_id, &target_entity_id)
+        .map_err(|e| format!("entity_merge 失败: {e}"))
+}
+
+/// 拆分实体 — 将一个源实体拆分为多个新实体（关系按 round-robin 分配）。
+///
+/// # 参数
+/// - `db`: Tauri managed state（`Mutex<rusqlite::Connection>`）
+/// - `source_entity_id`: 被拆分的源实体 id（保留，不删除）
+/// - `new_names`: 新实体名称列表（至少 1 个）
+///
+/// # 返回
+/// 成功返回 `Ok(Vec<String>)`（新建实体 id 列表）；失败返回 `Err(String)`
+///
+/// # 设计
+/// 直接调用 [`entity_ops::split_entity`] free function。新实体继承源实体的
+/// `entity_type_id`；关系按 `ORDER BY event_id ASC` round-robin 分配以保证可重现。
+#[tauri::command]
+pub async fn entity_split(
+    db: tauri::State<'_, std::sync::Mutex<rusqlite::Connection>>,
+    source_entity_id: String,
+    new_names: Vec<String>,
+) -> Result<Vec<String>, String> {
+    log::debug!(
+        "entity_split: source={source_entity_id}, new_names={:?}",
+        new_names
+    );
+    let conn = db.lock().map_err(|e| format!("Mutex lock 失败: {e}"))?;
+    entity_ops::split_entity(&conn, &source_entity_id, &new_names)
+        .map_err(|e| format!("entity_split 失败: {e}"))
+}
+
+/// 重命名实体 — 更新 entity.name + entity.normalized_name（保留 id 不变）。
+///
+/// # 参数
+/// - `db`: Tauri managed state（`Mutex<rusqlite::Connection>`）
+/// - `entity_id`: 待重命名的实体 id
+/// - `new_name`: 新名称（将自动归一化为 normalized_name）
+///
+/// # 返回
+/// 成功返回 `Ok(())`；失败返回 `Err(String)`
+///
+/// # 设计
+/// 直接调用 [`entity_ops::rename_entity`] free function。归一化使用
+/// `DefaultEntityNormalizer`（trim + lowercase），与 EventSaver 写入侧一致。
+#[tauri::command]
+pub async fn entity_rename(
+    db: tauri::State<'_, std::sync::Mutex<rusqlite::Connection>>,
+    entity_id: String,
+    new_name: String,
+) -> Result<(), String> {
+    log::debug!("entity_rename: id={entity_id}, new_name={new_name}");
+    let conn = db.lock().map_err(|e| format!("Mutex lock 失败: {e}"))?;
+    entity_ops::rename_entity(&conn, &entity_id, &new_name)
+        .map_err(|e| format!("entity_rename 失败: {e}"))
 }
 
 // ============================================================================

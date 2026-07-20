@@ -8,6 +8,8 @@ description = "SparkFox Tauri IPC bridge"
 
 [dependencies]
 sparkfox-core = { path = "../sparkfox-core" }
+# Sub-Step 11.4.2: entity_merge / entity_split / entity_rename 命令调用 entity_ops free function
+sparkfox-knowledge = { path = "../sparkfox-knowledge" }
 # Task 7.1: Tauri 2 commands + events 桥接（仅用 #[tauri::command] 宏，无需 features）
 tauri = { version = "2" }
 serde = { workspace = true }
@@ -18,6 +20,12 @@ env_logger = "0.11"
 tokio = { workspace = true }
 # Task 8.7: TickResult 时间戳
 chrono = { workspace = true }
+# Sub-Step 11.4.2: entity_merge / entity_split / entity_rename 命令的 tauri::State<Mutex<Connection>>
+# （rusqlite::Connection 不是 Sync，需用 Mutex 包装才能作为 Tauri managed state）
+rusqlite = { workspace = true }
 
 [dev-dependencies]
 tokio = { workspace = true }
+# Sub-Step 11.4.2: 命令单元测试需要 in-memory SQLite + SAG schema
+rusqlite = { workspace = true }
+sparkfox-knowledge = { path = "../sparkfox-knowledge" }

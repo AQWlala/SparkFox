@@ -1,9 +1,10 @@
 /**
- * KnowledgeGraphView 样式（spec §三 11.3.1 / 11.3.2 / 11.4.1 / 第 13-15 波并行 sub-step C）
+ * KnowledgeGraphView 样式（spec §三 11.3.1 / 11.3.2 / 11.4.1 / 11.5.1 / 第 13-16 波并行 sub-step C/B）
  *
  * 11.3.1 阶段：定义图谱视图容器的最小布局（垂直 flex、居中、间距）。
  * 11.3.2 阶段：追加 GraphCanvas 画布、图例、PoC 提示样式。
  * 11.4.1 阶段：追加 GraphFlow 渲染模式切换栏 + 标签样式（@xyflow/react v12）。
+ * 11.5.1 阶段：追加 MultiHopPathView 容器外层样式（pathViewWrap，多跳路径视图包裹层）。
  *
  * 实际力导布局由 11.4.x 阶段接入 d3-force / elkjs 后实现。
  */
@@ -195,4 +196,15 @@
   font-weight: 600;
   color: var(--color-text-2);
   white-space: nowrap;
+}
+
+/* ─── 11.5.1 MultiHopPathView 外层容器样式（多跳路径视图包裹层） ─── */
+
+/* pathViewWrap：包裹 MultiHopPathView，提供上下间距与边框圆角 */
+.pathViewWrap {
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 4px;
+  border-radius: 12px;
+  /* 内层 MultiHopPathView 自带 Card 边框，此处不再重复 */
 }

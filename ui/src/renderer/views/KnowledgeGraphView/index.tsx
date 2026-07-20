@@ -2,7 +2,7 @@
  * @license
  * Copyright 2026 SparkFox Contributors — AGPL-3.0-only
  *
- * KnowledgeGraphView — 知识图谱视图入口（spec §三 11.3.1 / 11.3.2 / 11.3.3 / 11.4.1）
+ * KnowledgeGraphView — 知识图谱视图入口（spec §三 11.3.1 / 11.3.2 / 11.3.3 / 11.4.1 / 11.4.2）
  *
  * 本文件提供「知识图谱」页面的入口：
  *   - 顶部：标题「知识图谱」+ 返回按钮（返回知识库详情页）
@@ -16,9 +16,11 @@
  * 较重且需 v12 升级，第 13 波仅实施「11 类着色常量 + 图例组件 + 简单 SVG 节点展示」，
  * 实际 @xyflow/react 渲染推迟到 11.4.1（本波）。两种模式并存以便对比与回退。
  *
- * 范围说明：spec §三 11.3.3 原本包含「IPC 调用 + 持久化到 entity 表」，但本波仅实施
- * 前端 UI 部分（Drawer 组件 + 3 操作 tabs + PoC mock 回调），IPC 调用 + 持久化
- * 推迟到 11.4.x（与后端 entity 编辑命令同步实施）。
+ * Sub-Step 11.4.2：handleMerge / handleSplit / handleRename 三个回调接入 Tauri IPC
+ * （entity_merge / entity_split / entity_rename 命令），持久化到 entity 表 +
+ * event_entity_relation 表。通过 isTauriRuntime() 环境检测实现降级：
+ *   - Tauri 桌面环境：invoke() 调用后端命令 + 成功后刷新图谱数据
+ *   - Web/开发环境（无 Tauri 运行时）：降级为 console.log 调试日志，不阻塞 UI
  *
  * PoC 数据：使用 useState mock 5 个节点 + 4 条边，覆盖 5 种实体类型
  *   （PERSON / LOCATION / ORGANIZATION / TIME / EVENT）。
@@ -31,11 +33,17 @@ import React, { useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Card, Radio } from '@arco-design/web-react';
 import { Left } from '@icon-park/react';
+// Sub-Step 11.4.2：entity_merge / entity_split / entity_rename IPC 调用
+import { invoke } from '@tauri-apps/api/core';
+// Sub-Step 11.4.2：环境检测（Tauri 桌面 vs Web/开发环境）— 非 Tauri 环境降级 console.log
+import { isTauriRuntime } from '@/common/adapter/tauriRuntime';
 import GraphCanvas from './GraphCanvas';
 import GraphFlow from './GraphFlow';
 import EntityEditDrawer from './EntityEditDrawer';
+import MultiHopPathView from './MultiHopPathView';
+import type { SearchHit } from './MultiHopPathView';
 import type { GraphData } from './graphContract';
-import type { GraphEdge, GraphNode } from './types';
+import type { GraphNode, GraphEdge } from './types';
 import styles from './styles.module.css';
 
 // Arco Radio.Group 别名（与项目其他模块写法保持一致）
@@ -86,6 +94,12 @@ const KnowledgeGraphView: React.FC = () => {
   // 默认 'svg' 保持与 11.3.2 阶段一致的初始行为，用户可手动切换到 'flow' 模式
   const [renderMode, setRenderMode] = useState<RenderMode>('svg');
 
+  // ─── 11.5.1 多跳路径视图状态 ───
+  // 当前选中的 SearchHit（GraphFlow 节点点击时由 mockHitsByNodeId 查找）
+  const [selectedHit, setSelectedHit] = useState<SearchHit | null>(null);
+  // MultiHopPathView 可见性（默认 true 显示，onClose 后隐藏）
+  const [showPathView, setShowPathView] = useState<boolean>(true);
+
   // ─── 11.4.1 GraphFlow 数据契约：从 SVG mock 数据转换为 GraphData DTO ───
   // 两种模式共享同一份 mock 数据，仅渲染方式不同，便于对比与切换
   const graphData: GraphData = useMemo(
@@ -112,8 +126,72 @@ const KnowledgeGraphView: React.FC = () => {
     [nodes, edges]
   );
 
+  // ─── 11.5.1 PoC mock 数据：每个节点对应的多跳检索命中（SearchHit） ───
+  // 真实数据由 11.4.2 IPC + 11.6.1 hnswlib-rs 后端检索填充；PoC 阶段使用 mock
+  // 数据驱动 MultiHopPathView 渲染，验证 hop1 → hop2 → hop3 路径可视化效果
+  const mockHitsByNodeId: Record<string, SearchHit> = useMemo(
+    () => ({
+      // n1 张三（PERSON）：单跳命中（hop1 蓝色）
+      n1: {
+        event_id: 'evt-1',
+        score: 0.92,
+        hop: 1,
+        via_entities: [
+          { entity_id: 'n1', entity_type: 'PERSON', text: '张三' },
+        ],
+        chunk_id: null,
+      },
+      // n2 北京（LOCATION）：二跳命中（hop2 黄色），路径 n1 → n2
+      n2: {
+        event_id: 'evt-2',
+        score: 0.85,
+        hop: 2,
+        via_entities: [
+          { entity_id: 'n1', entity_type: 'PERSON', text: '张三' },
+          { entity_id: 'n2', entity_type: 'LOCATION', text: '北京' },
+        ],
+        chunk_id: null,
+      },
+      // n3 阿里（ORGANIZATION）：三跳命中（hop3 灰色），路径 n1 → n2 → n3
+      n3: {
+        event_id: 'evt-3',
+        score: 0.78,
+        hop: 3,
+        via_entities: [
+          { entity_id: 'n1', entity_type: 'PERSON', text: '张三' },
+          { entity_id: 'n2', entity_type: 'LOCATION', text: '北京' },
+          { entity_id: 'n3', entity_type: 'ORGANIZATION', text: '阿里' },
+        ],
+        chunk_id: null,
+      },
+      // n4 2026-07-20（TIME）：单跳命中（hop1 蓝色）
+      n4: {
+        event_id: 'evt-4',
+        score: 0.66,
+        hop: 1,
+        via_entities: [
+          { entity_id: 'n4', entity_type: 'TIME', text: '2026-07-20' },
+        ],
+        chunk_id: null,
+      },
+      // n5 发布会（EVENT）：二跳命中（hop2 黄色），路径 n4 → n5
+      n5: {
+        event_id: 'evt-5',
+        score: 0.71,
+        hop: 2,
+        via_entities: [
+          { entity_id: 'n4', entity_type: 'TIME', text: '2026-07-20' },
+          { entity_id: 'n5', entity_type: 'EVENT', text: '发布会' },
+        ],
+        chunk_id: null,
+      },
+    }),
+    []
+  );
+
   // 节点点击回调（spec §三 11.3.3：打开 EntityEditDrawer 抽屉）
   // 两种渲染模式共享此回调：SVG 模式由 GraphCanvas 触发，ReactFlow 模式由 GraphFlow 触发
+  // 11.5.1 扩展：同时联动 selectedHit，刷新 MultiHopPathView 显示
   const handleNodeClick = (nodeId: string) => {
     // eslint-disable-next-line no-console
     console.log('[KnowledgeGraphView] node clicked:', nodeId);
@@ -121,6 +199,24 @@ const KnowledgeGraphView: React.FC = () => {
     const target = nodes.find((n) => n.id === nodeId) ?? null;
     setEditingEntity(target);
     setDrawerVisible(true);
+    // 11.5.1：根据 nodeId 在 mockHitsByNodeId 中查找对应的 SearchHit
+    // 找到则更新 selectedHit 并显示 MultiHopPathView
+    const hit = mockHitsByNodeId[nodeId] ?? null;
+    setSelectedHit(hit);
+    if (hit) setShowPathView(true);
+  };
+
+  // 11.5.1：via_entities Tag 点击回调，跳转到对应实体节点
+  // PoC 阶段：复用 handleNodeClick 实现「点击 via_entity Tag 联动图谱」效果
+  const handleEntityClick = (entityId: string) => {
+    // eslint-disable-next-line no-console
+    console.log('[KnowledgeGraphView] via_entity clicked:', entityId);
+    handleNodeClick(entityId);
+  };
+
+  // 11.5.1：MultiHopPathView 关闭回调
+  const handlePathViewClose = () => {
+    setShowPathView(false);
   };
 
   // 边点击回调（PoC：仅 console.log）
@@ -140,26 +236,69 @@ const KnowledgeGraphView: React.FC = () => {
     setEditingEntity(null);
   };
 
-  // 合并操作回调（PoC：console.log + 关闭抽屉；11.4.x 接入 IPC 持久化到 entity 表）
-  const handleMerge = (sourceId: string, targetId: string) => {
+  // 合并操作回调（11.4.2：Tauri 环境 invoke entity_merge；非 Tauri 环境降级 console.log）
+  // Rust 命令参数 source_entity_id/target_entity_id 在 JS 侧自动映射为 camelCase
+  const handleMerge = async (sourceId: string, targetId: string) => {
     // eslint-disable-next-line no-console
     console.log('[KnowledgeGraphView] merge entities:', sourceId, '->', targetId);
+    if (isTauriRuntime()) {
+      try {
+        await invoke('entity_merge', {
+          sourceEntityId: sourceId,
+          targetEntityId: targetId,
+        });
+        // 持久化成功后刷新图谱数据（PoC 阶段为 mock useState 不可变；
+        // 生产环境此处应触发 useQuery / SWR 重新拉取图谱数据）
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error('[KnowledgeGraphView] entity_merge IPC failed:', err);
+      }
+    }
     setDrawerVisible(false);
     setEditingEntity(null);
   };
 
-  // 拆分操作回调（PoC：console.log + 关闭抽屉；11.4.x 接入 IPC 持久化到 entity 表）
-  const handleSplit = (sourceId: string, newNames: string[]) => {
+  // 拆分操作回调（11.4.2：Tauri 环境 invoke entity_split；非 Tauri 环境降级 console.log）
+  // Rust 命令参数 source_entity_id/new_names 在 JS 侧自动映射为 camelCase
+  const handleSplit = async (sourceId: string, newNames: string[]) => {
     // eslint-disable-next-line no-console
     console.log('[KnowledgeGraphView] split entity:', sourceId, '->', newNames);
+    if (isTauriRuntime()) {
+      try {
+        const newIds = await invoke<string[]>('entity_split', {
+          sourceEntityId: sourceId,
+          newNames,
+        });
+        // 持久化成功后刷新图谱数据（PoC 阶段为 mock useState 不可变）
+        // eslint-disable-next-line no-console
+        console.log('[KnowledgeGraphView] entity_split created new ids:', newIds);
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error('[KnowledgeGraphView] entity_split IPC failed:', err);
+      }
+    }
     setDrawerVisible(false);
     setEditingEntity(null);
   };
 
-  // 重命名操作回调（PoC：console.log + 关闭抽屉；11.4.x 接入 IPC 持久化到 entity 表）
-  const handleRename = (entityId: string, newName: string) => {
+  // 重命名操作回调（11.4.2：Tauri 环境 invoke entity_rename；非 Tauri 环境降级 console.log）
+  // Rust 命令参数 entity_id/new_name 在 JS 侧自动映射为 camelCase
+  const handleRename = async (entityId: string, newName: string) => {
     // eslint-disable-next-line no-console
     console.log('[KnowledgeGraphView] rename entity:', entityId, '->', newName);
+    if (isTauriRuntime()) {
+      try {
+        await invoke('entity_rename', {
+          entityId,
+          newName,
+        });
+        // 持久化成功后刷新图谱数据（PoC 阶段为 mock useState 不可变；
+        // 生产环境此处应触发 useQuery / SWR 重新拉取图谱数据）
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error('[KnowledgeGraphView] entity_rename IPC failed:', err);
+      }
+    }
     setDrawerVisible(false);
     setEditingEntity(null);
   };
@@ -211,6 +350,18 @@ const KnowledgeGraphView: React.FC = () => {
           onNodeClick={handleNodeClick}
           onEdgeClick={handleEdgeClick}
         />
+      )}
+
+      {/* ─── 11.5.1 MultiHopPathView：图谱下方显示当前选中 hit 的多跳检索路径 ─── */}
+      {/* showPathView 控制可见性（默认 true 显示，onClose 后隐藏直到下次节点点击） */}
+      {showPathView && (
+        <div className={styles.pathViewWrap}>
+          <MultiHopPathView
+            hit={selectedHit}
+            onClose={handlePathViewClose}
+            onEntityClick={handleEntityClick}
+          />
+        </div>
       )}
 
       {/* ─── 11.3.3 EntityEditDrawer：节点点击打开抽屉（合并 / 拆分 / 重命名 3 操作） ─── */}
