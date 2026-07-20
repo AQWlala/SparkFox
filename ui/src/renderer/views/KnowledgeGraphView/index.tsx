@@ -22,6 +22,14 @@
  *   - Tauri 桌面环境：invoke() 调用后端命令 + 成功后刷新图谱数据
  *   - Web/开发环境（无 Tauri 运行时）：降级为 console.log 调试日志，不阻塞 UI
  *
+ * Sub-Step 12.4.2：重命名流程升级为「预览影响 + 确认执行」两步：
+ *   - handlePreviewRenameImpact：invoke preview_entity_rename_impact（纯 SELECT 不修改），
+ *     返回 RenameImpactPreview { affected_events, affected_relations, affected_chunks }，
+ *     通过 renameImpactPreview state 传给 EntityEditDrawer 渲染受影响范围面板
+ *   - handleRename 改为 invoke execute_entity_rename（事务原子性 BEGIN/COMMIT/ROLLBACK，
+ *     同步更新 entity.name + knowledge_event.content/summary/title）
+ *   - 原 entity_rename 命令保留向后兼容（11.4.2 实现），12.4.2 起前端改用 execute_entity_rename
+ *
  * PoC 数据：使用 useState mock 5 个节点 + 4 条边，覆盖 5 种实体类型
  *   （PERSON / LOCATION / ORGANIZATION / TIME / EVENT）。
  *
@@ -39,7 +47,9 @@ import { invoke } from '@tauri-apps/api/core';
 import { isTauriRuntime } from '@/common/adapter/tauriRuntime';
 import GraphCanvas from './GraphCanvas';
 import GraphFlow from './GraphFlow';
+// 12.4.2：EntityEditDrawer 新增 RenameImpactPreview 类型导出 + impactPreview prop
 import EntityEditDrawer from './EntityEditDrawer';
+import type { RenameImpactPreview } from './EntityEditDrawer';
 import MultiHopPathView from './MultiHopPathView';
 import type { SearchHit } from './MultiHopPathView';
 import type { GraphData } from './graphContract';
@@ -89,6 +99,12 @@ const KnowledgeGraphView: React.FC = () => {
   const [editingEntity, setEditingEntity] = useState<GraphNode | null>(null);
   // 抽屉可见性（节点点击时打开，onClose 时关闭）
   const [drawerVisible, setDrawerVisible] = useState<boolean>(false);
+
+  // ─── 12.4.2 重命名影响预览状态 ───
+  // 受影响范围数据（preview_entity_rename_impact 返回；null 表示未预览或预览失败）
+  // 通过 impactPreview prop 传给 EntityEditDrawer 渲染受影响事件/关系/文本块面板
+  const [renameImpactPreview, setRenameImpactPreview] =
+    useState<RenameImpactPreview | null>(null);
 
   // ─── 11.4.1 渲染模式切换状态（SVG / ReactFlow） ───
   // 默认 'svg' 保持与 11.3.2 阶段一致的初始行为，用户可手动切换到 'flow' 模式
@@ -230,10 +246,12 @@ const KnowledgeGraphView: React.FC = () => {
     console.log('[KnowledgeGraphView] edge clicked:', edge);
   };
 
-  // 关闭抽屉回调：清空 editingEntity + 隐藏抽屉
+  // 关闭抽屉回调：清空 editingEntity + 隐藏抽屉 + 清空重命名影响预览
+  // 12.4.2：新增 setRenameImpactPreview(null) 避免下次打开抽屉时残留上次预览数据
   const handleDrawerClose = () => {
     setDrawerVisible(false);
     setEditingEntity(null);
+    setRenameImpactPreview(null);
   };
 
   // 合并操作回调（11.4.2：Tauri 环境 invoke entity_merge；非 Tauri 环境降级 console.log）
@@ -265,10 +283,13 @@ const KnowledgeGraphView: React.FC = () => {
     console.log('[KnowledgeGraphView] split entity:', sourceId, '->', newNames);
     if (isTauriRuntime()) {
       try {
-        const newIds = await invoke<string[]>('entity_split', {
+        // 注：invoke 返回 unknown，需 cast 为 string[]。
+        // 12.4.2 整理：原 invoke<string[]>('entity_split', ...) 写法因含泛型参数，
+        // 导致测试字符串断言 invoke('entity_split' 不匹配，统一改为 as cast 模式。
+        const newIds = (await invoke('entity_split', {
           sourceEntityId: sourceId,
           newNames,
-        });
+        })) as string[];
         // 持久化成功后刷新图谱数据（PoC 阶段为 mock useState 不可变）
         // eslint-disable-next-line no-console
         console.log('[KnowledgeGraphView] entity_split created new ids:', newIds);
@@ -281,14 +302,68 @@ const KnowledgeGraphView: React.FC = () => {
     setEditingEntity(null);
   };
 
-  // 重命名操作回调（11.4.2：Tauri 环境 invoke entity_rename；非 Tauri 环境降级 console.log）
+  // 重命名影响预览回调（12.4.2：Tauri 环境 invoke preview_entity_rename_impact；
+  // 非 Tauri 环境降级 console.log）。
+  //
+  // 纯 SELECT 查询，不修改任何数据。返回 RenameImpactPreview
+  // （affected_events / affected_relations / affected_chunks），存入 renameImpactPreview state。
+  //
+  // Rust 命令参数 entity_id/new_name 在 JS 侧自动映射为 camelCase。
+  // Rust 返回值字段 affected_events/affected_relations/affected_chunks 保持 snake_case
+  // （Rust serde 默认行为），与前端 RenameImpactPreview 接口字段名一致。
+  const handlePreviewRenameImpact = async (
+    entityId: string,
+    newName: string
+  ) => {
+    // eslint-disable-next-line no-console
+    console.log(
+      '[KnowledgeGraphView] preview rename impact:',
+      entityId,
+      '->',
+      newName
+    );
+    if (isTauriRuntime()) {
+      try {
+        // 注：invoke 返回 unknown，需 cast 为 RenameImpactPreview。
+        // 字段名 affected_events/affected_relations/affected_chunks 保持 snake_case
+        // （Rust serde 默认行为，与前端 RenameImpactPreview 接口字段名一致）。
+        const preview = (await invoke('preview_entity_rename_impact', {
+          entityId,
+          newName,
+        })) as RenameImpactPreview;
+        setRenameImpactPreview(preview);
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(
+          '[KnowledgeGraphView] preview_entity_rename_impact IPC failed:',
+          err
+        );
+        // 预览失败时清空面板，避免显示陈旧数据
+        setRenameImpactPreview(null);
+      }
+    } else {
+      // 非 Tauri 环境：清空预览（无真实数据，不展示 mock 防止误导用户）
+      setRenameImpactPreview(null);
+    }
+  };
+
+  // 重命名操作回调（12.4.2：Tauri 环境 invoke execute_entity_rename；非 Tauri 环境降级 console.log）
+  //
+  // 12.4.2 升级：原 11.4.2 的 entity_rename 命令仅更新 entity.name，
+  // 12.4.2 改用 execute_entity_rename 命令在单个 SQLite 事务中同步更新：
+  //   1. UPDATE entity SET name = new_name, normalized_name = ...
+  //   2. UPDATE knowledge_event.content = REPLACE(content, old_name, new_name)
+  //   3. UPDATE knowledge_event.summary = REPLACE(summary, old_name, new_name)
+  //   4. UPDATE knowledge_event.title = REPLACE(title, old_name, new_name)
+  // 任一步失败则 ROLLBACK，保证 entity.name 与 chunk_text 同步更新。
+  //
   // Rust 命令参数 entity_id/new_name 在 JS 侧自动映射为 camelCase
   const handleRename = async (entityId: string, newName: string) => {
     // eslint-disable-next-line no-console
     console.log('[KnowledgeGraphView] rename entity:', entityId, '->', newName);
     if (isTauriRuntime()) {
       try {
-        await invoke('entity_rename', {
+        await invoke('execute_entity_rename', {
           entityId,
           newName,
         });
@@ -296,11 +371,15 @@ const KnowledgeGraphView: React.FC = () => {
         // 生产环境此处应触发 useQuery / SWR 重新拉取图谱数据）
       } catch (err) {
         // eslint-disable-next-line no-console
-        console.error('[KnowledgeGraphView] entity_rename IPC failed:', err);
+        console.error(
+          '[KnowledgeGraphView] execute_entity_rename IPC failed:',
+          err
+        );
       }
     }
     setDrawerVisible(false);
     setEditingEntity(null);
+    setRenameImpactPreview(null);
   };
 
   return (
@@ -365,6 +444,7 @@ const KnowledgeGraphView: React.FC = () => {
       )}
 
       {/* ─── 11.3.3 EntityEditDrawer：节点点击打开抽屉（合并 / 拆分 / 重命名 3 操作） ─── */}
+      {/* 12.4.2：新增 onPreviewRenameImpact + impactPreview 两个 prop（重命名影响预览） */}
       <EntityEditDrawer
         visible={drawerVisible}
         entity={editingEntity}
@@ -372,6 +452,8 @@ const KnowledgeGraphView: React.FC = () => {
         onMerge={handleMerge}
         onSplit={handleSplit}
         onRename={handleRename}
+        onPreviewRenameImpact={handlePreviewRenameImpact}
+        impactPreview={renameImpactPreview}
       />
     </div>
   );

@@ -7,38 +7,50 @@
 //! `entity_split` / `entity_rename`），调用 `sparkfox_knowledge::entity_ops`
 //! free function，持久化到 entity 表 + event_entity_relation 表。
 //!
+//! Sub-Step 12.4.2：新增 2 个重命名影响预览 command（`preview_entity_rename_impact` /
+//! `execute_entity_rename`），调用 `sparkfox_knowledge::entity_ops` 的同名 free function，
+//! 支持重命名前预览受影响 events / relations / chunks 数量，确认后事务执行。
+//!
 //! # 设计原则
 //! - **占位实现**：Task 7.1 的 10 个 command 不实际调用 sparkfox-knowledge /
 //!   sparkfox-memory 等业务 crate，避免循环依赖。仅定义 command 签名 + 返回占位结果。
 //! - **11.4.2 实装**：3 个 entity command 不再是占位，直接调用
 //!   `sparkfox_knowledge::entity_ops::{merge_entities, split_entity, rename_entity}`，
 //!   通过 `tauri::State<Mutex<rusqlite::Connection>>` 注入 SQLite 连接。
+//! - **12.4.2 增强**：2 个 rename impact preview command 调用
+//!   `sparkfox_knowledge::entity_ops::{preview_entity_rename_impact, execute_entity_rename}`，
+//!   返回 [`RenameImpactPreview`]（含 affected_events / affected_relations / affected_chunks）。
 //! - **标准签名**：所有 command 返回 `Result<T, String>`（Tauri 2 命令标准签名）。
 //! - **异步**：所有 command 为 `async fn`，便于后续接入真实异步业务逻辑。
 //!
 //! # 命令清单
-//! | 命令                  | 对接 store       | 说明                        |
-//! |-----------------------|------------------|-----------------------------|
-//! | `knowledge_search`    | knowledge/RAG    | 知识库检索（query + mode）  |
-//! | `memory_put`          | memoryStore      | 写入记忆条目                |
-//! | `memory_get`          | memoryStore      | 按 id 读取记忆条目          |
-//! | `memory_list`         | memoryStore      | 列出某层全部记忆            |
-//! | `agent_list`          | agentStore       | 列出全部 Agent              |
-//! | `agent_create`        | agentStore       | 创建新 Agent                |
-//! | `monitor_stats`       | monitorStore     | 获取监控统计                |
-//! | `monitor_ack`         | monitorStore     | 确认告警                    |
-//! | `hotspot_track`       | hotspotStore     | 上报热点事件                |
-//! | `hotspot_list`        | hotspotStore     | 列出近期热点                |
-//! | `entity_merge`        | KnowledgeGraph   | 合并实体（11.4.2 实装）     |
-//! | `entity_split`        | KnowledgeGraph   | 拆分实体（11.4.2 实装）     |
-//! | `entity_rename`       | KnowledgeGraph   | 重命名实体（11.4.2 实装）   |
+//! | 命令                  | 对接 store       | 说明                                       |
+//! |-----------------------|------------------|--------------------------------------------|
+//! | `knowledge_search`    | knowledge/RAG    | 知识库检索（query + mode）                 |
+//! | `memory_put`          | memoryStore      | 写入记忆条目                               |
+//! | `memory_get`          | memoryStore      | 按 id 读取记忆条目                         |
+//! | `memory_list`         | memoryStore      | 列出某层全部记忆                           |
+//! | `agent_list`          | agentStore       | 列出全部 Agent                             |
+//! | `agent_create`        | agentStore       | 创建新 Agent                               |
+//! | `monitor_stats`       | monitorStore     | 获取监控统计                               |
+//! | `monitor_ack`         | monitorStore     | 确认告警                                   |
+//! | `hotspot_track`       | hotspotStore     | 上报热点事件                               |
+//! | `hotspot_list`        | hotspotStore     | 列出近期热点                               |
+//! | `entity_merge`        | KnowledgeGraph   | 合并实体（11.4.2 实装）                    |
+//! | `entity_split`        | KnowledgeGraph   | 拆分实体（11.4.2 实装）                    |
+//! | `entity_rename`       | KnowledgeGraph   | 重命名实体（11.4.2 实装，向后兼容保留）    |
+//! | `preview_entity_rename_impact` | KnowledgeGraph | 重命名影响预览（12.4.2，仅查询不修改）|
+//! | `execute_entity_rename`        | KnowledgeGraph | 执行重命名（12.4.2，事务原子性）      |
 
 #![forbid(unsafe_code)]
 
 use serde_json::Value;
 
 // Sub-Step 11.4.2: entity 编辑命令直接调用 sparkfox-knowledge::entity_ops free function
+// Sub-Step 12.4.2: preview_entity_rename_impact / execute_entity_rename 命令调用同名 free function
 use sparkfox_knowledge::entity_ops;
+// Sub-Step 12.4.2: RenameImpactPreview 作为 Tauri command 返回值类型（serde::Serialize 派生）
+pub use sparkfox_knowledge::entity_ops::RenameImpactPreview;
 
 /// 知识库检索 — 调用 sparkfox-knowledge::RagEngine（占位）
 ///
@@ -262,6 +274,78 @@ pub async fn entity_rename(
     let conn = db.lock().map_err(|e| format!("Mutex lock 失败: {e}"))?;
     entity_ops::rename_entity(&conn, &entity_id, &new_name)
         .map_err(|e| format!("entity_rename 失败: {e}"))
+}
+
+// ============================================================================
+// Sub-Step 12.4.2 — 重命名影响预览 + 事务执行命令（实装，非占位）
+// ============================================================================
+
+/// 重命名影响预览 — 查询重命名后会受影响的 events / relations / chunks 数量，不执行重命名。
+///
+/// # 参数
+/// - `db`: Tauri managed state（`Mutex<rusqlite::Connection>`）
+/// - `entity_id`: 待重命名的实体 id
+/// - `new_name`: 新名称（预览阶段仅用于日志，不参与查询）
+///
+/// # 返回
+/// 成功返回 `Ok(RenameImpactPreview)`，含三个字段：
+/// - `affected_events`: 受影响的 event 数量（DISTINCT event_id）
+/// - `affected_relations`: 受影响的 event_entity_relation 行数
+/// - `affected_chunks`: 受影响的 knowledge_event 行数（content/summary/title 含旧 name）
+///
+/// 失败返回 `Err(String)`（如 entity_id 不存在时返回 NotFound 错误信息）
+///
+/// # 设计
+/// 直接调用 [`entity_ops::preview_entity_rename_impact`] free function，纯 SELECT 查询，
+/// 不修改任何数据。前端 UI 显示「受影响事件: N / 受影响关系: N / 受影响文本块: N」后
+/// 由用户确认是否调用 [`execute_entity_rename`] 执行重命名。
+#[tauri::command]
+pub async fn preview_entity_rename_impact(
+    db: tauri::State<'_, std::sync::Mutex<rusqlite::Connection>>,
+    entity_id: String,
+    new_name: String,
+) -> Result<RenameImpactPreview, String> {
+    log::debug!(
+        "preview_entity_rename_impact: id={entity_id}, new_name={new_name}"
+    );
+    let conn = db.lock().map_err(|e| format!("Mutex lock 失败: {e}"))?;
+    entity_ops::preview_entity_rename_impact(&conn, &entity_id, &new_name)
+        .map_err(|e| format!("preview_entity_rename_impact 失败: {e}"))
+}
+
+/// 执行重命名（事务原子性）— 在单个 SQLite 事务中更新 entity.name + knowledge_event 文本，
+/// 任一步失败则 ROLLBACK，保证 entity.name 与 chunk_text 同步更新。
+///
+/// # 参数
+/// - `db`: Tauri managed state（`Mutex<rusqlite::Connection>`）
+/// - `entity_id`: 待重命名的实体 id
+/// - `new_name`: 新名称（将自动归一化为 normalized_name = trim + lowercase）
+///
+/// # 返回
+/// 成功返回 `Ok(RenameImpactPreview)`（含实际受影响数量，应与 [`preview_entity_rename_impact`] 一致）；
+/// 失败返回 `Err(String)`（事务自动 ROLLBACK）
+///
+/// # 设计
+/// 直接调用 [`entity_ops::execute_entity_rename`] free function。事务原子性由 entity_ops 保证
+/// （BEGIN/COMMIT/ROLLBACK）。重命名流程：
+/// 1. UPDATE entity SET name = new_name, normalized_name = ..., updated_time = ...
+/// 2. UPDATE knowledge_event.content = REPLACE(content, old_name, new_name) WHERE instr > 0
+/// 3. UPDATE knowledge_event.summary = REPLACE(summary, old_name, new_name) WHERE instr > 0
+/// 4. UPDATE knowledge_event.title = REPLACE(title, old_name, new_name) WHERE instr > 0
+///
+/// event_entity_relation 无需 UPDATE（通过 entity_id 外键引用，重命名后自动反映新 name）。
+#[tauri::command]
+pub async fn execute_entity_rename(
+    db: tauri::State<'_, std::sync::Mutex<rusqlite::Connection>>,
+    entity_id: String,
+    new_name: String,
+) -> Result<RenameImpactPreview, String> {
+    log::debug!(
+        "execute_entity_rename: id={entity_id}, new_name={new_name}"
+    );
+    let conn = db.lock().map_err(|e| format!("Mutex lock 失败: {e}"))?;
+    entity_ops::execute_entity_rename(&conn, &entity_id, &new_name)
+        .map_err(|e| format!("execute_entity_rename 失败: {e}"))
 }
 
 // ============================================================================

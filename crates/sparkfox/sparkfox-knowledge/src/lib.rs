@@ -58,6 +58,8 @@ pub mod config;
 pub mod entity_ops;
 pub mod entity_normalize;
 pub mod extractor;
+// Sub-Step 12.2.1: 超边检测算法（SAG 核心创新 — >2 event 共享 >2 entity 自动形成超边）
+pub mod hyperedge;
 // Sub-Step 11.6.1: HnswIndex（hnsw_rs 真实 HNSW 实现，替代/补充 sqlite-vec）
 pub mod index;
 pub mod jieba_ner;
@@ -96,6 +98,8 @@ pub use sync::{KnowledgeSync, NoOpSync};
 // Sub-Step 10.4.1 / 10.4.2: NfkcNormalizer + levenshtein_normalized + AliasTable
 pub use entity_normalize::{levenshtein_normalized, NfkcNormalizer};
 pub use alias_table::{AliasAuditEntry, AliasTable};
+// Sub-Step 12.2.1: 超边检测器（SAG 核心创新 — >2 event 共享 >2 entity 自动形成超边）
+pub use hyperedge::{Hyperedge, HyperedgeDetector};
 
 pub const VERSION: &str = env!("CARGO_PKG_VERSION");
 

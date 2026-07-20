@@ -39,6 +39,7 @@ use std::collections::HashMap;
 use std::time::{SystemTime, UNIX_EPOCH};
 
 use rusqlite::Connection;
+use serde::{Deserialize, Serialize};
 use sparkfox_core::{Error, Result};
 
 // ---------------------------------------------------------------------------
@@ -129,6 +130,70 @@ const RENAME_ENTITY_SQL: &str =
 
 /// v1.1.0 测试用固定时间戳（生产环境切换为真实时间戳，与 saver.rs 保持一致）
 const FIXED_TIMESTAMP: &str = "2026-07-20T00:00:00Z";
+
+// ---------------------------------------------------------------------------
+// Sub-Step 12.4.2 — 重命名全局影响预览 / 事务执行 SQL 常量
+// ---------------------------------------------------------------------------
+
+/// 查询 entity 当前 name（重命名影响预览 / 执行前需读取旧 name）
+///
+/// 返回单行单列（entity.name），若 entity_id 不存在则 [`rusqlite::Error::QueryReturnedNoRows`]，
+/// 由调用方映射为 [`Error::NotFound`]。
+const SELECT_ENTITY_NAME_SQL: &str = "SELECT name FROM entity WHERE id = ?";
+
+/// 统计 event_entity_relation 中引用该 entity 的关系行数（affected_relations）
+///
+/// 重命名仅修改 entity.name，entity_id 不变，因此关系行本身不需要 UPDATE。
+/// 但关系行数反映了「受影响的关系数量」（外键关联自动反映新 name）。
+const COUNT_AFFECTED_RELATIONS_SQL: &str =
+    "SELECT COUNT(*) FROM event_entity_relation WHERE entity_id = ?";
+
+/// 统计受影响的 event 数量（affected_events）
+///
+/// 通过 event_entity_relation JOIN 计算去重后的 event_id 数量。
+/// 同一 event 可能被多条 relation 引用（如多 entity 共同参与一个 event），
+/// 故用 `COUNT(DISTINCT event_id)` 去重。
+const COUNT_AFFECTED_EVENTS_SQL: &str =
+    "SELECT COUNT(DISTINCT event_id) FROM event_entity_relation WHERE entity_id = ?";
+
+/// 统计受影响的 chunks（affected_chunks）数量
+///
+/// 项目 schema 无独立 chunks 表，[`knowledge_event`] 的 `content` / `summary` / `title`
+/// 三列作为 chunk_text 全文索引的代理字段（事件正文 + 摘要 + 标题）。
+///
+/// 使用 `instr(text, ?) > 0` 而非 `LIKE '%?%'`，避免 old_name 含 `%` / `_` 通配符时
+/// 误匹配（instr 是字节级查找，无通配符语义，更安全）。
+///
+/// 参数：`[old_name, old_name, old_name]`（content / summary / title 各一个）
+const COUNT_AFFECTED_CHUNKS_SQL: &str = r#"
+SELECT COUNT(*) FROM knowledge_event
+WHERE instr(content, ?) > 0
+   OR instr(summary, ?) > 0
+   OR instr(title, ?) > 0
+"#;
+
+/// UPDATE knowledge_event.content（执行重命名时，将 content 中旧 name 替换为新 name）
+///
+/// SQLite `REPLACE(X, Y, Z)`：在 X 中查找 Y，替换为 Z。
+///
+/// 参数：`[old_name, new_name, old_name]`
+/// - 第 1 个 `?` = old_name：REPLACE 的 Y 参数（要被替换的旧值）
+/// - 第 2 个 `?` = new_name：REPLACE 的 Z 参数（替换为的新值）
+/// - 第 3 个 `?` = old_name：WHERE 子句的 instr 查找（仅更新含旧 name 的行）
+const UPDATE_EVENT_CONTENT_SQL: &str =
+    "UPDATE knowledge_event SET content = REPLACE(content, ?, ?) WHERE instr(content, ?) > 0";
+
+/// UPDATE knowledge_event.summary（执行重命名时，将 summary 中旧 name 替换为新 name）
+///
+/// 参数顺序同 [`UPDATE_EVENT_CONTENT_SQL`]：`[old_name, new_name, old_name]`
+const UPDATE_EVENT_SUMMARY_SQL: &str =
+    "UPDATE knowledge_event SET summary = REPLACE(summary, ?, ?) WHERE instr(summary, ?) > 0";
+
+/// UPDATE knowledge_event.title（执行重命名时，将 title 中旧 name 替换为新 name）
+///
+/// 参数顺序同 [`UPDATE_EVENT_CONTENT_SQL`]：`[old_name, new_name, old_name]`
+const UPDATE_EVENT_TITLE_SQL: &str =
+    "UPDATE knowledge_event SET title = REPLACE(title, ?, ?) WHERE instr(title, ?) > 0";
 
 // ---------------------------------------------------------------------------
 // merge_entities / merge_entities_with_conflict_report — 合并实体
@@ -511,6 +576,240 @@ pub fn rename_entity(conn: &Connection, entity_id: &str, new_name: &str) -> Resu
         rusqlite::params![new_name, &normalized, FIXED_TIMESTAMP, entity_id],
     )?;
     Ok(())
+}
+
+// ---------------------------------------------------------------------------
+// Sub-Step 12.4.2 — 重命名全局影响预览 + 事务执行
+// ---------------------------------------------------------------------------
+
+/// 重命名影响预览结果（spec §三 12.4.2）
+///
+/// 描述重命名实体后会受影响的全局范围：
+/// - [`affected_events`](Self::affected_events)：受影响的 event 数量（通过 event_entity_relation JOIN）
+/// - [`affected_relations`](Self::affected_relations)：受影响的 event_entity_relation 行数
+/// - [`affected_chunks`](Self::affected_chunks)：受影响的 chunk 数量（knowledge_event.content/summary/title 含旧 name）
+///
+/// 由 [`preview_entity_rename_impact`]（仅查询不修改）与 [`execute_entity_rename`]（事务执行后返回实际数量）
+/// 共用，前端通过对比两个返回值可验证预览准确性。
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct RenameImpactPreview {
+    /// 受影响的 event 数量（DISTINCT event_id，通过 event_entity_relation JOIN 计算）
+    pub affected_events: usize,
+    /// 受影响的 event_entity_relation 行数（引用该 entity 的所有关系行）
+    pub affected_relations: usize,
+    /// 受影响的 chunk 数量（knowledge_event.content/summary/title 含旧 name 的行数，
+    /// 项目 schema 无独立 chunks 表，三列作为 chunk_text 全文索引的代理字段）
+    pub affected_chunks: usize,
+}
+
+/// 查询 entity 当前 name，若不存在返回 [`Error::NotFound`]
+///
+/// 内部辅助函数，由 [`preview_entity_rename_impact`] / [`execute_entity_rename`] 共用。
+/// 返回 `Ok(String)`（旧 name）或 `Err(Error::NotFound)`。
+fn query_entity_name(conn: &Connection, entity_id: &str) -> Result<String> {
+    conn.query_row(SELECT_ENTITY_NAME_SQL, rusqlite::params![entity_id], |row| {
+        row.get::<_, String>(0)
+    })
+    .map_err(|e| match e {
+        rusqlite::Error::QueryReturnedNoRows => Error::not_found("entity", entity_id),
+        other => Error::Db(other),
+    })
+}
+
+/// 统计重命名影响（不执行重命名）
+///
+/// 在执行重命名前预览受影响的 events / relations / chunks 数量，供 UI 显示
+/// 「受影响事件: N / 受影响关系: N / 受影响文本块: N」让用户确认后再执行。
+///
+/// ## 影响范围
+/// - **affected_events**：通过 event_entity_relation JOIN 计算 DISTINCT event_id 数量
+///   （重命名不修改 entity_id，关系行本身不 UPDATE，但 JOIN 查询会反映新 name）
+/// - **affected_relations**：event_entity_relation 中引用该 entity 的行数
+///   （外键关联，重命名后这些关系自动指向新 name）
+/// - **affected_chunks**：knowledge_event 中 content / summary / title 含旧 name 的行数
+///   （这些行的文本需要 REPLACE 更新，等效于「全文索引重建」）
+///
+/// ## 参数
+/// - `conn`：SQLite 连接
+/// - `entity_id`：要重命名的实体 ID（必须存在，否则返回 [`Error::NotFound`]）
+/// - `new_name`：新名称（预览阶段不使用，仅用于日志；保留参数为与 [`execute_entity_rename`] 签名对称）
+///
+/// ## 返回
+/// 成功返回 `Ok(RenameImpactPreview)`；失败返回 `Err(Error)`
+///
+/// ## 副作用
+/// **无**（纯 SELECT 查询，不修改任何数据）
+pub fn preview_entity_rename_impact(
+    conn: &Connection,
+    entity_id: &str,
+    new_name: &str,
+) -> Result<RenameImpactPreview> {
+    // 1. 查询 entity 当前 name（用于统计 chunk_text 含旧 name 的行数）
+    //    若 entity_id 不存在，返回 NotFound 错误（前置校验）
+    let old_name = query_entity_name(conn, entity_id)?;
+
+    // 2. 统计 affected_relations（引用该 entity 的关系行数）
+    let affected_relations: i64 = conn.query_row(
+        COUNT_AFFECTED_RELATIONS_SQL,
+        rusqlite::params![entity_id],
+        |row| row.get(0),
+    )?;
+
+    // 3. 统计 affected_events（DISTINCT event_id，通过 event_entity_relation 计算）
+    let affected_events: i64 = conn.query_row(
+        COUNT_AFFECTED_EVENTS_SQL,
+        rusqlite::params![entity_id],
+        |row| row.get(0),
+    )?;
+
+    // 4. 统计 affected_chunks（content/summary/title 含旧 name 的 knowledge_event 行数）
+    //    使用 instr() 而非 LIKE，避免 old_name 含 % / _ 通配符时误匹配
+    let affected_chunks: i64 = conn.query_row(
+        COUNT_AFFECTED_CHUNKS_SQL,
+        rusqlite::params![&old_name, &old_name, &old_name],
+        |row| row.get(0),
+    )?;
+
+    log::debug!(
+        "preview_entity_rename_impact: entity_id={}, new_name={}, old_name={}, \
+         affected_events={}, affected_relations={}, affected_chunks={}",
+        entity_id,
+        new_name,
+        old_name,
+        affected_events,
+        affected_relations,
+        affected_chunks
+    );
+
+    Ok(RenameImpactPreview {
+        affected_events: affected_events as usize,
+        affected_relations: affected_relations as usize,
+        affected_chunks: affected_chunks as usize,
+    })
+}
+
+/// 执行重命名（事务原子性，spec §三 12.4.2）
+///
+/// 在单个 SQLite 事务中执行：
+/// 1. 查询 entity 当前 name（old_name），若不存在返回 [`Error::NotFound`]（事务回滚）
+/// 2. UPDATE entity SET name = new_name, normalized_name = ..., updated_time = ... WHERE id = ?
+/// 3. UPDATE knowledge_event.content = REPLACE(content, old_name, new_name) WHERE instr(content, old_name) > 0
+/// 4. UPDATE knowledge_event.summary = REPLACE(summary, old_name, new_name) WHERE instr(summary, old_name) > 0
+/// 5. UPDATE knowledge_event.title = REPLACE(title, old_name, new_name) WHERE instr(title, old_name) > 0
+/// 6. 统计实际受影响数量并返回 [`RenameImpactPreview`]
+///
+/// 任一步失败则 ROLLBACK，所有修改回滚（entity.name + knowledge_event 文本均不变）。
+///
+/// ## 设计决策
+/// - **事务原子性**：3 步 UPDATE 在同一事务中，保证 entity.name 与 knowledge_event 文本同步更新
+///   （避免出现 entity.name 已更新但 chunk_text 仍含旧 name 的不一致状态）
+/// - **不更新 event_entity_relation**：表通过 entity_id 外键引用 entity，重命名不修改 entity_id，
+///   关系行自动反映新 name（无需 UPDATE，减少事务开销）
+/// - **chunk_text 代理字段**：项目 schema 无独立 chunks 表，使用 knowledge_event 的
+///   content / summary / title 三列作为 chunk_text 全文索引的代理字段
+/// - **instr() 而非 LIKE**：避免 old_name 含 `%` / `_` 通配符时误匹配
+///
+/// ## 参数
+/// - `conn`：SQLite 连接
+/// - `entity_id`：要重命名的实体 ID（必须存在，否则返回 [`Error::NotFound`]）
+/// - `new_name`：新名称（将自动归一化为 normalized_name = trim + lowercase）
+///
+/// ## 返回
+/// 成功返回 `Ok(RenameImpactPreview)`（含实际受影响数量，应与 [`preview_entity_rename_impact`] 一致）；
+/// 失败返回 `Err(Error)`（事务自动 ROLLBACK）
+pub fn execute_entity_rename(
+    conn: &Connection,
+    entity_id: &str,
+    new_name: &str,
+) -> Result<RenameImpactPreview> {
+    conn.execute_batch("BEGIN")?;
+    let result = execute_entity_rename_inner(conn, entity_id, new_name);
+    match result {
+        Ok(preview) => {
+            conn.execute_batch("COMMIT")?;
+            Ok(preview)
+        }
+        Err(e) => {
+            // 回滚事务（忽略回滚自身的错误）
+            let _ = conn.execute_batch("ROLLBACK");
+            Err(e)
+        }
+    }
+}
+
+/// execute_entity_rename 内部实现（在事务内执行）
+///
+/// 流程见 [`execute_entity_rename`] 文档。返回实际受影响数量。
+fn execute_entity_rename_inner(
+    conn: &Connection,
+    entity_id: &str,
+    new_name: &str,
+) -> Result<RenameImpactPreview> {
+    // 1. 查询 entity 当前 name（old_name）
+    //    若 entity_id 不存在，返回 NotFound 错误（事务将由外层 ROLLBACK）
+    let old_name = query_entity_name(conn, entity_id)?;
+
+    // 2. 统计 affected_relations / affected_events / affected_chunks（在 UPDATE 之前统计，
+    //    因为 UPDATE knowledge_event 后 chunk_text 已被 REPLACE，instr() 找不到旧 name）
+    let affected_relations: i64 = conn.query_row(
+        COUNT_AFFECTED_RELATIONS_SQL,
+        rusqlite::params![entity_id],
+        |row| row.get(0),
+    )?;
+    let affected_events: i64 = conn.query_row(
+        COUNT_AFFECTED_EVENTS_SQL,
+        rusqlite::params![entity_id],
+        |row| row.get(0),
+    )?;
+    let affected_chunks: i64 = conn.query_row(
+        COUNT_AFFECTED_CHUNKS_SQL,
+        rusqlite::params![&old_name, &old_name, &old_name],
+        |row| row.get(0),
+    )?;
+
+    // 3. UPDATE entity SET name = new_name, normalized_name = ..., updated_time = ... WHERE id = ?
+    //    normalized_name 与 DefaultEntityNormalizer 一致：trim + lowercase
+    let normalized = new_name.trim().to_lowercase();
+    conn.execute(
+        RENAME_ENTITY_SQL,
+        rusqlite::params![new_name, &normalized, FIXED_TIMESTAMP, entity_id],
+    )?;
+
+    // 4. UPDATE knowledge_event.content（REPLACE 旧 name 为新 name）
+    //    参数顺序：[old_name, new_name, old_name]（REPLACE 第 2/3 参数 + WHERE instr 参数）
+    conn.execute(
+        UPDATE_EVENT_CONTENT_SQL,
+        rusqlite::params![&old_name, new_name, &old_name],
+    )?;
+
+    // 5. UPDATE knowledge_event.summary
+    conn.execute(
+        UPDATE_EVENT_SUMMARY_SQL,
+        rusqlite::params![&old_name, new_name, &old_name],
+    )?;
+
+    // 6. UPDATE knowledge_event.title
+    conn.execute(
+        UPDATE_EVENT_TITLE_SQL,
+        rusqlite::params![&old_name, new_name, &old_name],
+    )?;
+
+    log::debug!(
+        "execute_entity_rename: entity_id={}, old_name={}, new_name={}, \
+         affected_events={}, affected_relations={}, affected_chunks={}",
+        entity_id,
+        old_name,
+        new_name,
+        affected_events,
+        affected_relations,
+        affected_chunks
+    );
+
+    Ok(RenameImpactPreview {
+        affected_events: affected_events as usize,
+        affected_relations: affected_relations as usize,
+        affected_chunks: affected_chunks as usize,
+    })
 }
 
 // ---------------------------------------------------------------------------

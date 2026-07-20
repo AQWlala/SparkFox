@@ -30,9 +30,12 @@
 use rusqlite::Connection;
 
 // Sub-Step 12.4.1：新增 merge_entities_with_conflict_report / SplitStrategy / split_entity_with_strategy
+// Sub-Step 12.4.2：新增 preview_entity_rename_impact / execute_entity_rename（返回 RenameImpactPreview 结构体，
+//   通过类型推断访问字段，无需显式 import 类型本身）
 use sparkfox_knowledge::entity_ops::{
-    merge_entities, merge_entities_with_conflict_report, rename_entity, split_entity,
-    split_entity_with_strategy, SplitStrategy,
+    execute_entity_rename, merge_entities, merge_entities_with_conflict_report,
+    preview_entity_rename_impact, rename_entity, split_entity, split_entity_with_strategy,
+    SplitStrategy,
 };
 use sparkfox_knowledge::schema::{ALL_SAG_DDL, INSERT_DEFAULT_ENTITY_TYPES};
 
@@ -909,5 +912,399 @@ fn test_split_entity_round_robin_backward_compatible() {
     assert_eq!(
         b_events, b_events2,
         "split_entity 与 split_entity_with_strategy(RoundRobin) 的 new_entity[1] 分布必须一致"
+    );
+}
+
+// ---------------------------------------------------------------------------
+// Sub-Step 12.4.2 — preview_entity_rename_impact / execute_entity_rename 测试
+// （重命名全局影响预览 + 事务原子性）
+// ---------------------------------------------------------------------------
+
+/// 构造 rename 影响预览测试 fixture：
+///
+/// ```text
+/// ent-rename (北京, default_person)
+///   ├── evt-1（content 含「北京」字样，title 含「北京」）── rel-1 ── ent-rename
+///   ├── evt-2（content 不含「北京」）                  ── rel-2 ── ent-rename
+///   └── evt-3（content 含「北京」字样）                ── rel-3 ── ent-other（不属于 ent-rename）
+/// ```
+///
+/// - 1 个待重命名 entity：ent-rename（北京）
+/// - 1 个其他 entity：ent-other（用于验证不影响其他 entity 的关系）
+/// - 3 个 event：evt-1 / evt-2 / evt-3（其中 evt-1 + evt-3 的 content 含「北京」字样）
+/// - 3 条 event_entity_relation：
+///   - rel-1: (evt-1, ent-rename)  ← affected_relations 计数
+///   - rel-2: (evt-2, ent-rename)  ← affected_relations 计数
+///   - rel-3: (evt-3, ent-other)   ← 不属于 ent-rename，不计入
+///
+/// 预期 preview（重命名 ent-rename: 北京 → 北京市）：
+/// - affected_events = 2（evt-1 + evt-2，通过 event_entity_relation JOIN）
+/// - affected_relations = 2（rel-1 + rel-2）
+/// - affected_chunks = 2（evt-1 + evt-3 的 content 含「北京」，knowledge_event.content 作为 chunk_text 代理）
+fn setup_rename_impact_fixture() -> Connection {
+    let conn = Connection::open_in_memory().unwrap();
+    conn.execute_batch("PRAGMA foreign_keys = ON;").unwrap();
+    for ddl in ALL_SAG_DDL {
+        conn.execute_batch(ddl).unwrap();
+    }
+    conn.execute_batch(INSERT_DEFAULT_ENTITY_TYPES).unwrap();
+
+    // 2 个 entity：ent-rename（北京）+ ent-other（上海）
+    conn.execute(
+        "INSERT INTO entity (id, entity_type_id, name, normalized_name, created_time, updated_time) VALUES (?, ?, ?, ?, ?, ?)",
+        rusqlite::params!["ent-rename", "default_person", "北京", "北京", "2026-07-20T00:00:00Z", "2026-07-20T00:00:00Z"],
+    ).unwrap();
+    conn.execute(
+        "INSERT INTO entity (id, entity_type_id, name, normalized_name, created_time, updated_time) VALUES (?, ?, ?, ?, ?, ?)",
+        rusqlite::params!["ent-other", "default_person", "上海", "上海", "2026-07-20T00:00:00Z", "2026-07-20T00:00:00Z"],
+    ).unwrap();
+
+    // 3 个 event：evt-1 / evt-3 的 content + summary 含「北京」，evt-2 不含
+    // （content/summary 作为 chunk_text 全文索引的代理字段）
+    conn.execute(
+        "INSERT INTO knowledge_event (id, kb_id, doc_id, title, summary, content, created_time, updated_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        rusqlite::params!["evt-1", "kb-1", "doc-1", "北京会议", "北京摘要", "张三在北京参加会议", "2026-07-20T00:00:00Z", "2026-07-20T00:00:00Z"],
+    ).unwrap();
+    conn.execute(
+        "INSERT INTO knowledge_event (id, kb_id, doc_id, title, summary, content, created_time, updated_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        rusqlite::params!["evt-2", "kb-1", "doc-1", "事件二", "摘要二", "李四在西安参加会议", "2026-07-20T00:00:00Z", "2026-07-20T00:00:00Z"],
+    ).unwrap();
+    conn.execute(
+        "INSERT INTO knowledge_event (id, kb_id, doc_id, title, summary, content, created_time, updated_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        rusqlite::params!["evt-3", "kb-1", "doc-1", "事件三", "北京相关摘要", "王五访问北京", "2026-07-20T00:00:00Z", "2026-07-20T00:00:00Z"],
+    ).unwrap();
+
+    // 3 条 event_entity_relation
+    // rel-1 + rel-2 关联 ent-rename；rel-3 关联 ent-other（但 evt-3 content 含「北京」）
+    conn.execute(
+        "INSERT INTO event_entity_relation (id, event_id, entity_id, created_time) VALUES (?, ?, ?, ?)",
+        rusqlite::params!["rel-1", "evt-1", "ent-rename", "2026-07-20T00:00:00Z"],
+    ).unwrap();
+    conn.execute(
+        "INSERT INTO event_entity_relation (id, event_id, entity_id, created_time) VALUES (?, ?, ?, ?)",
+        rusqlite::params!["rel-2", "evt-2", "ent-rename", "2026-07-20T00:00:00Z"],
+    ).unwrap();
+    conn.execute(
+        "INSERT INTO event_entity_relation (id, event_id, entity_id, created_time) VALUES (?, ?, ?, ?)",
+        rusqlite::params!["rel-3", "evt-3", "ent-other", "2026-07-20T00:00:00Z"],
+    ).unwrap();
+
+    conn
+}
+
+#[test]
+fn test_preview_entity_rename_impact_returns_counts() {
+    // 验收（spec §三 12.4.2）：preview_entity_rename_impact 返回受影响 events / relations / chunks 数量
+    //
+    // fixture:
+    //   ent-rename (北京) ── rel-1 ── evt-1 (content 含「北京」)
+    //                   ── rel-2 ── evt-2 (content 不含「北京」)
+    //   ent-other (上海) ── rel-3 ── evt-3 (content 含「北京」)
+    //
+    // preview(ent-rename, "北京市") 应返回：
+    //   - affected_events = 2（evt-1 + evt-2，通过 event_entity_relation JOIN）
+    //   - affected_relations = 2（rel-1 + rel-2，ent-rename 的关系行数）
+    //   - affected_chunks = 2（evt-1 + evt-3 的 content 含「北京」字样）
+    //
+    // 注意：affected_chunks 统计的是「content/summary 含旧 name」的 knowledge_event 行数，
+    // 不要求该 event 通过 event_entity_relation 关联到 ent-rename（chunk_text 是全文索引语义，
+    // 任何含旧 name 的文本都需要更新，与 entity 关系无关）。
+    let conn = setup_rename_impact_fixture();
+    let preview = preview_entity_rename_impact(&conn, "ent-rename", "北京市")
+        .expect("preview_entity_rename_impact 应成功");
+
+    // affected_events = 2：evt-1 + evt-2 通过 event_entity_relation 关联到 ent-rename
+    assert_eq!(
+        preview.affected_events, 2,
+        "affected_events 应为 2（evt-1 + evt-2 关联到 ent-rename），实际: {}",
+        preview.affected_events
+    );
+
+    // affected_relations = 2：rel-1 + rel-2 引用 ent-rename
+    assert_eq!(
+        preview.affected_relations, 2,
+        "affected_relations 应为 2（rel-1 + rel-2 引用 ent-rename），实际: {}",
+        preview.affected_relations
+    );
+
+    // affected_chunks = 2：evt-1 + evt-3 的 content/summary 含「北京」字样
+    // （evt-2 不含「北京」，不计入；evt-3 虽然关联 ent-other 但其 content 含「北京」，需更新）
+    assert_eq!(
+        preview.affected_chunks, 2,
+        "affected_chunks 应为 2（evt-1 + evt-3 含「北京」字样），实际: {}",
+        preview.affected_chunks
+    );
+
+    // 预览不应修改任何数据（仅查询）
+    let name: String = conn
+        .query_row(
+            "SELECT name FROM entity WHERE id = ?",
+            rusqlite::params!["ent-rename"],
+            |row| row.get(0),
+        )
+        .unwrap();
+    assert_eq!(name, "北京", "preview 不应修改 entity.name");
+}
+
+#[test]
+fn test_execute_entity_rename_atomic() {
+    // 验收（spec §三 12.4.2）：execute_entity_rename 事务原子性
+    //
+    // 成功场景：执行重命名后 entity.name + knowledge_event.content 同时更新（事务 COMMIT）
+    // 失败场景：对不存在的 entity_id 执行重命名应返回 NotFound 错误，且不修改任何数据（事务 ROLLBACK）
+    let conn = setup_rename_impact_fixture();
+
+    // ─── 成功场景：执行重命名 ent-rename: 北京 → 北京市 ───
+    let result = execute_entity_rename(&conn, "ent-rename", "北京市")
+        .expect("execute_entity_rename 应成功");
+
+    // 1. entity.name 应已更新为「北京市」
+    let name: String = conn
+        .query_row(
+            "SELECT name FROM entity WHERE id = ?",
+            rusqlite::params!["ent-rename"],
+            |row| row.get(0),
+        )
+        .unwrap();
+    assert_eq!(name, "北京市", "execute 后 entity.name 应为「北京市」");
+
+    // 2. knowledge_event.content 中的「北京」应被 REPLACE 为「北京市」
+    //    evt-1 content 原为「张三在北京参加会议」→ 应更新为「张三在北京市参加会议」
+    let evt1_content: String = conn
+        .query_row(
+            "SELECT content FROM knowledge_event WHERE id = ?",
+            rusqlite::params!["evt-1"],
+            |row| row.get(0),
+        )
+        .unwrap();
+    assert_eq!(
+        evt1_content, "张三在北京市参加会议",
+        "execute 后 evt-1.content 应含「北京市」(REPLACE 已生效)，实际: {}",
+        evt1_content
+    );
+
+    // 3. evt-2 content 不含「北京」，不应被修改
+    let evt2_content: String = conn
+        .query_row(
+            "SELECT content FROM knowledge_event WHERE id = ?",
+            rusqlite::params!["evt-2"],
+            |row| row.get(0),
+        )
+        .unwrap();
+    assert_eq!(
+        evt2_content, "李四在西安参加会议",
+        "execute 后 evt-2.content 不应变化（不含旧 name），实际: {}",
+        evt2_content
+    );
+
+    // 4. 返回的 RenameImpactPreview 应反映实际更新的数量
+    assert_eq!(
+        result.affected_events, 2,
+        "execute 返回的 affected_events 应为 2"
+    );
+    assert_eq!(
+        result.affected_relations, 2,
+        "execute 返回的 affected_relations 应为 2"
+    );
+    assert_eq!(
+        result.affected_chunks, 2,
+        "execute 返回的 affected_chunks 应为 2（evt-1 + evt-3 的 content/summary 被更新）"
+    );
+
+    // ─── 失败场景：对不存在的 entity_id 执行重命名应返回 NotFound 错误 ───
+    // 此时事务应 ROLLBACK，不修改任何数据（ent-rename 已重命名为「北京市」，
+    // 二次调用 ent-nonexistent 后 ent-rename 的 name 应保持「北京市」不变）
+    let err_result = execute_entity_rename(&conn, "ent-nonexistent", "不存在的实体");
+    assert!(err_result.is_err(), "对不存在的 entity_id 应返回错误");
+
+    // 验证 ent-rename 的 name 未被修改（事务回滚）
+    let name_after_fail: String = conn
+        .query_row(
+            "SELECT name FROM entity WHERE id = ?",
+            rusqlite::params!["ent-rename"],
+            |row| row.get(0),
+        )
+        .unwrap();
+    assert_eq!(
+        name_after_fail, "北京市",
+        "失败事务回滚后 ent-rename.name 应保持「北京市」不变，实际: {}",
+        name_after_fail
+    );
+}
+
+#[test]
+fn test_rename_updates_entity_name() {
+    // 验收（spec §三 12.4.2）：重命名后 entity.name + normalized_name 更新（execute_entity_rename 路径）
+    //
+    // execute(ent-rename, "北京市") 后：
+    //   - name = "北京市"
+    //   - normalized_name = "北京市"（trim + lowercase，中文不受影响）
+    //   - updated_time 更新
+    let conn = setup_rename_impact_fixture();
+    execute_entity_rename(&conn, "ent-rename", "北京市")
+        .expect("execute_entity_rename 应成功");
+
+    let (name, normalized): (String, String) = conn
+        .query_row(
+            "SELECT name, normalized_name FROM entity WHERE id = ?",
+            rusqlite::params!["ent-rename"],
+            |row| Ok((row.get(0)?, row.get(1)?)),
+        )
+        .unwrap();
+    assert_eq!(name, "北京市", "name 应更新为「北京市」");
+    assert_eq!(
+        normalized, "北京市",
+        "normalized_name 应为「北京市」（中文 trim + lowercase 不变）"
+    );
+
+    // entity_id 不变
+    let count: i64 = conn
+        .query_row(
+            "SELECT COUNT(*) FROM entity WHERE id = ?",
+            rusqlite::params!["ent-rename"],
+            |row| row.get(0),
+        )
+        .unwrap();
+    assert_eq!(count, 1, "entity_id 应不变（仍为 1 行）");
+}
+
+#[test]
+fn test_rename_updates_event_entity_relation() {
+    // 验收（spec §三 12.4.2）：重命名后 event_entity_relation 中相关行更新
+    //
+    // 设计说明：event_entity_relation 通过 entity_id 外键引用 entity，重命名仅修改
+    // entity.name + normalized_name，不修改 entity_id。因此 event_entity_relation 行
+    // 本身不需要 UPDATE，但通过 JOIN 查询时能拿到新 name（外键关联自动反映新 name）。
+    //
+    // 验收点：重命名后通过 JOIN 查询 event_entity_relation → entity，
+    // 关联行应返回新 name「北京市」（而非旧 name「北京」）。
+    let conn = setup_rename_impact_fixture();
+    execute_entity_rename(&conn, "ent-rename", "北京市")
+        .expect("execute_entity_rename 应成功");
+
+    // 查询 ent-rename 的所有 relation JOIN entity，应返回新 name「北京市」
+    let mut stmt = conn
+        .prepare(
+            "SELECT r.id, r.event_id, e.name \
+             FROM event_entity_relation r \
+             JOIN entity e ON r.entity_id = e.id \
+             WHERE r.entity_id = ? \
+             ORDER BY r.event_id ASC",
+        )
+        .unwrap();
+    let rows: Vec<(String, String, String)> = stmt
+        .query_map(rusqlite::params!["ent-rename"], |row| {
+            Ok((
+                row.get::<_, String>(0)?,
+                row.get::<_, String>(1)?,
+                row.get::<_, String>(2)?,
+            ))
+        })
+        .unwrap()
+        .filter_map(|r| r.ok())
+        .collect();
+    drop(stmt);
+
+    // ent-rename 应仍关联 evt-1 + evt-2（关系数量未变）
+    assert_eq!(rows.len(), 2, "ent-rename 应仍关联 2 条 relation");
+    // JOIN 查询返回的 name 应为新 name「北京市」（外键关联反映新 name）
+    for (_, _, name) in &rows {
+        assert_eq!(
+            name, "北京市",
+            "JOIN 查询应返回新 name「北京市」（外键关联自动反映），实际: {}",
+            name
+        );
+    }
+
+    // event_entity_relation 行数应保持不变（重命名不删除关系）
+    let total_rel: i64 = conn
+        .query_row("SELECT COUNT(*) FROM event_entity_relation", [], |row| {
+            row.get(0)
+        })
+        .unwrap();
+    assert_eq!(total_rel, 3, "重命名不应改变 event_entity_relation 总行数");
+}
+
+#[test]
+fn test_rename_updates_chunk_text_fulltext() {
+    // 验收（spec §三 12.4.2）：重命名后 chunk_text 全文索引更新
+    //
+    // 设计说明：项目 schema 无独立 chunks 表，knowledge_event.content + summary
+    // 作为 chunk_text 的代理字段（事件正文 + 摘要）。execute_entity_rename 通过
+    // SQL REPLACE(text, old_name, new_name) 更新所有含旧 name 的 content + summary，
+    // 等效于「全文索引重建」（SQLite LIKE '%old_name%' 模糊匹配 + 原地替换）。
+    //
+    // 验收点：重命名 ent-rename: 北京 → 北京市 后：
+    //   - evt-1 content（原「张三在北京参加会议」）应含「北京市」
+    //   - evt-1 summary（原「北京摘要」）应含「北京市」
+    //   - evt-1 title（原「北京会议」）应含「北京市」（title 也含旧 name，需更新）
+    //   - evt-3 content（原「王五访问北京」）应含「北京市」（即使 evt-3 关联 ent-other）
+    //   - evt-3 summary（原「北京相关摘要」）应含「北京市」
+    //   - evt-2 content（不含「北京」）应保持不变
+    let conn = setup_rename_impact_fixture();
+    execute_entity_rename(&conn, "ent-rename", "北京市")
+        .expect("execute_entity_rename 应成功");
+
+    // evt-1：content + summary + title 应全部含「北京市」
+    let (evt1_title, evt1_summary, evt1_content): (String, String, String) = conn
+        .query_row(
+            "SELECT title, summary, content FROM knowledge_event WHERE id = ?",
+            rusqlite::params!["evt-1"],
+            |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?)),
+        )
+        .unwrap();
+    assert_eq!(evt1_title, "北京市会议", "evt-1.title 应含「北京市」");
+    assert_eq!(evt1_summary, "北京市摘要", "evt-1.summary 应含「北京市」");
+    assert_eq!(
+        evt1_content, "张三在北京市参加会议",
+        "evt-1.content 应含「北京市」"
+    );
+
+    // evt-2：content + summary + title 不含「北京」，应保持不变
+    let (evt2_title, evt2_summary, evt2_content): (String, String, String) = conn
+        .query_row(
+            "SELECT title, summary, content FROM knowledge_event WHERE id = ?",
+            rusqlite::params!["evt-2"],
+            |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?)),
+        )
+        .unwrap();
+    assert_eq!(evt2_title, "事件二", "evt-2.title 不应变化");
+    assert_eq!(evt2_summary, "摘要二", "evt-2.summary 不应变化");
+    assert_eq!(evt2_content, "李四在西安参加会议", "evt-2.content 不应变化");
+
+    // evt-3：content + summary 应含「北京市」（即使 evt-3 关联 ent-other，content 含「北京」就需更新）
+    let (evt3_title, evt3_summary, evt3_content): (String, String, String) = conn
+        .query_row(
+            "SELECT title, summary, content FROM knowledge_event WHERE id = ?",
+            rusqlite::params!["evt-3"],
+            |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?)),
+        )
+        .unwrap();
+    assert_eq!(evt3_title, "事件三", "evt-3.title 不含「北京」应不变");
+    assert_eq!(
+        evt3_summary, "北京市相关摘要",
+        "evt-3.summary 应含「北京市」（原含「北京」）"
+    );
+    assert_eq!(
+        evt3_content, "王五访问北京市",
+        "evt-3.content 应含「北京市」（原含「北京」，即使 evt-3 关联 ent-other）"
+    );
+
+    // 验证：重命名后无 knowledge_event 行的 content/summary/title 仍含旧 name「北京」
+    // （因为「北京市」也包含「北京」子串，我们用更精确的查询：content LIKE '%北京%'
+    //  但 NOT LIKE '%北京市%' 的行应为 0 — 即不存在「北京」未替换为「北京市」的残留）
+    let stale_count: i64 = conn
+        .query_row(
+            "SELECT COUNT(*) FROM knowledge_event \
+             WHERE (content LIKE '%北京%' AND content NOT LIKE '%北京市%') \
+                OR (summary LIKE '%北京%' AND summary NOT LIKE '%北京市%') \
+                OR (title LIKE '%北京%' AND title NOT LIKE '%北京市%')",
+            [],
+            |row| row.get(0),
+        )
+        .unwrap();
+    assert_eq!(
+        stale_count, 0,
+        "重命名后不应有 content/summary/title 仍含「北京」但不含「北京市」的残留行"
     );
 }

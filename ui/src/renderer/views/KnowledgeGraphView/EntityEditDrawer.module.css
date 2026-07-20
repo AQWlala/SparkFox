@@ -104,3 +104,50 @@
   gap: 8px;
   margin-top: 4px;
 }
+
+/* ─── 12.4.2 重命名影响预览面板 ─── */
+
+/* 影响预览面板容器（与 entityInfo 卡片风格一致：浅色背景 + 圆角 + 边框） */
+.impactPanel {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  background-color: var(--color-fill-1);
+  border-radius: 10px;
+  border: 1px solid var(--color-border-2);
+  margin-top: 4px;
+}
+
+/* 面板标题（「受影响范围预览」） */
+.impactTitle {
+  margin: 0 0 4px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-1);
+}
+
+/* 单行影响数据：label + value 左右对齐 */
+.impactRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+/* 影响项标签（如「受影响事件」） */
+.impactLabel {
+  flex-shrink: 0;
+  color: var(--color-text-3);
+  font-weight: 500;
+}
+
+/* 影响项数值（受影响数量，右对齐强调） */
+.impactValue {
+  color: var(--color-text-1);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
