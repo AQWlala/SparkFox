@@ -1,9 +1,16 @@
 sparkfox-graph
-Copyright 2026 SparkFox Contributors (AGPL-3.0-or-later)
+Copyright 2026 SparkFox Contributors (AGPL-3.0-only)
 
-This product includes software and design concepts derived from:
+本 crate 是 SparkFox 通用图遍历引擎，A-02 P0 修复后降级为 GraphBackend trait，
+sparkfox-knowledge 为唯一 SoT。本 NOTICE 致谢上游依赖
+（致谢规范：依据 Apache-2.0 §4(d) / MIT）。
 
+This product includes software and design concepts derived from the following
+upstream projects (attribution retained per upstream license terms):
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 1. OpenAkita MDRM (Multi-hop Dynamic Relation Model)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    - Use: Multi-hop graph traversal algorithm design (clean-room rewrite in Rust)
    - License: Open-source (verified 2026-07-19)
    - Note: A-02 P0 修复后，sparkfox-graph 降级为通用图遍历引擎。
@@ -16,13 +23,36 @@ This product includes software and design concepts derived from:
          entity / knowledge_event / event_entity_relation 表，不维护独立图结构表。
      GraphBackend trait 与两套后端实现均为 SparkFox Contributors 独立编写。
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 2. SAG (SQL-Retrieval Augmented Generation with Query-Time Dynamic Hyperedges)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    - Repository: SAG-Benchmark (local clone at d:\xin kaifa\SAG-Benchmark)
    - License: MIT License (Copyright (c) 2026 Zleap Team) — verified 2026-07-19
    - Use: 间接依赖（通过 sparkfox-knowledge 的 SAG 5-table schema 反向引用）
    - Note: sparkfox-graph 不直接复制 SAG schema，仅通过 GraphBackend trait 抽象访问。
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. v1.1.0 新增第三方依赖致谢（Third-Party Dependencies — Attribution）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+3.1 petgraph 0.6（Rust 通用图数据结构 — StableDiGraph）
+    - License: MIT OR Apache-2.0 (dual-licensed, 选择 Apache-2.0 路径与 AGPL 兼容)
+    - Source: https://github.com/petgraph/petgraph
+    - Use: src/backend.rs::PetgraphBackend 内存图数据结构
+      （StableDiGraph 支持安全节点/边删除，用于通用图遍历引擎的内存缓存层）
+      - PetgraphBackend 维护 StableDiGraph 内存图 + SQLite 持久化（graph_node / graph_edge 表）
+      - 与 KnowledgeGraphBackend（反向引用 sparkfox-knowledge 表）并存
+    - Tests: 单元测试覆盖节点/边 CRUD、BFS 遍历、属性 JSON 序列化
+    - Copyright: Copyright (c) petgraph developers
+    - 致谢上游：petgraph 由 mitchmindtree 等贡献者开发，社区维护
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
 All GraphBackend trait definitions, PetgraphBackend implementation (graph_node /
-graph_edge independent tables), KnowledgeGraphBackend implementation, BFS traversal
-logic, and unit tests are independently authored by SparkFox Contributors and licensed
-under AGPL-3.0-or-later.
+graph_edge independent tables + StableDiGraph memory cache), KnowledgeGraphBackend
+implementation, BFS traversal logic, and unit tests are independently authored by
+SparkFox Contributors and licensed under AGPL-3.0-only.
+
+For questions about licensing, contact: SparkFox Contributors
+For the full text of AGPL-3.0, see: /LICENSE
+For the full text of MIT / Apache-2.0 (petgraph), see upstream repository linked above.

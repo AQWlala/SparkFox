@@ -36,6 +36,8 @@ import {
   dtoToFlowEdge,
   dtoToFlowNode,
 } from './graphContract';
+// 12.2.3：集成 HyperedgeLayer — react-flow 超边可视化图层
+import HyperedgeLayer, { type Hyperedge } from './HyperedgeLayer';
 
 /**
  * GraphFlow 组件 Props（spec §三 11.4.1）。
@@ -43,6 +45,10 @@ import {
  * - data：图谱数据（GraphData DTO，含 nodes / edges / meta）
  * - onNodeClick：节点点击回调（参数为 nodeId）
  * - onEdgeClick：边点击回调（参数为 edgeId）
+ * - hyperedges：所有超边列表（12.2.3 新增，传给 HyperedgeLayer 渲染）
+ * - activatedHyperedgeIds：激活的超边 ID 列表（12.2.3 新增，查询命中时高亮）
+ * - queryEntities：查询命中的 entity IDs（12.2.3 新增，保留查询上下文）
+ * - onHyperedgeClick：超边点击回调（12.2.3 新增）
  */
 export interface GraphFlowProps {
   /** 图谱数据 DTO（nodes + edges + meta） */
@@ -51,6 +57,14 @@ export interface GraphFlowProps {
   onNodeClick?: (nodeId: string) => void;
   /** 边点击回调（参数为 edgeId，PoC 阶段仅 console.log） */
   onEdgeClick?: (edgeId: string) => void;
+  /** 所有超边列表（12.2.3 新增，来自后端 detect_from_relations 全图检测） */
+  hyperedges?: Hyperedge[];
+  /** 激活的超边 ID 列表（12.2.3 新增，来自 activate_local_hyperedges 局部激活） */
+  activatedHyperedgeIds?: string[];
+  /** 查询命中的 entity IDs（12.2.3 新增，保留查询上下文便于未来扩展高亮逻辑） */
+  queryEntities?: string[];
+  /** 超边点击回调（12.2.3 新增，参数为被点击的 Hyperedge 对象） */
+  onHyperedgeClick?: (hyperedge: Hyperedge) => void;
 }
 
 /**
@@ -62,7 +76,16 @@ export interface GraphFlowProps {
  *   - ReactFlow 启用 fitView 自动适配视口（首次加载即居中显示所有节点）
  *   - 内置 Background / Controls / MiniMap 三个组件
  */
-const GraphFlow: React.FC<GraphFlowProps> = ({ data, onNodeClick, onEdgeClick }) => {
+const GraphFlow: React.FC<GraphFlowProps> = ({
+  data,
+  onNodeClick,
+  onEdgeClick,
+  // 12.2.3：超边相关 props（默认空数组 / undefined，向后兼容 11.4.1 测试）
+  hyperedges,
+  activatedHyperedgeIds,
+  queryEntities,
+  onHyperedgeClick,
+}) => {
   // 派生 ReactFlow nodes：data.nodes → Node[]（依赖 data 变化时重算）
   const nodes: Node[] = useMemo(
     () => data.nodes.map(dtoToFlowNode),
@@ -94,7 +117,10 @@ const GraphFlow: React.FC<GraphFlowProps> = ({ data, onNodeClick, onEdgeClick })
   );
 
   return (
-    <div className='sparkfox-graph-flow' style={{ width: '100%', height: '600px' }}>
+    <div
+      className='sparkfox-graph-flow'
+      style={{ width: '100%', height: '600px', position: 'relative' }}
+    >
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -106,6 +132,16 @@ const GraphFlow: React.FC<GraphFlowProps> = ({ data, onNodeClick, onEdgeClick })
         <Controls />
         <MiniMap />
       </ReactFlow>
+      {/* 12.2.3：叠加 HyperedgeLayer — react-flow 超边可视化（虚线 + 渐变色 + 高亮） */}
+      {/* 仅当父组件传入 hyperedges 时渲染，避免空数组无意义渲染 */}
+      {hyperedges && hyperedges.length > 0 && (
+        <HyperedgeLayer
+          hyperedges={hyperedges}
+          activatedHyperedgeIds={activatedHyperedgeIds}
+          queryEntities={queryEntities}
+          onHyperedgeClick={onHyperedgeClick}
+        />
+      )}
     </div>
   );
 };

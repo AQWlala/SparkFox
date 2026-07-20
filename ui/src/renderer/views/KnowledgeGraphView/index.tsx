@@ -52,6 +52,8 @@ import EntityEditDrawer from './EntityEditDrawer';
 import type { RenameImpactPreview } from './EntityEditDrawer';
 import MultiHopPathView from './MultiHopPathView';
 import type { SearchHit } from './MultiHopPathView';
+// 12.2.3：导入 Hyperedge 类型 + HyperedgeLayer 集成（在 GraphFlow 内叠加渲染）
+import type { Hyperedge } from './HyperedgeLayer';
 import type { GraphData } from './graphContract';
 import type { GraphNode, GraphEdge } from './types';
 import styles from './styles.module.css';
@@ -115,6 +117,25 @@ const KnowledgeGraphView: React.FC = () => {
   const [selectedHit, setSelectedHit] = useState<SearchHit | null>(null);
   // MultiHopPathView 可见性（默认 true 显示，onClose 后隐藏）
   const [showPathView, setShowPathView] = useState<boolean>(true);
+
+  // ─── 12.2.3 超边状态 ───
+  // 所有超边列表（mock 数据，对应后端 detect_from_relations 全图检测）
+  // 真实数据由 12.2.1/12.2.2 后端 HyperedgeDetector + detect_from_relations 提供
+  const [hyperedges] = useState<Hyperedge[]>([
+    {
+      id: 'he_mock_001',
+      member_events: ['evt-1', 'evt-2', 'evt-3'],
+      member_entities: ['n1', 'n2', 'n3'],
+    },
+    {
+      id: 'he_mock_002',
+      member_events: ['evt-2', 'evt-4', 'evt-5'],
+      member_entities: ['n2', 'n4', 'n5'],
+    },
+  ]);
+  // 激活的超边 ID 列表（来自 activate_local_hyperedges；非 Tauri 环境 mock 派生）
+  // 12.2.4 阶段：Tauri 环境改为 invoke('activate_local_hyperedges') 获取真实数据
+  const [activatedHyperedgeIds, setActivatedHyperedgeIds] = useState<string[]>([]);
 
   // ─── 11.4.1 GraphFlow 数据契约：从 SVG mock 数据转换为 GraphData DTO ───
   // 两种模式共享同一份 mock 数据，仅渲染方式不同，便于对比与切换
@@ -208,6 +229,7 @@ const KnowledgeGraphView: React.FC = () => {
   // 节点点击回调（spec §三 11.3.3：打开 EntityEditDrawer 抽屉）
   // 两种渲染模式共享此回调：SVG 模式由 GraphCanvas 触发，ReactFlow 模式由 GraphFlow 触发
   // 11.5.1 扩展：同时联动 selectedHit，刷新 MultiHopPathView 显示
+  // 12.2.3 扩展：同时联动 activate_local_hyperedges，高亮与该节点相关的超边
   const handleNodeClick = (nodeId: string) => {
     // eslint-disable-next-line no-console
     console.log('[KnowledgeGraphView] node clicked:', nodeId);
@@ -220,7 +242,62 @@ const KnowledgeGraphView: React.FC = () => {
     const hit = mockHitsByNodeId[nodeId] ?? null;
     setSelectedHit(hit);
     if (hit) setShowPathView(true);
+    // 12.2.3：激活与该节点相关的超边（queryEntities = [nodeId]）
+    // Tauri 环境：invoke('activate_local_hyperedges', { queryEntities: [nodeId] })
+    // 非 Tauri 环境：mock 派生（hyperedges 中含该 nodeId 的全部高亮）
+    void activateHyperedgesForQuery([nodeId]);
   };
+
+  // 12.2.3：超边激活逻辑（query 命中时高亮激活的超边）
+  // - Tauri 桌面环境：invoke activate_local_hyperedges 调用后端 12.2.2 实现
+  // - Web/开发环境：从 mock hyperedges 中过滤 member_entities ∩ queryEntities 非空的超边
+  //   （mock 实现与后端 activate_local_hyperedges 算法一致，便于前端独立验证可视化）
+  const activateHyperedgesForQuery = async (queryEntities: string[]) => {
+    if (queryEntities.length === 0) {
+      setActivatedHyperedgeIds([]);
+      return;
+    }
+    if (isTauriRuntime()) {
+      try {
+        // invoke 返回 unknown，需 cast 为 Hyperedge[]
+        // 字段名 id/member_events/member_entities 保持 snake_case（Rust serde 默认行为）
+        const activated = (await invoke('activate_local_hyperedges', {
+          queryEntities,
+        })) as Hyperedge[];
+        setActivatedHyperedgeIds(activated.map((he) => he.id));
+      } catch (err) {
+        // eslint-disable-next-line no-console
+        console.error(
+          '[KnowledgeGraphView] activate_local_hyperedges IPC failed:',
+          err
+        );
+        setActivatedHyperedgeIds([]);
+      }
+    } else {
+      // 非 Tauri 环境：mock 派生（与后端 activate_local_hyperedges 算法一致）
+      const querySet = new Set(queryEntities);
+      const activated = hyperedges
+        .filter((he) => he.member_entities.some((ent) => querySet.has(ent)))
+        .map((he) => he.id);
+      setActivatedHyperedgeIds(activated);
+    }
+  };
+
+  // 12.2.3：超边点击回调（PoC：仅 console.log，12.2.4+ 阶段可打开详情面板）
+  const handleHyperedgeClick = (hyperedge: Hyperedge) => {
+    // eslint-disable-next-line no-console
+    console.log('[KnowledgeGraphView] hyperedge clicked:', hyperedge.id);
+  };
+
+  // 12.2.3：派生 queryEntities（从 selectedHit 提取，传给 GraphFlow → HyperedgeLayer）
+  // 用于在 HyperedgeLayer 中保留查询上下文，便于未来扩展高亮逻辑
+  const queryEntities = useMemo(
+    () =>
+      selectedHit
+        ? selectedHit.via_entities.map((e) => e.entity_id)
+        : [],
+    [selectedHit]
+  );
 
   // 11.5.1：via_entities Tag 点击回调，跳转到对应实体节点
   // PoC 阶段：复用 handleNodeClick 实现「点击 via_entity Tag 联动图谱」效果
@@ -396,9 +473,9 @@ const KnowledgeGraphView: React.FC = () => {
         </Button>
       </div>
 
-      {/* ─── PoC 提示卡片：标注当前 11.3.2 阶段实现范围 ─── */}
+      {/* ─── PoC 提示卡片：标注当前实现范围（11.3.2 / 11.4.1 / 12.2.3） ─── */}
       <Card className={styles.pocHint} bordered>
-        <span>图谱渲染待 11.3.2 实现（PoC：11 类着色 + 图例 + SVG 简单展示；@xyflow/react 渲染待 11.4.1）</span>
+        <span>图谱渲染 11.3.2（SVG 11 类着色）+ 11.4.1（@xyflow/react v12）+ 12.2.3（SAG 超边可视化：虚线 + 渐变色 + 查询高亮）</span>
       </Card>
 
       {/* ─── 11.4.1 渲染模式切换：SVG 模式 / ReactFlow 模式 ─── */}
@@ -421,6 +498,11 @@ const KnowledgeGraphView: React.FC = () => {
           data={graphData}
           onNodeClick={handleNodeClick}
           onEdgeClick={(edgeId) => handleEdgeClick(edgeId)}
+          // 12.2.3：传入超边数据 + 激活状态 + 查询上下文（仅在 ReactFlow 模式下渲染 HyperedgeLayer）
+          hyperedges={hyperedges}
+          activatedHyperedgeIds={activatedHyperedgeIds}
+          queryEntities={queryEntities}
+          onHyperedgeClick={handleHyperedgeClick}
         />
       ) : (
         <GraphCanvas

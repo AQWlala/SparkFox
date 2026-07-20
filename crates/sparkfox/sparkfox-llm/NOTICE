@@ -1,0 +1,78 @@
+sparkfox-llm
+Copyright 2026 SparkFox Contributors (AGPL-3.0-only)
+
+本 crate 是 SparkFox LLM Provider 抽象层（OpenAI / Anthropic / Google / Bedrock / Local），
+v1.1.0 引入 SAG 中文检索增强流程所需的 LLM 推理依赖。
+本 NOTICE 致谢上游（致谢规范：依据 Apache-2.0 §4(d) / MIT）。
+
+This product includes software and design concepts derived from the following
+upstream projects (attribution retained per upstream license terms):
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. v1.1.0 新增第三方依赖致谢（Third-Party Dependencies — Attribution）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1.1 candle-core / candle-nn / candle-transformers 0.8（HuggingFace Rust 推理框架）
+    - License: MIT OR Apache-2.0 (dual-licensed, 选择 Apache-2.0 路径与 AGPL 兼容)
+    - Source: https://github.com/huggingface/candle
+    - Use: sparkfox-llm 通过 sparkfox-embedding crate 间接依赖 candle-core，
+      用于加载 XLM-RoBERTa / bge-small-zh / bge-reranker-v2-m3 权重做 tensor 推理。
+      - sparkfox-llm 本身不直接 #[derive] candle 类型，但 LlmProvider 的
+        structured_complete 路径（SAG MULTI pipeline step 1 NER）依赖
+        sparkfox-embedding::BgeEmbedder（内部基于 candle-core）
+      - 因此 sparkfox-llm 是 candle-core 的间接消费者
+    - Copyright: Copyright (c) HuggingFace Inc.
+    - 致谢上游：candle 由 HuggingFace Inc. 开源，Rust 纯实现 tensor 推理框架
+    - Note: candle-nn 的 VarBuilder::from_mmaped_safetensors 为 unsafe（mmap + FFI），
+      仅在 sparkfox-embedding 加载处局部 #[allow(unsafe_code)]，
+      sparkfox-llm 仍保持 #![forbid(unsafe_code)]。
+
+1.2 XLM-RoBERTa（多语言编码器 — SAG MULTI pipeline step 1 跨语言实体嵌入）
+    - License: MIT (model weights), Apache-2.0 (transformer reference impl)
+    - Source: https://github.com/facebookresearch/fairseq/tree/main/examples/xlmr
+              https://huggingface.co/FacebookAI/xlm-roberta-base
+    - Use: 通过 sparkfox-embedding 加载 XLM-RoBERTa 权重，
+      sparkfox-llm::structured_complete 调用 SAG MULTI NER 步骤时使用
+    - 致谢：Conneau et al., "Unsupervised Cross-lingual Representation Learning
+      at Scale", ACL 2020.
+    - Copyright: Copyright (c) Facebook, Inc. and its affiliates.
+
+1.3 jsonrepair 0.1（修复 LLM 输出的非严格 JSON）
+    - License: MIT
+    - Source: https://github.com/josdejong/jsonrepair
+    - Use: src/stream.rs / structured_complete 路径中修复 LLM 输出的
+      尾随逗号、缺引号等非严格 JSON，防 prompt 注入通过结构化字段逃逸
+    - Copyright: Copyright (c) Jos de Jong
+
+1.4 OpenAI API / Anthropic API（Provider 接口参考）
+    - License: Proprietary API（仅接口参考，未复制代码）
+    - Source: https://platform.openai.com/docs
+              https://docs.anthropic.com
+    - Use: src/openai.rs / src/anthropic.rs Provider 实现的 HTTP 协议参考
+    - Note: 仅参考公开 API 文档，实现为 SparkFox 原创代码
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. 间接上游依赖（通过 sparkfox-embedding crate 引入）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+2.1 BAAI/bge-small-zh-v1.5（中文嵌入模型）
+    - License: MIT
+    - Source: https://huggingface.co/BAAI/bge-small-zh-v1.5
+    - Use: sparkfox-embedding 默认嵌入模型（120MB），通过 candle-transformers 加载
+
+2.2 BAAI/bge-reranker-v2-m3（多语言重排模型）
+    - License: MIT
+    - Source: https://huggingface.co/BAAI/bge-reranker-v2-m3
+    - Use: sparkfox-embedding 重排模型（560MB），对召回结果二次精排
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+All LlmProvider trait definitions, AuditedProvider decorator (Task 7.2.2),
+LlmStream implementation (tokio mpsc channel), OpenAI/Anthropic/Ollama provider
+implementations, JSON repair integration, and unit/integration tests are
+independently authored by SparkFox Contributors and licensed under AGPL-3.0-only.
+
+For questions about licensing, contact: SparkFox Contributors
+For the full text of AGPL-3.0, see: /LICENSE
+For the full text of MIT / Apache-2.0 (candle / jsonrepair), see upstream
+repositories linked above.

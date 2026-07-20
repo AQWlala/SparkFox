@@ -1,0 +1,191 @@
+依赖名,版本,许可证,类别,致谢位置,上游 URL
+tokio,1,MIT,backend,NOTICE,https://github.com/tokio-rs/tokio
+tokio-util,0.7,MIT,backend,NOTICE,https://github.com/tokio-rs/tokio
+axum,0.8,MIT,backend,NOTICE,https://github.com/tokio-rs/axum
+tower,0.5,MIT,backend,NOTICE,https://github.com/tower-rs/tower
+tower-http,0.6,MIT,backend,NOTICE,https://github.com/tower-rs/tower-http
+http,1,MIT OR Apache-2.0,backend,NOTICE,https://github.com/hyperium/http
+http-body-util,0.1,MIT,backend,NOTICE,https://github.com/hyperium/http-body
+futures,0.3,MIT OR Apache-2.0,backend,NOTICE,https://github.com/rust-lang/futures-rs
+futures-util,0.3,MIT OR Apache-2.0,backend,NOTICE,https://github.com/rust-lang/futures-rs
+serde,1,MIT OR Apache-2.0,backend,NOTICE,https://github.com/serde-rs/serde
+serde_json,1,MIT OR Apache-2.0,backend,NOTICE,https://github.com/serde-rs/json
+serde_yaml,0.9,MIT,backend,NOTICE,https://github.com/dtolnay/serde-yaml
+jsonschema,0.47,MIT,backend,NOTICE,https://github.com/Stranger6667/jsonschema-rs
+ts-rs,12.0.1,MIT,backend,NOTICE,https://github.com/Aleph-Alpha/ts-rs
+encoding_rs,0.8,MIT OR Apache-2.0,backend,NOTICE,https://github.com/hsivonen/encoding_rs
+async-trait,0.1,MIT OR Apache-2.0,backend,NOTICE,https://github.com/dtolnay/async-trait
+thiserror,2,MIT OR Apache-2.0,backend,NOTICE,https://github.com/dtolnay/thiserror
+anyhow,1,MIT OR Apache-2.0,backend,NOTICE,https://github.com/dtolnay/anyhow
+tracing,0.1,MIT,backend,NOTICE,https://github.com/tokio-rs/tracing
+tracing-appender,0.2,MIT,backend,NOTICE,https://github.com/tokio-rs/tracing
+tracing-subscriber,0.3,MIT,backend,NOTICE,https://github.com/tokio-rs/tracing
+log,0.4,MIT OR Apache-2.0,backend,NOTICE,https://github.com/rust-lang/log
+env_logger,0.11,MIT OR Apache-2.0,backend,NOTICE,https://github.com/rust-cli/env_logger
+clap,4,MIT OR Apache-2.0,backend,NOTICE,https://github.com/clap-rs/clap
+sqlx,0.8,MIT OR Apache-2.0,backend,NOTICE,https://github.com/launchbadge/sqlx
+rusqlite,0.32,MIT,backend,NOTICE,https://github.com/rusqlite/rusqlite
+uuid,1,MIT OR Apache-2.0,backend,NOTICE,https://github.com/uuid-rs/uuid
+chrono,0.4,MIT OR Apache-2.0,backend,NOTICE,https://github.com/chronotope/chrono
+chrono-tz,0.10,MIT OR Apache-2.0,backend,NOTICE,https://github.com/chronotope/chrono-tz
+regex,1,MIT OR Apache-2.0,backend,NOTICE,https://github.com/rust-lang/regex
+dashmap,6,MIT OR Apache-2.0,backend,NOTICE,https://github.com/xacrimon/dashmap
+lru,0.18,MIT,backend,NOTICE,https://github.com/jeromefroe/lru-rs
+url,2,MIT OR Apache-2.0,backend,NOTICE,https://github.com/servo/rust-url
+reqwest,0.12,MIT OR Apache-2.0,backend,NOTICE,https://github.com/seanmonstar/reqwest
+tokio-tungstenite,0.26,MIT,backend,NOTICE,https://github.com/snapview/tokio-tungstenite
+base64,0.22,MIT OR Apache-2.0,backend,NOTICE,https://github.com/marshallpierce/rust-base64
+hex,0.4,MIT OR Apache-2.0,backend,NOTICE,https://github.com/KokaKiwi/rust-hex
+getrandom,0.2,MIT OR Apache-2.0,backend,NOTICE,https://github.com/rust-random/getrandom
+libc,0.2,MIT OR Apache-2.0,backend,NOTICE,https://github.com/rust-lang/libc
+dirs,6,MIT OR Apache-2.0,backend,NOTICE,https://github.com/soc/dirs-rs
+dirs-next,2.0,MIT OR Apache-2.0,backend,NOTICE,https://github.com/xdg-rs/dirs-next
+walkdir,2,Unlicense OR MIT,backend,NOTICE,https://github.com/BurntSushi/walkdir
+glob,0.3,MIT OR Apache-2.0,backend,NOTICE,https://github.com/rust-lang/glob
+ignore,0.4,CC0-1.0 OR MIT,backend,NOTICE,https://github.com/BurntSushi/ripgrep
+notify,8,CC0-1.0,backend,NOTICE,https://github.com/notify-rs/notify
+include_dir,0.7,Apache-2.0,backend,NOTICE,https://github.com/Michael-F-Bryan/include_dir
+rust-embed,8,MIT,backend,NOTICE,https://github.com/pyros2097/rust-embed
+fs2,0.4,MIT OR Apache-2.0,backend,NOTICE,https://github.com/danburkert/fs2-rs
+zip,2,MIT,backend,NOTICE,https://github.com/zip-rs/zip2
+flate2,1,MIT OR Apache-2.0,backend,NOTICE,https://github.com/rust-lang/flate2
+tar,0.4,MIT OR Apache-2.0,backend,NOTICE,https://github.com/alexcrichton/tar-rs
+zstd,0.13,BSD-3-Clause,backend,NOTICE,https://github.com/gyscos/zstd-rs
+git2,0.20,MIT OR Apache-2.0,backend,NOTICE,https://github.com/rust-lang/git2-rs
+mime_guess,2,MIT,backend,NOTICE,https://github.com/abonander/mime_guess
+similar,2,Apache-2.0,backend,NOTICE,https://github.com/mitsuhiko/similar
+prost,0.13,Apache-2.0,backend,NOTICE,https://github.com/tokio-rs/prost
+semver,1,MIT OR Apache-2.0,backend,NOTICE,https://github.com/dtolnay/semver
+sys-locale,0.3,MIT OR Apache-2.0,backend,NOTICE,https://github.com/1Password/sys-locale
+unicode-width,0.2.2,MIT OR Apache-2.0,backend,NOTICE,https://github.com/unicode-rs/unicode-width
+crossterm,0.29,MIT,backend,NOTICE,https://github.com/crossterm-rs/crossterm
+is-terminal,0.4,MIT,backend,NOTICE,https://github.com/sunfishcode/is-terminal
+image,0.25,MIT OR Apache-2.0,backend,NOTICE,https://github.com/image-rs/image
+htmd,0.5,MIT,backend,NOTICE,https://github.com/Harness/htmd
+oauth2,5.0.0-rc.1,MIT OR Apache-2.0,backend,NOTICE,https://github.com/ramosbugs/oauth2-rs
+jsonwebtoken,10,MIT,backend,NOTICE,https://github.com/Keats/jsonwebtoken
+bcrypt,0.17,MIT,backend,NOTICE,https://github.com/Keats/rust-bcrypt
+sha1,0.10,MIT OR Apache-2.0,backend,NOTICE,https://github.com/RustCrypto/hashes
+sha2,0.10,MIT OR Apache-2.0,backend,NOTICE,https://github.com/RustCrypto/hashes
+hmac,0.12,MIT OR Apache-2.0,backend,NOTICE,https://github.com/RustCrypto/MACs
+md-5,0.10,MIT OR Apache-2.0,backend,NOTICE,https://github.com/RustCrypto/hashes
+aes,0.8,MIT OR Apache-2.0,backend,NOTICE,https://github.com/RustCrypto/block-ciphers
+aes-gcm,0.10,MIT OR Apache-2.0,backend,crates/sparkfox/sparkfox-e2ee/NOTICE,https://github.com/RustCrypto/AEADs
+ed25519-dalek,2,BSD-3-Clause,backend,NOTICE,https://github.com/dalek-cryptography/ed25519-dalek
+psl,2,Apache-2.0,backend,NOTICE,https://github.com/addr-rs/psl
+rustls,0.23,Apache-2.0 OR MIT,backend,NOTICE,https://github.com/rustls/rustls
+rustls-native-certs,0.8,Apache-2.0 OR MIT,backend,NOTICE,https://github.com/rustls/rustls-native-certs
+nostr,0.37,MIT,backend,NOTICE,https://github.com/rust-nostr/nostr
+calamine,0.26,MIT,backend,crates/sparkfox/sparkfox-parser/NOTICE,https://github.com/tafia/calamine
+rust_xlsxwriter,0.82,MIT OR Apache-2.0,backend,NOTICE,https://github.com/jmcnamara/rust_xlsxwriter
+cron,0.15,Apache-2.0 OR MIT,backend,NOTICE,https://github.com/zslayton/cron
+portable-pty,0.8,MIT,backend,NOTICE,https://github.com/wez/wezterm
+open,5,MIT,backend,NOTICE,https://github.com/Byron/open-rs
+which,7,MIT,backend,NOTICE,https://github.com/harryfei/which-rs
+aws-config,1,MIT OR Apache-2.0,backend,NOTICE,https://github.com/smithy-lang/smithy-rs
+aws-sdk-bedrock,1,MIT OR Apache-2.0,backend,NOTICE,https://github.com/awslabs/aws-sdk-rust
+aws-sigv4,1,MIT OR Apache-2.0,backend,NOTICE,https://github.com/awslabs/aws-sdk-rust
+aws-credential-types,1,MIT OR Apache-2.0,backend,NOTICE,https://github.com/awslabs/aws-sdk-rust
+toml,0.8,MIT OR Apache-2.0,backend,NOTICE,https://github.com/toml-rs/toml
+toml_edit,0.25,MIT OR Apache-2.0,backend,NOTICE,https://github.com/toml-rs/toml
+automerge,0.10,MIT,sparkfox,crates/sparkfox/sparkfox-crdt/NOTICE,https://github.com/automerge/automerge-rs
+x25519-dalek,2,BSD-3-Clause,sparkfox,crates/sparkfox/sparkfox-e2ee/NOTICE,https://github.com/dalek-cryptography/x25519-dalek
+petgraph,0.6,MIT OR Apache-2.0,sparkfox,crates/sparkfox/sparkfox-graph/NOTICE,https://github.com/petgraph/petgraph
+hnsw_rs,0.3,MIT,sparkfox,crates/sparkfox/sparkfox-knowledge/NOTICE,https://github.com/jean-pierreBoth/hnswlib-rs
+jieba-rs,0.7,MIT,sparkfox,crates/sparkfox/sparkfox-knowledge/NOTICE,https://github.com/messense/jieba-rs
+unicode-normalization,0.1,MIT OR Apache-2.0,sparkfox,NOTICE,https://github.com/unicode-rs/unicode-normalization
+candle-core,0.8,MIT OR Apache-2.0,sparkfox,crates/sparkfox/sparkfox-embedding/NOTICE,https://github.com/huggingface/candle
+candle-nn,0.8,MIT OR Apache-2.0,sparkfox,crates/sparkfox/sparkfox-embedding/NOTICE,https://github.com/huggingface/candle
+candle-transformers,0.8,MIT OR Apache-2.0,sparkfox,crates/sparkfox/sparkfox-embedding/NOTICE,https://github.com/huggingface/candle
+tokenizers,0.21,Apache-2.0,sparkfox,crates/sparkfox/sparkfox-embedding/NOTICE,https://github.com/huggingface/tokenizers
+hf-hub,0.4,Apache-2.0,sparkfox,crates/sparkfox/sparkfox-embedding/NOTICE,https://github.com/huggingface/hf-hub
+lopdf,0.34,MIT,sparkfox,crates/sparkfox/sparkfox-parser/NOTICE,https://github.com/J-F-Liu/lopdf
+docx-rs,0.4,MIT,sparkfox,crates/sparkfox/sparkfox-parser/NOTICE,https://github.com/bokuweb/docx-rs
+quick-xml,0.36,MIT,sparkfox,crates/sparkfox/sparkfox-parser/NOTICE,https://github.com/tafia/quick-xml
+jsonrepair,0.1,MIT,sparkfox,crates/sparkfox/sparkfox-llm/NOTICE,https://github.com/josdejong/jsonrepair
+tauri,2,MIT OR Apache-2.0,desktop,NOTICE,https://github.com/tauri-apps/tauri
+tauri-build,2,MIT OR Apache-2.0,desktop,NOTICE,https://github.com/tauri-apps/tauri
+tauri-plugin-single-instance,2,MIT OR Apache-2.0,desktop,NOTICE,https://github.com/tauri-apps/plugins-workspace
+tauri-plugin-deep-link,2,MIT OR Apache-2.0,desktop,NOTICE,https://github.com/tauri-apps/plugins-workspace
+tauri-plugin-dialog,2,MIT OR Apache-2.0,desktop,NOTICE,https://github.com/tauri-apps/plugins-workspace
+tauri-plugin-notification,2,MIT OR Apache-2.0,desktop,NOTICE,https://github.com/tauri-apps/plugins-workspace
+tauri-plugin-updater,2,MIT OR Apache-2.0,desktop,NOTICE,https://github.com/tauri-apps/plugins-workspace
+tauri-plugin-process,2,MIT OR Apache-2.0,desktop,NOTICE,https://github.com/tauri-apps/plugins-workspace
+tauri-plugin-autostart,2,MIT OR Apache-2.0,desktop,NOTICE,https://github.com/tauri-apps/plugins-workspace
+keepawake,0.6,MIT OR Apache-2.0,desktop,NOTICE,https://github.com/ogxd/keepawake-rs
+xcap,0.9,Apache-2.0,desktop,NOTICE,https://github.com/nashaofu/xcap
+enigo,0.6,MIT OR Apache-2.0 OR Unlicense,desktop,NOTICE,https://github.com/enigo-rs/enigo
+chromiumoxide,0.9,MIT OR Apache-2.0,desktop,NOTICE,https://github.com/mattsse/chromiumoxide
+uiautomation,0.25,MIT,agent,NOTICE,https://github.com/leexgone/uiautomation-rs
+windows,0.61,MIT OR Apache-2.0,agent,NOTICE,https://github.com/microsoft/windows-rs
+windows-sys,0.61,MIT OR Apache-2.0,agent,NOTICE,https://github.com/microsoft/windows-rs
+junction,1,MIT,agent,NOTICE,https://github.com/codota/junction-rs
+dunce,1,MIT OR Apache-2.0,agent,NOTICE,https://github.com/sfackler/dunce
+core-foundation,0.10,MIT OR Apache-2.0,agent,NOTICE,https://github.com/servo/core-foundation-rs
+core-graphics,0.25,MIT OR Apache-2.0,agent,NOTICE,https://github.com/servo/core-foundation-rs
+objc2,0.6,MIT,agent,NOTICE,https://github.com/madsmtm/objc2
+objc2-foundation,0.3,MIT,agent,NOTICE,https://github.com/madsmtm/objc2
+objc2-vision,0.3,MIT,agent,NOTICE,https://github.com/madsmtm/objc2
+dispatch2,0.3,MIT,agent,NOTICE,https://github.com/nickel-org/dispatch2
+atspi,0.30,MIT,agent,NOTICE,https://github.com/nickel-org/atspi
+zbus,5,MIT,agent,NOTICE,https://github.com/dbus2/zbus
+schemars,1,MIT,agent,NOTICE,https://github.com/GREsau/schemars
+crc32fast,1.4,MIT OR Apache-2.0 OR Zlib,agent,NOTICE,https://github.com/zcorpan/crc32fast
+rmcp,1.5,MIT OR Apache-2.0,agent,NOTICE,https://github.com/modelcontextprotocol/rust-sdk
+if-addrs,0.13,MIT OR Apache-2.0,agent,NOTICE,https://github.com/messense/if-addrs
+tempfile,3,MIT OR Apache-2.0,testing,NOTICE,https://github.com/Stebalien/tempfile
+wiremock,0.6,MIT,testing,NOTICE,https://github.com/LukeMathWalker/wiremock-rs
+tokio-test,0.4,MIT,testing,NOTICE,https://github.com/tokio-rs/tokio
+mockall,0.14,MIT OR Apache-2.0,testing,NOTICE,https://github.com/asomers/mockall
+rstest,0.26,MIT OR Apache-2.0,testing,NOTICE,https://github.com/la10736/rstest
+serial_test,3,MIT,testing,NOTICE,https://github.com/palfrey/serial_test
+insta,1.48,MIT,testing,NOTICE,https://github.com/mitsuhiko/insta
+react,19.1.0,MIT,frontend,NOTICE,https://github.com/facebook/react
+react-dom,19.1.0,MIT,frontend,NOTICE,https://github.com/facebook/react
+react-router-dom,7.8.0,MIT,frontend,NOTICE,https://github.com/remix-run/react-router
+react-i18next,14.0.5,MIT,frontend,NOTICE,https://github.com/i18next/react-i18next
+i18next,23.7.16,MIT,frontend,NOTICE,https://github.com/i18next/i18next
+@arco-design/web-react,2.66.1,MIT,frontend,NOTICE,https://github.com/arco-design/arco-design
+zustand,5.0.0,MIT,frontend,NOTICE,https://github.com/pmndrs/zustand
+swr,2.3.6,MIT,frontend,NOTICE,https://github.com/vercel/swr
+dayjs,1.11.18,MIT OR Apache-2.0,frontend,NOTICE,https://github.com/iamkun/dayjs
+classnames,2.5.1,MIT,frontend,NOTICE,https://github.com/JedWatson/classnames
+zod,3.25.76,MIT,frontend,NOTICE,https://github.com/colinhacks/zod
+openai,5.12.2,Apache-2.0,frontend,NOTICE,https://github.com/openai/openai-node
+@anthropic-ai/sdk,0.71.2,MIT,frontend,NOTICE,https://github.com/anthropics/anthropic-sdk-typescript
+@google/genai,1.16.0,Apache-2.0,frontend,NOTICE,https://github.com/googleapis/js-genai
+@aws-sdk/client-bedrock,3.987.0,Apache-2.0,frontend,NOTICE,https://github.com/aws/aws-sdk-js-v3
+@modelcontextprotocol/sdk,1.20.0,MIT,frontend,NOTICE,https://github.com/modelcontextprotocol/typescript-sdk
+@agentclientprotocol/sdk,0.18.2,MIT,frontend,NOTICE,https://github.com/agentclientprotocol/agent-client-protocol
+@xyflow/react,12.11.1,MIT,frontend,NOTICE,https://github.com/xyflow/xyflow
+@xterm/xterm,5.5.0,MIT,frontend,NOTICE,https://github.com/xtermjs/xterm.js
+@icon-park/react,1.4.2,MIT,frontend,NOTICE,https://github.com/bytedance/IconPark
+@monaco-editor/react,4.7.0,MIT,frontend,NOTICE,https://github.com/suren-atoyan/monaco-react
+@codemirror/view,6.38.6,MIT,frontend,NOTICE,https://github.com/codemirror/dev
+@uiw/react-codemirror,4.25.2,MIT,frontend,NOTICE,https://github.com/uiwjs/react-codemirror
+react-markdown,10.1.0,MIT,frontend,NOTICE,https://github.com/remarkjs/react-markdown
+react-syntax-highlighter,16.1.0,MIT,frontend,NOTICE,https://github.com/react-syntax-highlighter/react-syntax-highlighter
+remark-gfm,4.0.1,MIT,frontend,NOTICE,https://github.com/remarkjs/remark-gfm
+rehype-katex,7.0.1,MIT,frontend,NOTICE,https://github.com/remarkjs/remark-rehype
+katex,0.16.22,MIT,frontend,NOTICE,https://github.com/KaTeX/KaTeX
+mermaid,11.13.0,MIT,frontend,NOTICE,https://github.com/mermaid-js/mermaid
+diff2html,3.4.55,BSD-3-Clause,frontend,NOTICE,https://github.com/rtfpessoa/diff2html
+diff,8.0.3,BSD-3-Clause,frontend,NOTICE,https://github.com/kpdecker/jsdiff
+d3,7.9.0,ISC,frontend,NOTICE,https://github.com/d3/d3
+three,0.169.0,MIT,frontend,NOTICE,https://github.com/mrdoob/three.js
+onnxruntime-web,1.26.0,MIT,frontend,NOTICE,https://github.com/microsoft/onnxruntime
+web-tree-sitter,0.25.10,MIT,frontend,NOTICE,https://github.com/tree-sitter/tree-sitter
+turndown,7.2.2,MIT,frontend,NOTICE,https://github.com/mixmark-io/turndown
+mammoth,1.11.0,BSD-2-Clause,frontend,NOTICE,https://github.com/mwilliamson/mammoth.js
+docx,9.5.1,MIT,frontend,NOTICE,https://github.com/dolanmiu/docx
+xlsx-republish,0.20.3,Apache-2.0,frontend,NOTICE,https://github.com/SheetJS/sheetjs
+express,5.1.0,MIT,frontend,NOTICE,https://github.com/expressjs/express
+ws,8.18.3,MIT,frontend,NOTICE,https://github.com/websockets/ws
+jsonwebtoken,9.0.2,MIT,frontend,NOTICE,https://github.com/auth0/node-jsonwebtoken
+bcryptjs,2.4.3,BSD-3-Clause OR MIT,frontend,NOTICE,https://github.com/dcodeIO/bcrypt.js
+vite,6.4.1,MIT,frontend,NOTICE,https://github.com/vitejs/vite
+typescript,5.8.3,Apache-2.0,frontend,NOTICE,https://github.com/microsoft/TypeScript
+unocss,66.3.3,MIT,frontend,NOTICE,https://github.com/unocss/unocss
+concurrently,9.2.1,MIT,build,NOTICE,https://github.com/open-cli-tools/concurrently
+@tauri-apps/cli,2.1.0,MIT OR Apache-2.0,build,NOTICE,https://github.com/tauri-apps/tauri
+@vitejs/plugin-react,4.3.4,MIT,build,NOTICE,https://github.com/vitejs/vite-plugin-react

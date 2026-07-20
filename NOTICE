@@ -120,19 +120,116 @@ License Verification (C-01, resolved 2026-07-19):
 
 License Compatibility: MIT is compatible with AGPL-3.0.
 
+───────────────────────────────────────────────────────────────────────
+6. v1.1.0 新增第三方依赖致谢（Third-Party Dependencies Introduced in v1.1.0）
+───────────────────────────────────────────────────────────────────────
+说明（致谢规范）：
+  本章节依据 Apache-2.0 §4(d) 与 MIT 许可证条款，对 v1.1.0 引入的上游依赖
+  进行显式致谢。所有依赖仅以 Rust crate 形式静态链接，未修改其源代码。
+  上游许可证原文保留在各自 crate 仓库中（见每项 Source 字段）。
+  AGPL-3.0-only 与 MIT / Apache-2.0 / CC BY-SA 4.0 兼容（详见下方矩阵）。
+
+【SAG 中文检索增强流程依赖】
+
+6.1 XLM-RoBERTa（多语言编码器，用于 SAG 跨语言实体嵌入）
+    - License: MIT (model weights), Apache-2.0 (transformer reference impl)
+    - Source: https://github.com/facebookresearch/fairseq/tree/main/examples/xlmr
+              https://huggingface.co/FacebookAI/xlm-roberta-base
+    - Use: sparkfox-llm / sparkfox-embedding 中通过 candle-core 加载
+          XLM-RoBERTa 权重做中文 NER 与实体嵌入（SAG MULTI pipeline step 1）
+    - 致谢：Conneau et al., "Unsupervised Cross-lingual Representation Learning
+      at Scale", ACL 2020.
+
+6.2 jieba-rs（中文分词，Rust 实现，用于 jieba 降级 NER）
+    - License: MIT
+    - Source: https://github.com/messense/jieba-rs
+    - Use: sparkfox-knowledge::jieba_ner 当 LLM NER 失败时的降级路径
+          （R-06 决策：LLM 失败 → jieba + 规则匹配兜底）
+    - Copyright: (c) messense and jieba-rs contributors
+    - 致谢上游：原作者 fxsjy《结巴中文分词》
+
+6.3 DuReader（中文机器阅读理解数据集，用于 SAG 中文检索评测）
+    - License: Apache-2.0
+    - Source: https://github.com/baidu/DuReader
+    - Use: sparkfox-knowledge 集成测试 fixtures（zh_multihop 多跳评测集）
+          评测 SAG MULTI 策略的中文召回质量
+    - Copyright: Copyright 2018 Baidu, Inc.
+
+6.4 CMRC2018（中文阅读理解数据集，用于 SAG 实体抽取评测）
+    - License: CC BY-SA 4.0
+    - Source: https://github.com/ymcui/cmrc2018
+    - Use: sparkfox-knowledge zh_ner 评测 fixtures（zh_ner_100_cases）
+          评测中文 NER 实体抽取 F1（jieba 降级 vs LLM 路径）
+    - Citation: Cui, Li, et al. "A Span-Extraction Dataset for Chinese Machine
+      Reading Comprehension", EMNLP 2019.
+
+【向量索引依赖】
+
+6.5 hnsw_rs（纯 Rust HNSW 向量索引实现，无 C++ FFI 依赖）
+    - License: MIT OR Apache-2.0 (dual-licensed)
+    - Source: https://github.com/brownn/hnsw_rs
+    - Use: sparkfox-knowledge::index::hnsw_index 真实 HNSW 算法实现
+          （替代 sparkfox-store 中因 hnswlib-rs Windows 编译失败而退化的暴力扫描占位）
+    - Copyright: Copyright (c) hnsw_rs contributors
+    - Note: 与 sparkfox-store 的暴力扫描占位实现并存：
+      - sparkfox-store::vector_index::hnsw（HashMap 暴力扫描，因 hnswlib-rs C++ binding
+        在 Windows 上 off64 依赖缺失而降级）
+      - sparkfox-knowledge::index::hnsw_index（hnsw_rs 真实 HNSW，纯 Rust Windows 兼容）
+
+6.6 sqlite-vec（SQLite 向量扩展，预留依赖）
+    - License: MIT
+    - Source: https://github.com/asg017/sqlite-vec
+    - Use: sparkfox-store 预留扩展接口（v1.1.0 未直接编译启用，
+          为 v1.2.0 sqlite-vec 替代 sqlite-vss 做接口准备）
+    - Copyright: Copyright (c) Alex Garcia
+
+【图遍历依赖】
+
+6.7 petgraph（Rust 通用图数据结构，StableDiGraph）
+    - License: MIT OR Apache-2.0 (dual-licensed)
+    - Source: https://github.com/petgraph/petgraph
+    - Use: sparkfox-graph::backend::PetgraphBackend 内存图数据结构
+          （StableDiGraph 支持安全节点/边删除，用于通用图遍历引擎）
+    - Copyright: Copyright (c) petgraph developers
+
+【LLM 推理依赖】
+
+6.8 candle-core / candle-nn / candle-transformers（HuggingFace Rust 推理框架）
+    - License: MIT OR Apache-2.0 (dual-licensed)
+    - Source: https://github.com/huggingface/candle
+    - Use: sparkfox-embedding 中加载 bge-small-zh / bge-reranker-v2-m3 /
+          XLM-RoBERTa 权重做 tensor 推理
+    - Copyright: Copyright (c) HuggingFace Inc.
+    - Note: candle-nn 的 VarBuilder::from_mmaped_safetensors 为 unsafe（mmap+FFI），
+      仅在 sparkfox-embedding 加载处局部 #[allow(unsafe_code)]，其余 crate 仍 forbid unsafe。
+
+License Compatibility Notes:
+  - MIT / Apache-2.0 dual-licensed crates: 选择 Apache-2.0 路径与 AGPL-3.0 兼容。
+  - CC BY-SA 4.0（CMRC2018 数据集）: 仅用于测试 fixtures，不编译进发行版二进制，
+    不触发 AGPL §13 网络服务条款。若未来在发行版中分发该数据集，需遵守
+    ShareAlike 约束（衍生作品需以相同许可发布）。
+
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
                       License Compatibility Matrix
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
-┌─────────────────┬──────────────┬───────────────────┬──────────────────────┐
-│ Upstream Project│ License      │ Compatible w/AGPL?│ Inclusion Mode       │
-├─────────────────┼──────────────┼───────────────────┼──────────────────────┤
-│ NomiFun         │ Apache-2.0   │ Yes               │ Direct code reuse    │
-│ Pangu Nebula    │ Proprietary  │ N/A (blueprint)   │ Blueprint reference  │
-│ OpenAkita       │ Proprietary  │ N/A (reference)   │ Clean-room rewrite   │
-│ BaiLongma       │ MIT          │ Yes               │ Clean-room rewrite   │
-│ SAG             │ MIT          │ Yes               │ Schema borrowing     │
-└─────────────────┴──────────────┴───────────────────┴──────────────────────┘
+┌─────────────────────────┬──────────────────────┬───────────────────┬──────────────────────┐
+│ Upstream Project        │ License              │ Compatible w/AGPL?│ Inclusion Mode       │
+├─────────────────────────┼──────────────────────┼───────────────────┼──────────────────────┤
+│ NomiFun                 │ Apache-2.0           │ Yes               │ Direct code reuse    │
+│ Pangu Nebula            │ Proprietary          │ N/A (blueprint)   │ Blueprint reference  │
+│ OpenAkita               │ Proprietary          │ N/A (reference)   │ Clean-room rewrite   │
+│ BaiLongma               │ MIT                  │ Yes               │ Clean-room rewrite   │
+│ SAG                     │ MIT                  │ Yes               │ Schema borrowing     │
+│ XLM-RoBERTa (v1.1.0)    │ MIT / Apache-2.0     │ Yes               │ Static model weights │
+│ jieba-rs (v1.1.0)       │ MIT                  │ Yes               │ Crate dependency     │
+│ DuReader (v1.1.0)        │ Apache-2.0           │ Yes               │ Test fixtures only   │
+│ CMRC2018 (v1.1.0)       │ CC BY-SA 4.0         │ Yes (test-only)   │ Test fixtures only   │
+│ hnsw_rs (v1.1.0)         │ MIT / Apache-2.0     │ Yes               │ Crate dependency     │
+│ sqlite-vec (v1.1.0)     │ MIT                  │ Yes               │ Interface reserved   │
+│ petgraph (v1.1.0)        │ MIT / Apache-2.0     │ Yes               │ Crate dependency     │
+│ candle (v1.1.0)           │ MIT / Apache-2.0     │ Yes               │ Crate dependency     │
+└─────────────────────────┴──────────────────────┴───────────────────┴──────────────────────┘
 
 SparkFox original code: AGPL-3.0-only
   - All new Rust crates under crates/sparkfox/

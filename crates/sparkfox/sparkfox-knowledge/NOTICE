@@ -1,9 +1,15 @@
 sparkfox-knowledge
-Copyright 2026 SparkFox Contributors (AGPL-3.0-or-later)
+Copyright 2026 SparkFox Contributors (AGPL-3.0-only)
 
-This product includes software and design concepts derived from:
+本 crate 是 SAG 中文检索增强生成的核心实现，包含 v1.1.0 引入的多项上游依赖。
+本 NOTICE 致谢上游（致谢规范：依据 Apache-2.0 §4(d) / MIT / CC BY-SA 4.0）。
 
+This product includes software and design concepts derived from the following
+upstream projects (attribution retained per upstream license terms):
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 1. SAG (SQL-Retrieval Augmented Generation with Query-Time Dynamic Hyperedges)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    - Repository: SAG-Benchmark (local clone at d:\xin kaifa\SAG-Benchmark)
    - License: MIT License (Copyright (c) 2026 Zleap Team) — verified 2026-07-19
    - Paper: arXiv:2606.15971
@@ -11,13 +17,77 @@ This product includes software and design concepts derived from:
      MULTI 8-step pipeline (reimplemented with Chinese adaptation)
    - Note: Schema field-level mapping does not constitute classical clean-room rewrite.
      Prompt templates and few-shot examples are independently authored in Chinese.
+   - Schema source: crates/sparkfox/sparkfox-knowledge/src/schema.rs
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 2. NomiFun (Apache-2.0)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    - Use: Knowledge base UI components (extended, not rewritten)
 
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 3. OpenAkita MDRM
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    - Use: Multi-hop traversal algorithm (clean-room rewrite in Rust)
 
-All prompt templates, few-shot examples, entity normalization logic, and Chinese NER
-adaptations are independently authored by SparkFox Contributors and licensed under
-AGPL-3.0-or-later.
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. v1.1.0 新增第三方依赖致谢（Third-Party Dependencies — Attribution）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+4.1 jieba-rs 0.7（中文分词 — jieba 降级 NER 路径）
+    - License: MIT
+    - Source: https://github.com/messense/jieba-rs
+    - Use: src/jieba_ner.rs 当 LLM NER 失败时降级（R-06 决策）：
+      LLM 失败 → jieba-rs 分词 + 规则匹配兜底，保证中文实体抽取可用性
+    - Tests: tests/jieba_ner_test.rs / tests/jieba_fallback_f1_test.rs
+    - Copyright: (c) messense and jieba-rs contributors
+    - 致谢上游：原作者 fxsjy《结巴中文分词》Python 版
+
+4.2 DuReader（中文机器阅读理解数据集 — SAG MULTI 中文多跳评测）
+    - License: Apache-2.0
+    - Source: https://github.com/baidu/DuReader
+    - Use: tests/fixtures/zh_multihop/ 多跳评测集（entities.json / events.json /
+      queries.json / relations.json），评测 SAG MULTI 策略中文召回质量
+    - Copyright: Copyright 2018 Baidu, Inc.
+    - 生成脚本: tests/fixtures/zh_multihop/_generate.py
+
+4.3 CMRC2018（中文阅读理解数据集 — zh_ner 实体抽取 F1 评测）
+    - License: CC BY-SA 4.0
+    - Source: https://github.com/ymcui/cmrc2018
+    - Use: tests/data/zh_ner_100_cases.json 评测中文 NER 实体抽取 F1，
+      对比 jieba 降级路径与 LLM 路径
+    - Citation: Cui, Li, et al. "A Span-Extraction Dataset for Chinese Machine
+      Reading Comprehension", EMNLP 2019.
+    - Note: CC BY-SA 4.0 数据仅用于测试 fixtures，不编译进发行版二进制。
+
+4.4 hnsw_rs 0.3（纯 Rust HNSW 向量索引 — 真实 HNSW 算法实现）
+    - License: MIT OR Apache-2.0 (dual-licensed, 选择 Apache-2.0 路径)
+    - Source: https://github.com/brownn/hnsw_rs
+    - Use: src/index/hnsw_index.rs 真实 HNSW 向量索引实现
+      （Sub-Step 11.6.1：替代 sparkfox-store 中因 hnswlib-rs Windows 编译失败
+       而退化的暴力扫描占位实现，纯 Rust 无 C++ FFI 依赖，Windows 兼容）
+    - Tests: tests/hnsw_index_test.rs
+    - Copyright: Copyright (c) hnsw_rs contributors
+
+4.5 sqlite-vec（SQLite 向量扩展 — 接口预留，v1.1.0 未直接编译启用）
+    - License: MIT
+    - Source: https://github.com/asg017/sqlite-vec
+    - Use: 为 v1.2.0 sqlite-vec 替代 sqlite-vss 做接口准备
+    - Copyright: Copyright (c) Alex Garcia
+
+4.6 XLM-RoBERTa（多语言编码器 — 通过 sparkfox-embedding 间接使用）
+    - License: MIT (model weights), Apache-2.0 (transformer reference impl)
+    - Source: https://huggingface.co/FacebookAI/xlm-roberta-base
+    - Use: SAG MULTI pipeline step 1 跨语言实体嵌入，通过 sparkfox-embedding
+      crate 加载 XLM-RoBERTa 权重（不直接在本 crate 引用，避免重复依赖）
+    - 致谢：Conneau et al., ACL 2020.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+All prompt templates, few-shot examples, entity normalization logic, Chinese
+NER adaptations, jieba fallback path integration, HNSW index Rust wrapper,
+and unit/integration tests are independently authored by SparkFox Contributors
+and licensed under AGPL-3.0-only.
+
+For questions about licensing, contact: SparkFox Contributors
+For the full text of AGPL-3.0, see: /LICENSE
+For the full text of MIT / Apache-2.0, see upstream repositories linked above.

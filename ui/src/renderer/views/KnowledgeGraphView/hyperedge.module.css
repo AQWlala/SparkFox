@@ -1,0 +1,66 @@
+/**
+ * @license
+ * Copyright 2026 SparkFox Contributors — AGPL-3.0-only
+ *
+ * HyperedgeLayer 样式 — spec §三 12.2.3 / 第二十二波 sub-step A
+ *
+ * 设计要点（SAG 超边可视化，区别于普通二元边）：
+ *   - 虚线（strokeDasharray）— 视觉上与普通实线边区分，凸显「多元共现」语义
+ *   - 渐变色（linearGradient，蓝 #007aff → 紫 #8e4ec6）— 突出 SAG 核心创新
+ *     （蓝来自 hop1 的 ATOMIC 单跳基准色；紫对应 NUMBER 实体色，象征多元聚合）
+ *   - 激活高亮（activated）— query 命中时加粗 + opacity=1.0，未激活则淡显 opacity=0.4
+ *
+ * 与 MultiHopPathView.module.css 的颜色映射呼应：
+ *   - 蓝色 #007aff 与 hop1 一致，呼应「ATOMIC 单跳基准」语义
+ *   - 紫色 #8e4ec6 与 ENTITY_TYPE_COLORS.NUMBER 一致，象征「多元聚合实体」
+ */
+
+/* ─── 超边容器：绝对定位覆盖在 GraphFlow 画布之上 ─── */
+
+.hyperedgeLayer {
+  position: absolute;
+  inset: 0;
+  pointer-events: none; /* 容器不拦截事件，仅在子元素 <g> 上重新启用 */
+  z-index: 5;           /* 高于普通边（默认 z-index=1）但低于节点（z-index=10） */
+}
+
+/* ─── 单条超边 SVG <g> 元素（含路径 + 标签） ─── */
+
+.hyperedgeGroup {
+  pointer-events: auto;  /* 重新启用点击事件，触发 onHyperedgeClick */
+  cursor: pointer;
+}
+
+/* 超边路径：虚线 + 渐变色（默认未激活状态，opacity=0.4 淡显） */
+.hyperedgePath {
+  fill: none;
+  stroke: url(#sparkfox-hyperedge-gradient); /* 引用 SVG linearGradient 定义 */
+  stroke-width: 1.5;
+  stroke-dasharray: 5 3; /* 虚线：5px 实线 + 3px 空隙，与普通实线边区分 */
+  opacity: 0.4;          /* 未激活超边淡显，避免视觉干扰 */
+  transition: opacity 200ms ease, stroke-width 200ms ease;
+}
+
+/* 激活状态：query 命中时加粗 + opacity=1.0 高亮显示 */
+.activated {
+  stroke-width: 3;
+  opacity: 1;
+  filter: drop-shadow(0 0 4px rgba(142, 78, 198, 0.4)); /* 紫色光晕，强化激活视觉 */
+}
+
+/* ─── 超边标签（如超边 ID 简写 / 成员数统计） ─── */
+
+.hyperedgeLabel {
+  fill: var(--color-text-2);
+  font-size: 10px;
+  font-family: 'SF Mono', Menlo, monospace;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ─── 渐变色定义（蓝→紫，SAG 创新标识） ─── */
+
+/* 注：实际 <linearGradient> 元素在 HyperedgeLayer.tsx 中渲染（SVG 内联定义），
+ * 这里仅保留样式钩子；渐变 stops 蓝色 #007aff → 紫色 #8e4ec6 在 tsx 中以 SVG 属性注入 */
