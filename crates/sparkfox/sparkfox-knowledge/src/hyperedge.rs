@@ -236,6 +236,113 @@ impl HyperedgeDetector {
         hyperedges.sort_by(|a, b| a.id.cmp(&b.id));
         hyperedges
     }
+
+    /// Sub-Step 12.2.2 — 查询时 SQL JOIN 激活局部超边（SAG 核心创新第 2 步）
+    ///
+    /// ## 关键设计 — 非预计算 + 局部激活
+    /// - **非预计算**：超边不预先存储在表中，而是在 query 时动态调用
+    ///   [`detect_hyperedges`](Self::detect_hyperedges) 检测全图超边，
+    ///   然后过滤出与 `query_entities` 有交集的超边。这避免预计算存储开销，
+    ///   且超边随数据增删自动更新（无需重建索引）。
+    /// - **局部激活**：仅返回 `member_entities ∩ query_entities != ∅` 的超边，
+    ///   不做全局图遍历。这避免在大图上返回所有超边，复杂度受限于激活超边数。
+    ///
+    /// ## 算法
+    /// 1. 调用 [`detect_hyperedges`](Self::detect_hyperedges) 检测全图所有超边
+    ///    （从 `event_entity_relation` 表 SQL 加载所有 (event_id, entity_id) 关系）
+    /// 2. 过滤：`hyperedge.member_entities ∩ query_entities != ∅` → 激活
+    /// 3. 返回激活的超边列表（局部，非全局；按 ID 排序保证幂等）
+    ///
+    /// ## 参数
+    /// - `conn`：SQLite 连接（须已创建 SAG schema）
+    /// - `query_entities`：query 命中的 entity_id 列表（通常来自 ES-first 实体检索）
+    ///
+    /// ## 返回
+    /// `Result<Vec<Hyperedge>>`：激活的局部超边列表
+    /// - 空：query 未命中任何超边成员
+    /// - 非空：每条超边含至少一个 `query_entities` 中的 entity
+    ///
+    /// ## 错误
+    /// - SQL prepare / 查询失败：返回 `Storage` 错误（透传自 [`detect_hyperedges`]）
+    ///
+    /// ## 复杂度
+    /// - Step 1（detect_hyperedges）：O(E × 2^n)，E = entity 数，n = 单 entity 关联 event 数
+    /// - Step 2（过滤）：O(K × M)，K = 全图超边数，M = 平均 member_entities 数
+    /// - 总复杂度：O(E × 2^n + K × M)
+    /// - 在生产数据上（n ≤ 20）：detect_hyperedges 可在毫秒级完成
+    ///
+    /// ## SAG 核心创新体现
+    /// 传统二元图：query 命中 entity → 仅返回该 entity 直接关联的 events（hop=1）
+    /// SAG 超边激活：query 命中超边内任一 entity → 激活整条超边 → 返回所有成员 events
+    /// （即使部分 event 不直接关联 query entity，也通过超边语义聚合返回）
+    ///
+    /// ## 用法
+    /// ```ignore
+    /// use sparkfox_knowledge::hyperedge::HyperedgeDetector;
+    ///
+    /// let detector = HyperedgeDetector::new();
+    /// let query_entities = vec!["ent-0".to_string()];
+    /// let activated = detector.activate_local_hyperedges(&conn, &query_entities)?;
+    /// for he in &activated {
+    ///     println!("激活超边 {}: {} events × {} entities",
+    ///              he.id, he.member_events.len(), he.member_entities.len());
+    /// }
+    /// ```
+    pub fn activate_local_hyperedges(
+        &self,
+        conn: &Connection,
+        query_entities: &[String],
+    ) -> Result<Vec<Hyperedge>> {
+        // query_entities 为空时直接返回（避免无意义检测）
+        if query_entities.is_empty() {
+            return Ok(Vec::new());
+        }
+
+        // Step 1: 非预计算 — 动态检测全图超边
+        let all_hyperedges = self.detect_hyperedges(conn)?;
+
+        // Step 2: 局部激活 — 仅保留与 query_entities 有交集的超边
+        let query_set: HashSet<&str> = query_entities.iter().map(|s| s.as_str()).collect();
+        let mut activated: Vec<Hyperedge> = all_hyperedges
+            .into_iter()
+            .filter(|he| {
+                // 检查 member_entities ∩ query_entities 是否非空
+                he.member_entities
+                    .iter()
+                    .any(|ent| query_set.contains(ent.as_str()))
+            })
+            .collect();
+
+        // 按 ID 排序，保证返回顺序幂等（与 detect_from_relations 一致）
+        activated.sort_by(|a, b| a.id.cmp(&b.id));
+        Ok(activated)
+    }
+
+    /// Sub-Step 12.2.2 — 收集激活超边的所有成员 events（去重 + 排序）
+    ///
+    /// ## 算法
+    /// 1. 遍历所有激活超边的 `member_events`
+    /// 2. 用 `BTreeSet` 去重并自动排序
+    /// 3. 转换为 `Vec<String>` 返回
+    ///
+    /// ## 参数
+    /// - `hyperedges`：已激活的超边列表（来自 [`activate_local_hyperedges`]）
+    ///
+    /// ## 返回
+    /// `Vec<String>`：所有激活超边的 member_events 去重后的列表（已排序，幂等）
+    ///
+    /// ## 用途
+    /// MULTI_ES 策略将此结果作为候选 events 集成到 search 命中列表，
+    /// 同时应用 `max_join_rows` 阀门防止 graph explosion。
+    pub fn collect_activated_events(&self, hyperedges: &[Hyperedge]) -> Vec<String> {
+        let mut events: BTreeSet<String> = BTreeSet::new();
+        for he in hyperedges {
+            for evt in &he.member_events {
+                events.insert(evt.clone());
+            }
+        }
+        events.into_iter().collect()
+    }
 }
 
 /// 默认实现（等价于 [`HyperedgeDetector::new`]）

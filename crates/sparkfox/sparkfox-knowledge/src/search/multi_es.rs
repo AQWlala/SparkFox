@@ -73,6 +73,7 @@ use rusqlite::Connection;
 
 use sparkfox_core::{Error, Result};
 
+use crate::hyperedge::HyperedgeDetector;
 use crate::jieba_ner::JiebaNer;
 use super::multi_step::{step1_vectorize, step2_extract_entities_with_jieba, MultiState};
 use super::{EntityRef, SearchHit, SearchResult, SearchStrategy};
@@ -185,6 +186,19 @@ const DEFAULT_TOP_K: usize = 10;
 /// MULTI_ES 默认是否开启子图预筛选（spec §三 12.1.2 默认开启）
 const DEFAULT_SUBGRAPH_PREFILTER: bool = true;
 
+/// Sub-Step 12.2.2：MULTI_ES 默认超边 JOIN 行数上限（与 [`super::multi::MAX_JOIN_ROWS`] 一致）
+///
+/// 此阀门适用于超边激活的 JOIN 行数：累计激活超边的 `member_events` 总数。
+/// 超过此阈值时截断超边激活（不增强 via_entities）+ 记录 warning。
+const DEFAULT_MAX_JOIN_ROWS: usize = 10000;
+
+/// Sub-Step 12.2.2：MULTI_ES 默认是否开启超边激活（默认关闭，避免大数据集性能退化）
+///
+/// 超边激活在每次 search 时调用 `detect_hyperedges`（复杂度 O(E × 2^n)），
+/// 在大数据集（如 zh_multihop 200 entity）上可能拖慢查询。
+/// 默认关闭，仅在需要超边语义聚合的场景显式开启（如 12.2.2 测试）。
+const DEFAULT_ENABLE_HYPEREDGE_ACTIVATION: bool = false;
+
 // ---------------------------------------------------------------------------
 // MultiEsStrategy
 // ---------------------------------------------------------------------------
@@ -230,6 +244,19 @@ pub struct MultiEsStrategy {
     /// - `true`：BFS 前先用 `WHERE entity_id IN (...)` 批量查询 subgraph events，DISTINCT 去重
     /// - `false`：BFS 内逐个 entity 调用 `find_events_by_entity`（与 MULTI 一致，用于对比测试）
     subgraph_prefilter: bool,
+    /// Sub-Step 12.2.2：超边 JOIN 行数上限（防 graph explosion）
+    ///
+    /// 适用于超边激活的 JOIN 行数：累计激活超边的 `member_events` 总数。
+    /// 超过此阈值时截断超边激活（不增强 via_entities）+ 记录 warning 到
+    /// [`last_valve_warnings`](Self::last_valve_warnings)。
+    max_join_rows: usize,
+    /// Sub-Step 12.2.2：是否开启超边激活（默认关闭，避免大数据集性能退化）
+    ///
+    /// - `false`（默认）：不调用超边激活，search 行为与 12.1.2 一致（保持 Recall@5 不变）
+    /// - `true`：在 BFS 扩展后调用 `apply_hyperedge_activation`，激活局部超边 + 增强 via_entities
+    ///
+    /// 通过 [`with_hyperedge_activation`](Self::with_hyperedge_activation) 显式开启。
+    enable_hyperedge_activation: bool,
     /// 上次 `search` 调用产生的 JOIN 行数（测试访问入口，spec §三 12.1.2）
     ///
     /// 子图预筛选开启时：JOIN 行数 = subgraph 内 unique events 数量
@@ -237,6 +264,12 @@ pub struct MultiEsStrategy {
     ///
     /// `search` 调用开始时清空，结束时保留供测试通过 [`MultiEsStrategy::last_join_rows`] 访问。
     last_join_rows: Mutex<usize>,
+    /// Sub-Step 12.2.2：上次 `search` 调用产生的阀门警告列表（测试访问入口）
+    ///
+    /// 记录超边 JOIN 行数超过 [`max_join_rows`] 时的警告信息。
+    /// `search` 调用开始时清空，结束时保留供测试通过
+    /// [`MultiEsStrategy::last_valve_warnings`] 访问。
+    last_valve_warnings: Mutex<Vec<String>>,
 }
 
 impl MultiEsStrategy {
@@ -248,7 +281,10 @@ impl MultiEsStrategy {
             top_k: DEFAULT_TOP_K,
             max_hop: DEFAULT_MAX_HOP,
             subgraph_prefilter: DEFAULT_SUBGRAPH_PREFILTER,
+            max_join_rows: DEFAULT_MAX_JOIN_ROWS,
+            enable_hyperedge_activation: DEFAULT_ENABLE_HYPEREDGE_ACTIVATION,
             last_join_rows: Mutex::new(0),
+            last_valve_warnings: Mutex::new(Vec::new()),
         }
     }
 
@@ -262,7 +298,10 @@ impl MultiEsStrategy {
             top_k: DEFAULT_TOP_K,
             max_hop,
             subgraph_prefilter: DEFAULT_SUBGRAPH_PREFILTER,
+            max_join_rows: DEFAULT_MAX_JOIN_ROWS,
+            enable_hyperedge_activation: DEFAULT_ENABLE_HYPEREDGE_ACTIVATION,
             last_join_rows: Mutex::new(0),
+            last_valve_warnings: Mutex::new(Vec::new()),
         }
     }
 
@@ -304,6 +343,53 @@ impl MultiEsStrategy {
         self
     }
 
+    /// Sub-Step 12.2.2：Builder 方法：设置超边 JOIN 行数上限（链式调用）
+    ///
+    /// ## 参数
+    /// - `max_join_rows`: 超边 JOIN 行数上限（默认 [`DEFAULT_MAX_JOIN_ROWS`] = 10000）
+    ///
+    /// ## 用法
+    /// ```ignore
+    /// // 测试用小阈值便于触发阀门
+    /// let strategy = MultiEsStrategy::new(conn).with_max_join_rows(2);
+    /// ```
+    ///
+    /// ## 阀门机制
+    /// - 累计激活超边的 `member_events` 总数 > `max_join_rows` → 触发阀门
+    /// - 触发后：截断超边激活（不增强 via_entities）+ 记录 warning 到
+    ///   [`last_valve_warnings`](Self::last_valve_warnings)
+    /// - 未触发：正常增强 via_entities（注入超边 member_entities 上下文）
+    ///
+    /// ## 设计动机
+    /// 防止 graph explosion：若超边激活的 events 数量过大（如 10001 行），
+    /// 会拖慢查询。此阀门在生产环境设为 10000，测试可用小阈值便于验证。
+    pub fn with_max_join_rows(mut self, max_join_rows: usize) -> Self {
+        self.max_join_rows = max_join_rows;
+        self
+    }
+
+    /// Sub-Step 12.2.2：Builder 方法：设置是否开启超边激活（链式调用）
+    ///
+    /// ## 参数
+    /// - `enabled`: `true` 开启超边激活（默认关闭）；`false` 关闭（默认）
+    ///
+    /// ## 用法
+    /// ```ignore
+    /// // 显式开启超边激活（用于 12.2.2 测试）
+    /// let strategy = MultiEsStrategy::new(conn).with_hyperedge_activation(true);
+    /// ```
+    ///
+    /// ## 设计动机
+    /// 超边激活在每次 search 时调用 `detect_hyperedges`（复杂度 O(E × 2^n)），
+    /// 在大数据集（如 zh_multihop 200 entity）上可能拖慢查询。
+    /// 默认关闭，仅在需要超边语义聚合的场景显式开启：
+    /// - 小图测试（K_{3,3} 等）：开启验证超边激活功能
+    /// - 大图生产：按需开启（需配合缓存或预计算优化，v1.1.0+ 优化）
+    pub fn with_hyperedge_activation(mut self, enabled: bool) -> Self {
+        self.enable_hyperedge_activation = enabled;
+        self
+    }
+
     /// 返回上次 `search` 调用产生的 JOIN 行数（spec §三 12.1.2 测试访问入口）
     ///
     /// ## 返回
@@ -320,6 +406,28 @@ impl MultiEsStrategy {
         // unwrap_or 的默认值类型必须是 MutexGuard（而非 &{integer}）。
         // into_inner() 在 mutex 中毒时仍返回 guard，避免 panic（标准 Rust 模式）。
         *self.last_join_rows.lock().unwrap_or_else(|e| e.into_inner())
+    }
+
+    /// Sub-Step 12.2.2：返回上次 `search` 调用产生的阀门警告列表（测试访问入口）
+    ///
+    /// ## 返回
+    /// `Vec<String>`：上次 `search` 产生的阀门警告列表
+    /// - 空：未触发任何阀门（超边 JOIN 行数 ≤ `max_join_rows`）
+    /// - 非空：每个 warning 描述一个阀门触发事件，含「超边」字样标识超边 JOIN 阀门
+    ///
+    /// ## 用途
+    /// - 测试断言阀门触发（`!warnings.is_empty()`）
+    /// - 测试断言 warning 含「超边」字样（区分超边阀门与 BFS 阀门）
+    /// - 性能诊断：评估超边激活的实际 JOIN 行数
+    pub fn last_valve_warnings(&self) -> Vec<String> {
+        // 注：使用 unwrap_or_else(|e| e.into_inner()) 而非 unwrap_or(&Vec::new())，
+        // 因为 lock() 返回 Result<MutexGuard, PoisonError<MutexGuard>>，
+        // unwrap_or 的默认值类型必须是 MutexGuard（而非 &Vec<String>）。
+        // into_inner() 在 mutex 中毒时仍返回 guard，避免 panic（标准 Rust 模式）。
+        self.last_valve_warnings
+            .lock()
+            .unwrap_or_else(|e| e.into_inner())
+            .clone()
     }
 
     /// 返回子图预筛选 SQL 模板（spec §三 12.1.2 测试访问入口）
@@ -1002,6 +1110,15 @@ impl SearchStrategy for MultiEsStrategy {
         }
 
         // ====================================================================
+        // Sub-Step 12.2.2：清空上次 search 的阀门警告列表
+        // ====================================================================
+        // 超边激活时若触发 max_join_rows 阀门，会记录 warning 到此列表。
+        // 每次 search 开始时清空，确保 last_valve_warnings 反映本次调用的状态。
+        if let Ok(mut warnings) = self.last_valve_warnings.lock() {
+            warnings.clear();
+        }
+
+        // ====================================================================
         // Step1（ES-first）：query 直接作为 entity_name 查询 entity 表
         // ====================================================================
         // 跳过 Step2 jieba NER 抽取，直接用 query 作为 entity name 在 entity 表中
@@ -1087,7 +1204,34 @@ impl SearchStrategy for MultiEsStrategy {
         // - 按 hop 升序排序 + score=1/hop 衰减 + 取 top_k
         // - strategy_name = "multi_es"（降级不改变）
         // - latency_ms 由 Instant::now() 测量
-        let hits = self.build_hits(expansion)?;
+        let mut hits = self.build_hits(expansion)?;
+
+        // ====================================================================
+        // Sub-Step 12.2.2：超边激活 + max_join_rows 阀门 + via_entities 增强
+        // ====================================================================
+        // SAG 核心创新第 2 步：query 命中超边内任一 entity 时，SQL JOIN 激活整条超边
+        // （非预计算），返回所有成员 events。
+        //
+        // 算法：
+        // 1. 用 ES-first 命中的 entity_ids 作为 query_entities，调用
+        //    HyperedgeDetector::activate_local_hyperedges 检测并激活局部超边
+        // 2. 累计激活超边的 member_events 总数（超边 JOIN 行数）
+        // 3. 检查 max_join_rows 阀门：
+        //    - 超阈值：记录 warning（含「超边」字样）+ 截断超边激活（不增强 via_entities）
+        //    - 未超阈值：增强 via_entities（注入超边 member_entities 上下文）
+        //
+        // 关键设计 — 非预计算 + 局部激活：
+        // - 非预计算：超边在 query 时动态检测（detect_hyperedges），不依赖预存储表
+        // - 局部激活：仅激活与 query_entities 有交集的超边，不做全局图遍历
+        //
+        // 性能保护 — 默认关闭（DEFAULT_ENABLE_HYPEREDGE_ACTIVATION=false）
+        // 超边激活在每次 search 时调用 detect_hyperedges（复杂度 O(E × 2^n)），
+        // 在大数据集上可能拖慢查询。默认关闭，仅在需要超边语义聚合的场景显式开启
+        // （通过 [`with_hyperedge_activation`](Self::with_hyperedge_activation)）。
+        if self.enable_hyperedge_activation {
+            self.apply_hyperedge_activation(&mut hits, &entity_ids)?;
+        }
+
         let latency_ms = start.elapsed().as_millis() as u64;
 
         Ok(SearchResult {
@@ -1099,5 +1243,124 @@ impl SearchStrategy for MultiEsStrategy {
 
     fn name(&self) -> &str {
         "multi_es"
+    }
+}
+
+impl MultiEsStrategy {
+    /// Sub-Step 12.2.2 — 应用超边激活到 search 命中列表（私有辅助方法）
+    ///
+    /// ## 算法
+    /// 1. 用 `query_entities`（ES-first 命中的 entity_ids）调用
+    ///    [`HyperedgeDetector::activate_local_hyperedges`] 检测并激活局部超边
+    /// 2. 累计激活超边的 `member_events` 总数（超边 JOIN 行数）
+    /// 3. 检查 `max_join_rows` 阀门：
+    ///    - 超阈值：记录 warning（含「超边」字样）到 `last_valve_warnings` + 截断（不增强）
+    ///    - 未超阈值：对每个激活超边的每个 member_event：
+    ///      - 若 event 已在 hits 中：增强 via_entities（添加超边 member_entities 中未已有的 EntityRef）
+    ///      - 若 event 不在 hits 中：添加新的 hit（hop=1，via_entities=超边 member_entities）
+    ///
+    /// ## 参数
+    /// - `hits`: BFS 扩展构建的 SearchHit 列表（可变引用，就地增强）
+    /// - `query_entities`: ES-first 命中的 entity_id 列表（用于超边激活过滤）
+    ///
+    /// ## 错误
+    /// - 透传自 [`HyperedgeDetector::activate_local_hyperedges`] 的 SQL 错误
+    /// - 透传自 [`find_entity_ref`] / [`find_event_detail`] 的 SQL 错误
+    fn apply_hyperedge_activation(
+        &self,
+        hits: &mut Vec<SearchHit>,
+        query_entities: &[String],
+    ) -> Result<()> {
+        // Step 1: 非预计算 — 动态检测并激活局部超边
+        let detector = HyperedgeDetector::new();
+
+        // 锁 conn 用于超边检测（detect_hyperedges 内部 SQL 查询）
+        let activated_hyperedges = {
+            let conn = self.conn.lock().map_err(|e| {
+                Error::storage(
+                    format!("Mutex lock 失败: {e}"),
+                    "MultiEsStrategy::apply_hyperedge_activation",
+                )
+            })?;
+            detector.activate_local_hyperedges(&conn, query_entities)?
+        };
+
+        // 无激活超边时直接返回（无增强无阀门）
+        if activated_hyperedges.is_empty() {
+            return Ok(());
+        }
+
+        // Step 2: 累计超边 JOIN 行数（所有激活超边的 member_events 总数，含重复）
+        let hyperedge_join_rows: usize = activated_hyperedges
+            .iter()
+            .map(|he| he.member_events.len())
+            .sum();
+
+        // Step 3: 检查 max_join_rows 阀门
+        if hyperedge_join_rows > self.max_join_rows {
+            // 阀门触发：记录 warning（含「超边」字样）+ 截断超边激活（不增强 via_entities）
+            let warning = format!(
+                "超边 JOIN 行数 {} > max_join_rows {}（阀门触发，截断超边激活）",
+                hyperedge_join_rows, self.max_join_rows
+            );
+            if let Ok(mut warnings) = self.last_valve_warnings.lock() {
+                warnings.push(warning);
+            }
+            log::warn!(
+                "Sub-Step 12.2.2 阀门触发: 超边 JOIN 行数 {} > max_join_rows {}（截断超边激活）",
+                hyperedge_join_rows,
+                self.max_join_rows
+            );
+            // 截断：不增强 via_entities，直接返回原 hits
+            return Ok(());
+        }
+
+        // Step 4: 未触发阀门 — 增强 via_entities（注入超边 member_entities 上下文）
+        // 对每个激活超边，对每个 member_event：
+        //   - 若 event 在 hits 中：增强 via_entities（添加超边 member_entities 中未已有的 EntityRef）
+        //   - 若 event 不在 hits 中：添加新的 hit（hop=1，via_entities=超边 member_entities）
+        for he in &activated_hyperedges {
+            // 收集超边的 member_entities 的 EntityRef（含 entity_id / entity_type / name）
+            let mut hyperedge_entity_refs: Vec<EntityRef> = Vec::new();
+            for ent_id in &he.member_entities {
+                if let Some(entity_ref) = self.find_entity_ref(ent_id)? {
+                    hyperedge_entity_refs.push(entity_ref);
+                }
+            }
+
+            // 对每个 member_event 增强 via_entities 或添加新 hit
+            for evt_id in &he.member_events {
+                // 在 hits 中查找该 event
+                let hit_idx = hits.iter().position(|h| &h.event_id == evt_id);
+                if let Some(idx) = hit_idx {
+                    // event 已在 hits 中：增强 via_entities
+                    let hit = &mut hits[idx];
+                    for er in &hyperedge_entity_refs {
+                        // 仅添加未已有的 EntityRef（避免重复）
+                        if !hit.via_entities.iter().any(|e| e.entity_id == er.entity_id) {
+                            hit.via_entities.push(er.clone());
+                        }
+                    }
+                } else {
+                    // event 不在 hits 中：添加新的 hit
+                    // （hop=1，via_entities=超边 member_entities，score=1.0）
+                    if let Some((title, summary, chunk_id)) = self.find_event_detail(evt_id)? {
+                        hits.push(SearchHit {
+                            event_id: evt_id.clone(),
+                            title,
+                            summary,
+                            chunk_id,
+                            score: 1.0,
+                            hop: Some(1),
+                            via_entities: hyperedge_entity_refs.clone(),
+                            chunk_span: None,
+                        });
+                    }
+                    // 若 event 不存在（已被删除），跳过（find_event_detail 返回 None）
+                }
+            }
+        }
+
+        Ok(())
     }
 }

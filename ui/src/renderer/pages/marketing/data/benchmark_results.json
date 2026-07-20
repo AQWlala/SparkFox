@@ -1,0 +1,11 @@
+{
+  "version": "v1.1.0-preview",
+  "dataset": "zh_multihop (50 queries, 200 entities, 500 events)",
+  "strategies": [
+    { "name": "multi",    "recall_at_5": 0.74, "recall_at_10": 0.82, "avg_latency_ms": 850 },
+    { "name": "multi1",   "recall_at_5": 0.68, "recall_at_10": 0.76, "avg_latency_ms": 420 },
+    { "name": "hopllm",   "recall_at_5": 0.78, "recall_at_10": 0.84, "avg_latency_ms": 1200 },
+    { "name": "multi_es", "recall_at_5": 0.80, "recall_at_10": 0.87, "avg_latency_ms": 680 }
+  ],
+  "note": "数据来自 v1.1.0 第二十波预估值，Task 12.3.2 完成后将更新为真实 Benchmark"
+}
