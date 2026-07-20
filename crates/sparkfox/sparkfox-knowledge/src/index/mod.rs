@@ -17,6 +17,9 @@
 //! 反向依赖会形成循环。因此本模块在 `sparkfox-knowledge` 内独立实现 HnswIndex，
 //! 不依赖 `sparkfox-store`。集成测试中可通过 adapter 桥接两个实现。
 
+// Sub-Step 11.6.2: BidirectionalIndex（entity ↔ event 双向 HashMap 索引，加速 multi-hop BFS）
+pub mod bidirectional_index;
 pub mod hnsw_index;
 
+pub use bidirectional_index::BidirectionalIndex;
 pub use hnsw_index::HnswIndex;

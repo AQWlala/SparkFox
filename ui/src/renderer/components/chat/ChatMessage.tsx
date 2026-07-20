@@ -23,6 +23,8 @@ import MarkdownView from '@renderer/components/Markdown';
 import ThoughtStream from '@renderer/components/thinking/ThoughtStream';
 import CitationChip from '@renderer/components/citation/CitationChip';
 import type { Citation } from '@renderer/components/citation/types';
+import HopViaEntitiesDisplay from './HopViaEntitiesDisplay';
+import type { SearchHit } from './HopViaEntitiesDisplay';
 import { useThinkingStore } from '@renderer/store/thinkingStore';
 import type { ChatMessage } from '@renderer/store/chatStore';
 import { friendlyChannelLabel } from '@renderer/store/chatStore';
@@ -32,12 +34,19 @@ interface ChatMessageProps {
   agentName?: string;
   /** 引用列表（v1.1.0 第十一波集成：来自 SearchResult.citations） */
   citations?: Citation[];
+  /**
+   * 检索命中列表（v1.1.0 第十七波 11.5.2 集成：来自 SearchResult.hits）
+   * 用于在 assistant 消息底部行内展示每个 SearchHit 的 hop 数和 via_entities 链。
+   * 与 KnowledgeGraphView/MultiHopPathView 不同，这里是「行内紧凑展示」。
+   */
+  hits?: SearchHit[];
 }
 
 const ChatMessageComponent: React.FC<ChatMessageProps> = ({
   message,
   agentName = 'SparkFox',
   citations,
+  hits,
 }) => {
   const { role, content, channel, label, attachments, isStreaming, thoughtStreamSlot } = message;
 
@@ -113,6 +122,15 @@ const ChatMessageComponent: React.FC<ChatMessageProps> = ({
               </CitationChip>
             ))}
           </div>
+        )}
+
+        {/* hop/via_entities 行内展示 — v1.1.0 第十七波 11.5.2 集成（spec §三 11.5.2）
+            仅 assistant 消息且非流式输出中时渲染，每个 SearchHit 一行
+            [hop=N] [via: entity1 → entity2 → entity3]
+            hop 颜色映射与 KnowledgeGraphView/MultiHopPathView 保持一致
+            （hop1 蓝 / hop2 黄 / hop3 灰） */}
+        {shouldRenderCitations && hits && hits.length > 0 && (
+          <HopViaEntitiesDisplay hits={hits} />
         )}
       </div>
     </div>

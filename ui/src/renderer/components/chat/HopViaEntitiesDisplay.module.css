@@ -1,0 +1,137 @@
+/**
+ * @license
+ * Copyright 2026 SparkFox Contributors — AGPL-3.0-only
+ *
+ * HopViaEntitiesDisplay 样式 — spec §三 11.5.2 / 第 17 波并行 sub-step A
+ *
+ * 设计要点（与 MultiHopPathView.module.css / ReasoningChainPanel.module.css
+ * 颜色映射保持完全一致，便于用户跨视图形成「hop=1 蓝 / hop=2 黄 / hop=3 灰」
+ * 的统一视觉记忆）：
+ *   - hop1 = 蓝色（ATOMIC 单跳，--sf-primary 系统蓝 #007aff）
+ *   - hop2 = 黄色（MULTI 二跳扩展，--sf-warning 橙黄 #ff9500）
+ *   - hop3 = 灰色（MULTI 三跳及以上，中性灰 #6e6e73）
+ *
+ * 与 MultiHopPathView 不同，本组件是「行内紧凑展示」：
+ *   - 容器嵌入 ChatMessage 气泡底部，无独立 Card 边框
+ *   - 每个 hit 占一行（flex-direction: column）
+ *   - 行内使用 Arco Tag + Space 排列 hop Tag 和 via_entities Tag
+ */
+
+/* ─── 主容器：嵌入 ChatMessage 气泡底部 ─── */
+
+.container {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  padding-top: 6px;
+  border-top: 1px dashed var(--color-border-2, #e5e6eb);
+}
+
+/* ─── 单个 hit 行：横向 flex（hop Tag + via_entities Tag 列表） ─── */
+
+.hitRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 4px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--color-text-2, #4e5969);
+}
+
+/* ─── via_entities 区：横向 flex（Tag + 箭头分隔） ─── */
+
+.viaEntities {
+  display: inline-flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 2px;
+}
+
+.viaEntitiesLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--color-text-3, #86909c);
+  margin-right: 2px;
+  user-select: none;
+}
+
+/* ─── 箭头分隔符（via_entities 之间） ─── */
+
+.arrow {
+  display: inline-block;
+  color: var(--color-text-3, #86909c);
+  font-size: 11px;
+  font-family: 'SF Mono', Menlo, monospace;
+  user-select: none;
+  margin: 0 2px;
+}
+
+/* ─── 实体 Tag：可点击 + Tooltip ─── */
+
+.entityTag {
+  cursor: pointer;
+  user-select: none;
+  font-size: 11px;
+  padding: 0 6px;
+  line-height: 18px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border-2, #e5e6eb);
+  background: var(--color-fill-2, #f7f8fa);
+  color: var(--color-text-2, #4e5969);
+  transition: all 0.15s ease;
+}
+
+.entityTag:hover {
+  background: var(--color-fill-3, #e5e6eb);
+  border-color: var(--color-border-1, #c9cdd4);
+}
+
+/* ─── hop 颜色：蓝 / 黄 / 灰（与 MultiHopPathView 完全一致） ─── */
+
+/* hop1 = 蓝色（ATOMIC 单跳，#007aff） */
+.hop1 {
+  --hop-color: #007aff;
+  color: #007aff;
+  border-color: rgba(0, 122, 255, 0.4) !important;
+  background: rgba(0, 122, 255, 0.08) !important;
+}
+
+/* hop2 = 黄色（MULTI 二跳扩展，#ff9500） */
+.hop2 {
+  --hop-color: #ff9500;
+  color: #ff9500;
+  border-color: rgba(255, 149, 0, 0.4) !important;
+  background: rgba(255, 149, 0, 0.08) !important;
+}
+
+/* hop3 = 灰色（MULTI 三跳及以上，#6e6e73） */
+.hop3 {
+  --hop-color: #6e6e73;
+  color: #6e6e73;
+  border-color: var(--color-border-2, #e5e6eb) !important;
+  background: var(--color-fill-2, #f7f8fa) !important;
+}
+
+/* ─── hop Tag 通用样式（小徽章） ─── */
+
+.hopTag {
+  font-size: 10px;
+  font-family: 'SF Mono', Menlo, monospace;
+  letter-spacing: 0.04em;
+  padding: 1px 6px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* hop 未分级（hop === null）的占位样式 */
+.hopUnknown {
+  color: var(--color-text-3, #86909c);
+  border-color: var(--color-border-2, #e5e6eb) !important;
+  background: var(--color-fill-2, #f7f8fa) !important;
+}
