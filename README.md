@@ -2,552 +2,276 @@
 
 <div align="center">
 
-<a href="https://www.nomifun.com">
-  <img src="docs/images/readme-00-agent-collaboration-hero.png" alt="NomiFun Agent collaboration, reusable roles, and execution graph" width="100%">
-</a>
+<h1>SparkFox</h1>
 
-<h3>A no-holds-barred, fully open-source, <em>local-first</em> super AI workstation.</h3>
+<h3>本地优先的 AI Agent 桌面工作站 · 数据主权至上</h3>
 
 <p>
-  Rich, inventive capabilities and serious productivity gains —<br/>
-  with <b>all your data staying on your own machine</b>. Safe for individuals and enterprises, free to commercialize, open to audit.
+  <b>别把第二大脑租给别人——你的思考，不该成为别人的养料。</b>
 </p>
 
 <p>
-  <a href="LICENSE"><img alt="License: Apache-2.0" src="https://img.shields.io/badge/License-Apache_2.0-FF6F91?style=for-the-badge"></a>
+  <img alt="License: AGPL-3.0-only" src="https://img.shields.io/badge/License-AGPL_3.0_only-FF6F91?style=for-the-badge">
   <img alt="Platform" src="https://img.shields.io/badge/Platform-macOS%20%7C%20Windows%20%7C%20Linux-7583B2?style=for-the-badge">
   <img alt="Status" src="https://img.shields.io/badge/Status-pre--1.0-FBBF24?style=for-the-badge">
-  <a href="https://www.nomifun.com"><img alt="Website" src="https://img.shields.io/badge/Website-nomifun.com-FF6F91?style=for-the-badge"></a>
+  <img alt="Version" src="https://img.shields.io/badge/Version-v0.2.28%20(v1.1.0%20进行中)-24C8DB?style=for-the-badge">
 </p>
 
 <p>
   <img alt="Built with Tauri 2" src="https://img.shields.io/badge/Tauri-2-24C8DB?style=flat-square&logo=tauri&logoColor=white">
   <img alt="Rust 2024" src="https://img.shields.io/badge/Rust-edition_2024-CE412B?style=flat-square&logo=rust&logoColor=white">
-  <img alt="React 19" src="https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=white">
-  <a href="https://github.com/nomifun/nomifun-tauri/stargazers"><img alt="Stars" src="https://img.shields.io/github/stars/nomifun/nomifun-tauri?style=flat-square&color=FF6F91"></a>
+  <img alt="Preact" src="https://img.shields.io/badge/Preact-10-673AB8?style=flat-square&logo=preact&logoColor=white">
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white">
+  <img alt="Arco Design" src="https://img.shields.io/badge/Arco_Design-2-0FC6C2?style=flat-square">
 </p>
 
 <p>
-  <b>English</b>&nbsp;·&nbsp;<a href="README.zh-CN.md">简体中文</a>
+  <b>简体中文</b>&nbsp;·&nbsp;<a href="README.zh-CN.md">English</a>
 </p>
 
 <p>
-  <a href="https://www.nomifun.com">🌐 Website</a>&nbsp;·&nbsp;
-  <a href="docs/README.md">📖 Docs</a>&nbsp;·&nbsp;
-  <a href="#-getting-started">🚀 Get started</a>&nbsp;·&nbsp;
-  <a href="https://github.com/nomifun/nomifun-tauri/releases">📦 Releases</a>&nbsp;·&nbsp;
-  <a href="https://pan.baidu.com/s/5GPonoJNrwJ7GciBSDgXLaA">China mirror</a>&nbsp;·&nbsp;
-  <a href="./RELEASING.zh-CN.md">发版手册</a>&nbsp;·&nbsp;
-  <a href="#-contact--community">💬 Community</a>
+  <a href="#-核心特性">🎯 核心特性</a>&nbsp;·&nbsp;
+  <a href="#-架构">🏗️ 架构</a>&nbsp;·&nbsp;
+  <a href="#-快速开始">🚀 快速开始</a>&nbsp;·&nbsp;
+  <a href="#-开发">🛠️ 开发</a>&nbsp;·&nbsp;
+  <a href="#-致谢">💛 致谢</a>&nbsp;·&nbsp;
+  <a href="#-许可证">⚖️ 许可证</a>
 </p>
 
 </div>
 
 ---
 
-> [!IMPORTANT]
-> **Public-interest open-source and data-risk notice**: NomiFun is a public-interest open-source project. The maintainers do not assume responsibility for user data loss, corruption, or unrecoverable damage during iteration. Back up your data before upgrades, migrations, experimental features, or real production use.
+## 🎯 项目定位
+
+**SparkFox** 是一款本地优先（local-first）的 AI Agent 桌面工作站，融合多源开源项目精华，专注于**记忆系统优化**与**Agent 编排创新**。
+
+- **数据主权至上**：所有数据驻留本机，无云账号、无遥测、无订阅。唯一的外发流量是你显式配置的 LLM 调用。
+- **Apple system style 桌面设计**：遵循 macOS 设计语言，原生 Tauri 2 壳，无 Electron、无 Node 宿主。
+- **AGPL-3.0-only**：强 copyleft 许可证，确保衍生作品同样开源，守护数据主权承诺。
 
 ---
 
-**NomiFun** is everything you imagine an AI workstation to be — and it runs on your terms. One React frontend and one Rust backend give you an evolving desktop companion, an unattended automation platform, a unified knowledge base, native computer- and browser-use, and an open capability bus that any agent can drive. No cloud account. No telemetry. No subscription. Your data never leaves your machine except for the LLM calls **you** configure.
+## ✨ 核心特性
 
-> The product name is **NomiFun**. Lowercase `nomifun` is used only for code identifiers, crate names, environment variables, and repository paths.
+### 🧠 6 层记忆架构（Pangu Nebula L0-L5）
 
----
+基于 Pangu Nebula 的 6 层架构作为记忆系统基石：
 
-## ✨ Why NomiFun
+- **L0 Raw**：原始数据层（events / chunks）
+- **L1 Indexed**：索引层（HnswIndex + sqlite-vec 双引擎）
+- **L2 Associative**：关联层（event_entity_relation 图）
+- **L3 Episodic/Semantic**：情景记忆 + 语义记忆（GraphNode）
+- **L4 Metacognitive**：元认知层（思考过程可视化）
+- **L5 Procedural**：程序性记忆（技能沉淀）
 
-|  | |
-|---|---|
-| 🔓 **Open & local** | Source fully open, no reservations. Data lives on your machine and is never sent out on its own. Free for personal **and** commercial use. Open to audit. |
-| 🐾 **Evolving companions** | The most complete companion-growth system we know of — it learns how you work and gets better over time. Not just a buddy, a genuine productivity partner. |
-| 🤖 **Unattended automation** | Manage requirements, then just give the order. AutoWork + IDMM keep your sessions alive and working reliably while you're away. |
-| 🌐 **Open capability ecosystem** | Everything is here, everything connects, everything cooperates — and *any* agent can borrow NomiFun's powers over MCP / REST. |
-| 🧩 **Config once, use anywhere** | Unified management of knowledge bases, skills, agents, MCP servers, and models — defined once, reused across every surface. |
-| 🖥️ **Truly native** | In-process, self-built **computer use** and **browser use** as native tools — more capable, faster, and cheaper on tokens. |
-| 🚀 **Built for productivity** | Designed from real needs, with a lot of inventive capabilities. And many delightful features are still on the way. |
+### 🔍 SAG（Semantic Agentic Graph）多跳检索
 
----
+v1.1.0 核心能力，三策略并行检索：
 
-## 🔒 Local-first, by design
+- **multi**：BFS 多跳扩展（max_hop=3）
+- **multi1**：单跳剪枝（性能优先）
+- **hopllm**：LLM 引导多跳扩展（语义优先，失败降级到 multi1）
+- **R-07 三道 LIMIT 阀门**：MAX_HOP=3 / MAX_INTERMEDIATE_ENTITIES=100 / MAX_JOIN_ROWS=10000，防止 graph explosion
+- **MULTI 8 步流程**：query 向量化 → 实体抽取 → 实体检索 → 事件检索 → 三策略合并 → chunk 关联 → Rerank → 返回 SearchResult
 
-Data security is not a setting in NomiFun — it is the architecture.
+### 🐝 蜂群编排（OpenAkita + Pangu Nebula）
 
-- **All data is local.** NomiFun never proactively sends your data anywhere. The **only** outbound network calls are the LLM requests you explicitly configure to your chosen model provider. There is no other third-party service integration phoning home.
-- **Safe for anyone who cares about data.** Individuals and enterprises with strict data-handling requirements can use it with confidence. The code is **fully open and open to audit**.
-- **We cut features to keep this promise.** To guarantee your data stays yours, we deliberately dropped several advanced, genuinely fun feature designs. Everything here is in service of letting users — and developers — relax.
-- **No ads. No commercialization. No membership tiers.** We promise to *never* charge for any feature of this project. The only thing that costs money is your LLM provider's tokens, which is outside our control. (If finding/serving models is painful, [reach out](#-contact--community) — we're happy to help build a unified model gateway.)
+双主控 + 蜂群 worker + persona 自进化设计：
 
-See [`SECURITY.md`](SECURITY.md) for the deployment threat model and responsible-disclosure policy.
+- **主星·编排者**：任务分解 + DAG 调度
+- **化身·灵魂分身**：persona 自进化
+- **星尘群**：蜂群 worker 并行执行
+- **星魂**：长期记忆沉淀
 
----
+### 🎨 Scene Protocol + 思考过程可视化（BaiLongma）
 
-## 🖼️ A look inside
+- **Scene Protocol**：场景化对话展示
+- **ReasoningChainPanel**：7 步推理链可视化（hop 颜色映射 + via_entities 高亮）
+- **CitationDetailDrawer**：三级溯源（Entity → Event → Chunk）
+- **KnowledgeGraphView**：知识图谱可视化（@xyflow/react v12 + 11 类着色 + EntityEditDrawer 编辑）
 
-<div align="center">
+### 🔒 端到端加密（E2EE）
 
-<p>
-  🎬 <b>Demo videos:</b>
-  China:
-  <a href="https://www.bilibili.com/video/BV1kwKZ6UE5X/">Bilibili</a>
-  &nbsp;|&nbsp;
-  International:
-  <a href="https://youtu.be/AsEToBDFR9s">YouTube</a>
-</p>
+- **X25519** 密钥协商 + **HKDF** 密钥派生 + **AES-256-GCM** 对称加密
+- **Double Ratchet** 算法前向保密（直接实现，非 ratchetx2）
 
-<p>
-  <img src="docs/images/readme-01-workbench-overview.png" alt="NomiFun Agent collaboration and execution graph" width="100%">
-  <br/><sub><b>Agent collaboration: one conversation, reusable roles, and a live execution graph</b></sub>
-</p>
+### 🔄 CRDT 多设备同步
 
-<table>
-  <tr>
-    <td width="50%"><img src="docs/images/readme-05-companions.png" alt="Desktop companion overview"><br/><sub><b>Desktop companions · memory and growth</b></sub></td>
-    <td width="50%"><img src="docs/images/readme-07-requirements.png" alt="Requirements platform list"><br/><sub><b>Requirements platform · AutoWork entry</b></sub></td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="docs/images/readme-06-knowledge.png" alt="Knowledge base list"><br/><sub><b>Knowledge base · local domain context</b></sub></td>
-    <td width="50%"><img src="docs/images/readme-02-terminal-create.png" alt="Create an agent terminal"><br/><sub><b>Terminal · capabilities for Agent CLI</b></sub></td>
-  </tr>
-  <tr>
-    <td width="50%"><img src="docs/images/readme-03-presets.png" alt="Presets and Skills capability library"><br/><sub><b>Presets & Skills · reusable capability templates</b></sub></td>
-    <td width="50%"><img src="docs/images/readme-04-model-agents.png" alt="Models and Agents management"><br/><sub><b>Models & Agents · unified management and setup</b></sub></td>
-  </tr>
-</table>
-
-<sub>Captured from the live NomiFun desktop app on 2026-07-01 and kept at 2560px wide. See <a href="docs/images/SCREENSHOTS.md">the screenshot manifest</a> for the full set and capture method.</sub>
-
-</div>
+- **automerge-rs** 实现（非自研方案）
+- `AutoCommit::save()` + `load()` + `merge()` 全快照 CRDT 合并
 
 ---
 
-## 🚀 Feature highlights
+## 🏗️ 架构
 
-### 🐾 Desktop Companion — it grows with you
+一个 Preact 前端 + 一个 Rust 后端，**两种宿主模式**，同一后端进程内运行。
 
-> Guide: [`docs/guides/companions.md`](docs/guides/companions.md)
-
-The companion you talk to every day quietly becomes the partner who *gets* you.
-
-- **Make it yours.** Upload a custom companion figure (DIY), or pick from an independent figure library decoupled from any single companion.
-- **One brain, many faces.** Run multiple companions that share a common memory hub, while each keeps its own **private** memory and can mount different domain knowledge bases. Teach *one* companion well, then have it teach the others.
-- **Chat with them where you already work.** Companion chats now live in the main **Sessions** UI under a dedicated desktop-companion group, while `/nomi` stays focused on companion management.
-- **It learns you (opt-in, on by default after a one-time consent).** A background learner distills your usage into durable memories; a deterministic evolution engine mines your recurring multi-step tool sequences into **draft skills** it proposes for your review. Memory is fully **visible and editable**.
-- **Skills that spread.** Companions generate their own skills, discuss them with you, and can **gift** a skill to another companion (the recipient gets a copy) — opt-in shared learning across your roster.
-- **A super gateway, not just a buddy.** Each companion is a complete, independent individual that can connect to multiple IM channels. From anywhere with a network and a chat app, message your companion to drive your computer for you. Each companion can fully operate the desktop's capabilities.
-
-### 🧠 Agent collaboration
-
-Start from a normal Agent conversation. When the task deserves parallel work, the same Agent capability can delegate parts of it and expose a live execution graph.
-
-- **One product concept.** Configure Agents and a collaboration policy; delegated work stays in the same Conversation and the single `AgentExecution` aggregate.
-- **Per-step preflight control.** Before a delegated Agent starts, override its model and add a preset brief; settled steps can be retried with the same configuration.
-- **Review before execution.** Approval-enabled collaboration pauses after planning and shows the plan in the conversation, so you can adjust the graph before work begins.
-- **Real Agent transcripts.** Click any step to read that Agent's actual conversation, then return to the lead conversation to keep guiding the work.
-
-### 🤖 Unattended automation — Requirements + AutoWork + IDMM
-
-> Guides: [`autowork-requirements.md`](docs/guides/autowork-requirements.md) · [`intelligent-decision.md`](docs/guides/intelligent-decision.md)
-
-You give the orders; NomiFun reliably does the work.
-
-- **Requirement platform** — a CRUD store with ordered rotation, a board/kanban, tags, and per-item claim.
-- **AutoWork** — claims pending requirements, drives a turn, rotates to the next, and renews leases while a turn is in flight. Targets can be **conversation agents *or* terminal PTYs**.
-- **IDMM (Intelligent Decision-Making)** — per-session supervision that keeps agents alive through provider faults and decision stalls, with a no-LLM rule tier and a sidecar backup-model tier, stacking on top of AutoWork.
-- **Notify out** — completion notifications to **Lark/Feishu** custom bots, **Slack**, and HTTP webhooks.
-
-### 📚 Unified Knowledge Base
-
-> Guide: [`docs/guides/mcp-and-skills.md`](docs/guides/mcp-and-skills.md)
-
-Pull the knowledge scattered across your system into one managed, trackable place.
-
-- **Centralized management & tracking** — create, mount, and track consumers across conversations, terminals, and companions.
-- **Safe write-back** — a code-enforced, per-surface write policy. By default, writes are **staged into a review inbox** with unified-diff preview and merge/discard — so agents never scribble into the wrong place.
-- **Real-time URL snapshot** — turn any web page into a knowledge source (SSRF-guarded fetch, HTML→Markdown), in *snapshot* (persisted, re-fetchable) or *live* mode.
-- **Scoped retrieval** — agents call a `knowledge_search` tool whose scope is decided server-side and cannot be widened.
-
-### 🖥️ Native Computer Use & Browser Use *(desktop build)*
-
-> Guide: [`docs/guides/computer-browser-use.md`](docs/guides/computer-browser-use.md)
-
-Self-built, **in-process Rust** — no Playwright, no Node, no third-party automation daemon. More capable, faster, and far cheaper on tokens, with fine-grained control and fully open source for you to extend.
-
-- **Computer use** — accessibility tree + Set-of-Marks overlay + OCR, steering the model to act on real UI elements instead of guessing pixels. macOS (AXUIElement + Vision OCR) and Windows (UI Automation) are complete; Linux (AT-SPI2) is partial.
-- **Browser use** — an in-process Chromium CDP engine with ARIA observation, an egress **firewall** with out-of-band approval, and an origin-bound secret vault so credentials never reach the LLM.
-- **Modes that match the job** — desktop builds default to visible browser runs in your system Chrome / Edge (using an isolated profile), with managed Chromium and silent runs still available.
-- **One-click login reuse** — open a visible "Log into my browser" window once, then later agent runs reuse that authenticated state from a shared profile with encrypted backup.
-- **Approval with visual context** — silent-mode high-risk browser approvals can include a current-page screenshot, so you do not have to approve blindly from text alone.
-- **Guarded by design** — every action carries a danger × surface approval matrix; irreversible actions wait for explicit confirmation.
-
-> ℹ️ Computer/browser control ship with the **desktop app**. The headless web/server host omits them by design.
-
-### 🌐 Open capability bus — MCP + REST
-
-> Guides: [`remote-capability-api.md`](docs/guides/remote-capability-api.md) · [`remote-capability-api-examples.md`](docs/guides/remote-capability-api-examples.md)
-
-Every capability NomiFun has is exposed through a single, typed capability registry — **~20 domains and 150+ tools** — so you can wire NomiFun into anything.
-
-- **MCP front door** at `/mcp` (authenticated, Streamable-HTTP). Point **Claude Code, Cursor, or your own agent** at it and they operate NomiFun exactly as the desktop companion does.
-- **REST + OpenAPI** at `/v1/tools`, with streaming and an auto-generated `/v1/openapi.json`.
-- Adding a capability to the bus makes it appear on MCP **and** REST automatically — no drift.
-
-### 🧩 Bring your own agents — or use the built-in one
-
-> Guide: [`docs/guides/model-routing.md`](docs/guides/model-routing.md)
-
-- **Built-in `nomi` agent** — no extra install. Works with **26+ model providers/presets** (OpenAI, Anthropic, Gemini + Vertex AI, AWS Bedrock, DeepSeek, OpenRouter, Moonshot/Kimi, Qwen/Dashscope, Zhipu/GLM, MiniMax, SiliconFlow, xAI, Volcengine/Doubao, and more) across **4 wire protocols**, plus the **New API** aggregator gateway.
-- **~19 external agents over ACP** — connect Claude Code, Codex, Gemini, Qwen, Kimi, Cursor, Copilot, Goose, OpenCode, Droid, and more, and NomiFun feeds them models *and* its native capabilities (computer/browser/knowledge/gateway) over injected MCP bridges.
-- **Everywhere** — the native capabilities are available to the built-in agent, to ACP agents, in the chat UI, **and** in the terminal.
-- **Graceful multimodal fallback** — if a selected provider/model rejects image input, NomiFun strips the images, retries in the same conversation, and leaves an inline notice instead of killing the session.
-- **Per-model context tuning** — override context-window limits per model when an upstream platform reports bad defaults or hides them, improving routing and long-context budgeting.
-
-### 🔌 Model providers: quick setup links
-
-NomiFun does not lock you into a single model vendor. Pick providers by region, price, quota, model capability, and data policy, then paste the API key into NomiFun's **Models & Agents** page. These are third-party services; pricing, regional availability, rate limits, and data-handling terms are controlled by each provider.
-
-| Provider | Start here | Good to evaluate |
+| | `sparkfox-desktop` | `sparkfox-web` |
 |---|---|---|
-| <img src="https://www.google.com/s2/favicons?sz=64&domain=platform.stepfun.ai" alt="StepFun logo" width="20" height="20"> **StepFun** | [Platform](https://platform.stepfun.ai/) | Step models for Chinese, agentic, and cost-conscious workloads |
-| <img src="https://www.google.com/s2/favicons?sz=64&domain=platform.kimi.ai" alt="Kimi logo" width="20" height="20"> **Kimi / Moonshot AI** | [API keys](https://platform.kimi.ai/console/api-keys) | Long context, Chinese writing, coding, and general tasks |
-| <img src="https://www.google.com/s2/favicons?sz=64&domain=bigmodel.cn" alt="GLM logo" width="20" height="20"> **GLM / Zhipu BigModel** | [API keys](https://open.bigmodel.cn/usercenter/apikeys) | GLM models, general reasoning, coding, and enterprise integration |
-| <img src="https://www.google.com/s2/favicons?sz=64&domain=www.volcengine.com" alt="Doubao logo" width="20" height="20"> **Doubao / Volcengine Ark** | [API keys](https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey) | Doubao models and China-region cloud/enterprise workflows |
-| <img src="https://www.google.com/s2/favicons?sz=64&domain=help.aliyun.com" alt="Qwen logo" width="20" height="20"> **Qwen / Alibaba Cloud Model Studio** | [API keys](https://bailian.console.aliyun.com/?tab=model#/api-key) | Qwen models, DashScope, and Alibaba Cloud workflows |
-| <img src="https://www.google.com/s2/favicons?sz=64&domain=platform.minimax.io" alt="MiniMax logo" width="20" height="20"> **MiniMax / MinMax** | [API keys](https://platform.minimax.io/user-center/basic-information/interface-key) | MiniMax models, long-form text, multimodal, and voice capabilities |
-| <img src="https://www.google.com/s2/favicons?sz=64&domain=mimo.mi.com" alt="MiMo logo" width="20" height="20"> **MiMo / Xiaomi** | [Website](https://mimo.mi.com/) | MiMo models and Xiaomi ecosystem capabilities |
-| <img src="https://www.google.com/s2/favicons?sz=64&domain=platform.deepseek.com" alt="DeepSeek logo" width="20" height="20"> **DeepSeek** | [API keys](https://platform.deepseek.com/api_keys) | Reasoning, coding, and high value-for-money model calls |
-| <img src="https://www.google.com/s2/favicons?sz=64&domain=openrouter.ai" alt="OpenRouter logo" width="20" height="20"> **OpenRouter** | [API keys](https://openrouter.ai/keys) | Multi-model aggregation, unified billing, fallback routing, and comparison |
-| <img src="https://www.google.com/s2/favicons?sz=64&domain=platform.claude.com" alt="Claude logo" width="20" height="20"> **Claude / Anthropic** | [API keys](https://platform.claude.com/settings/keys) | Claude models, long-form work, coding, and the Claude Code ecosystem |
-| <img src="https://www.google.com/s2/favicons?sz=64&domain=openai.com" alt="OpenAI logo" width="20" height="20"> **GPT / OpenAI** | [GPT models](https://platform.openai.com/docs/models) · [API keys](https://platform.openai.com/api-keys) | GPT models, OpenAI API, agent workflows, coding, and general-purpose tasks |
-| <img src="https://www.google.com/s2/favicons?sz=64&domain=aistudio.google.com" alt="Gemini logo" width="20" height="20"> **Gemini / Google AI** | [API keys](https://aistudio.google.com/app/apikey) | Gemini models, multimodal work, very long context, and Google AI Studio |
-
-### 💻 Terminal mode
-
-> Guide: [`docs/guides/terminal.md`](docs/guides/terminal.md)
-
-Run agent CLIs inside in-app PTY sessions (or the standalone `nomi` CLI). NomiFun injects native capabilities — knowledge search, requirement completion, and lifecycle hooks — into known CLIs through their *own* native config, so you keep full fidelity and OAuth.
-
-### 📱 WebUI remote control — scan, and you're in
-
-> Guide: [`docs/guides/webui-remote-access.md`](docs/guides/webui-remote-access.md)
-
-No social platform required. One-tap **QR pairing** connects your phone or tablet to your computer over the LAN (one-time token, realtime over WebSocket) so you can drive your workstation remotely from the couch.
-
-### ⚙️ Config once, use anywhere
-
-Central hubs for **Knowledge**, **Presets & Skills**, **MCP**, **Models**, and **Open Capabilities** — define them once, then select per conversation, terminal, channel, or companion. One source of truth, reused everywhere.
-
-### 💬 11 IM channels
-
-> Guide: [`docs/guides/channels.md`](docs/guides/channels.md)
-
-Bind a companion to any of these and drive it from where you already chat:
-
-`Telegram` · `Lark / 飞书` · `DingTalk / 钉钉` · `WeChat / 微信` · `Discord` · `Slack` · `Matrix` · `Mattermost` · `Twitch` · `Nostr` · `QQ Bot`
-
----
-
-## 🏗️ Architecture
-
-One React frontend, one Rust backend, **two host modes** — and the same backend runs in-process in both.
-
-| | `nomifun-desktop` | `nomifun-web` |
-|---|---|---|
-| **Shell** | Tauri 2 desktop app | Standalone axum server |
-| **Backend** | Embedded in-process, private loopback port | Same backend, in-process |
-| **Auth** | Local-trust token injected into the webview | Login required by default |
-| **Serves** | Native desktop UI + tray + companion windows | API + `/ws` + built SPA on one port |
-| **Computer / browser use** | ✅ Included | ❌ Headless (omitted) |
-
-There is no Electron shell, no Node web host, and no prebuilt backend handoff.
+| **壳** | Tauri 2 桌面应用 | 独立 axum 服务器 |
+| **后端** | 进程内嵌入，私有环回端口 | 同一后端，进程内 |
+| **认证** | 本地信任令牌注入 webview | 默认要求登录 |
+| **服务** | 原生桌面 UI + 托盘 + 伴侣窗口 | API + `/ws` + 内嵌 SPA |
 
 <details>
-<summary><b>Repository map</b></summary>
+<summary><b>仓库结构</b></summary>
 
 ```text
 apps/
-  desktop/      Tauri 2 shell and desktop-only commands
-  web/          standalone web host for API + SPA
+  desktop/      Tauri 2 壳 + 桌面独有命令
+  web/          独立 Web 宿主（API + SPA）
 crates/
-  agent/        15 nomi-* crates: engine, providers, tools, MCP, skills, memory,
-                browser/computer use, and the standalone nomi CLI
-  backend/      29 nomifun-* crates: app composition, auth, database, sessions,
-                MCP, knowledge, requirements, terminal, companion, gateway, etc.
-  shared/       2 cross-layer crates: nomifun-net and nomi-redact
-ui/             React 19 + Vite SPA shared by desktop and web
-docs/           technical docs, user/operator guides, architecture notes
-packaging/      Linux deployment support for the web host
+  sparkfox/     14 个核心 crate：
+                sparkfox-knowledge（SAG 检索）
+                sparkfox-memory（6 层记忆）
+                sparkfox-orchestrator（蜂群编排）
+                sparkfox-graph（图遍历）
+                sparkfox-e2ee（端到端加密）
+                sparkfox-crdt（多设备同步）
+                sparkfox-embedding（向量化）
+                sparkfox-llm（LLM 抽象）
+                sparkfox-chat / sparkfox-agent / sparkfox-hotspot
+                sparkfox-monitor / sparkfox-parser / sparkfox-core
+  backend/      29 个 nomifun-* 后端 crate（保留命名兼容）
+  agent/        15 个 nomi-* / sparkfox-ag-* Agent crate
+ui/             Preact + Vite SPA（桌面与 Web 共享）
+docs/           技术文档、用户指南、架构说明
 ```
-
-Start with [`docs/architecture/overview.md`](docs/architecture/overview.md) for the full system map. The Cargo workspace is defined in [`Cargo.toml`](Cargo.toml).
 
 </details>
 
 ---
 
-## 🚀 Getting started
+## 🚀 快速开始
 
-> 📦 **Installers**: use [GitHub Releases](https://github.com/nomifun/nomifun-tauri/releases) first. Mainland China users can use the [Baidu Netdisk mirror](https://pan.baidu.com/s/5GPonoJNrwJ7GciBSDgXLaA) (shared as `nomifun`). You can also install from source or run the server with Docker.
+**前置要求**
 
-**Prerequisites**
-
-- [Rust](https://rustup.rs) — stable toolchain, edition 2024
+- [Rust](https://rustup.rs) — stable 工具链，edition 2024
 - [Bun](https://bun.sh) ≥ 1.3.13
-- Recommended on PATH for full agent tooling: `node` / `npm` / `npx`, `git`, `ripgrep`
+- 推荐 PATH 包含：`node` / `npm` / `npx`、`git`、`ripgrep`
 
-**Desktop app (from source)**
+**桌面应用（从源码构建）**
 
 ```bash
-git clone https://github.com/nomifun/nomifun-tauri.git
-cd nomifun-tauri
+git clone git@github.com:AQWlala/SparkFox.git
+cd SparkFox
 bun install
 
-bun run dev      # develop with hot reload
-bun run build    # build a desktop bundle for your OS
+bun run dev      # 热重载开发
+bun run build    # 构建当前 OS 的桌面安装包
 ```
 
-**Web server (self-host)**
+**Web 服务器（自托管）**
 
 ```bash
 bun run build:ui && bun run serve:web
-# serves API + SPA on http://127.0.0.1:8787 (login required)
+# 在 http://127.0.0.1:8787 提供 API + SPA（默认要求登录）
 ```
 
-**Docker (self-host the server)**
+详见 [`docs/getting-started/installation.md`](docs/getting-started/installation.md)。
+
+---
+
+## 🛠️ 开发
 
 ```bash
-docker compose up -d --build
-# then open http://<server-ip>:8787  —  pair with the bundled Caddyfile for TLS
+bun install        # 安装依赖（一次性）
+bun run dev        # 桌面应用开发（热重载）
+bun run dev:web    # Web 宿主 + Vite 开发
+bun run build:ui   # 构建 SPA
+bun run check      # 前端 typecheck + i18n + 主题 + 脚本登记门禁
+bun run test       # Rust 测试（含 doctest）
+bun run test:fast  # nextest 快速跑 Rust 测试（日常）
 ```
 
-See [`docs/getting-started/installation.md`](docs/getting-started/installation.md) and [`docs/guides/web-server-deployment.md`](docs/guides/web-server-deployment.md) for details.
+### 📦 桌面打包
+
+每个 OS 有独立命令，**包只能在匹配的 OS 上构建**：
+
+| OS | 命令 | 产物 |
+|---|---|---|
+| macOS | `bun run build:mac` | `.dmg`（universal / arm / intel） |
+| Windows | `bun run build:win` | `.exe`（NSIS，x64 / arm64） |
+| Linux | `bun run build:linux` | `.deb` / `.AppImage` / `.rpm` |
+
+签名与公证：`--signed` 标志，详见 [`apps/desktop/signing/README.md`](apps/desktop/signing/README.md)。
 
 ---
 
-## 🛠️ Development
+## 📖 文档
 
-```bash
-bun install        # install dependencies (one-time)
-bun run dev        # desktop app development (hot reload)
-bun run dev:web    # web host + Vite development
-bun run build:ui   # build the SPA
-bun run check      # frontend typecheck + i18n + theme + script-registry gate
-bun run test       # Rust tests (use test:fast for nextest)
-```
-
-Prefer the scripted entry points over plain `cargo`/`vite` — they include build-dir pruning and consistency checks. New to the codebase? Read [`CONTRIBUTING.md`](CONTRIBUTING.md), [`CONTRIBUTING.zh-CN.md`](CONTRIBUTING.zh-CN.md), and [`docs/contributing/development.md`](docs/contributing/development.md).
-
-### 📦 Desktop packaging
-
-Each OS has its own command, and **a package can only be built on its matching OS** —
-macOS bundles must be signed/notarized on macOS, Windows installers built on Windows,
-Linux packages on Linux. There is no cross-OS build. All artifacts are collected into
-`dist/desktop/`.
-
-Common argument shape for all three:
-
-```
-bun run build:<os> [arch ...] [--signed] [-- <args passed straight to `tauri build`>]
-```
-
-- **arch** — zero or more architectures. Omit to use the per-OS default below.
-- **`--signed`** — sign (and, on macOS, notarize). Requires local signing config; see each OS.
-- **`-- …`** — everything after `--` is forwarded verbatim to `tauri build`
-  (e.g. `-- --bundles nsis`). `build:mac` and `build:win` also forward unknown `--xxx`
-  options directly. For updater builds, layer on the committed overlay as a **file path**:
-  `bun run build:<os> --config apps/desktop/tauri.updater.conf.json` — pass the file, not
-  inline JSON, because Windows PowerShell 5.1 strips the quotes from `--config '{...}'`.
-
-**macOS — `build:mac`** (produces `.dmg`; default arch: `universal`)
-
-| Goal | Command |
-| --- | --- |
-| Universal (Intel + Apple Silicon, one fat package) | `bun run build:mac` |
-| Universal, signed + notarized | `bun run build:mac --signed` |
-| Apple Silicon only | `bun run build:mac arm` |
-| Intel only | `bun run build:mac intel` |
-| Intel only, signed + notarized | `bun run build:mac --signed intel` |
-| All three separately (ARM + Intel + Universal) | `bun run build:mac arm intel universal` |
-
-Arch aliases: `arm`/`aarch64`/`silicon`, `intel`/`x64`/`x86_64`, `universal`/`all-arch`.
-Signing reads `apps/desktop/signing/.env.signing` (gitignored); missing → it errors with setup hints.
-
-**Windows — `build:win`** (produces a single NSIS `.exe`; default arch: the host's, usually `x64`)
-
-| Goal | Command |
-| --- | --- |
-| Current arch | `bun run build:win` |
-| x64 only | `bun run build:win x64` |
-| ARM64 only | `bun run build:win arm64` |
-| Both | `bun run build:win x64 arm64` |
-| Signed (Authenticode) | `bun run build:win --signed` |
-
-Arch aliases: `x64`/`x86_64`, `arm64`/`aarch64`/`arm`. `--signed` reads the cert thumbprint from
-`WINDOWS_CERTIFICATE_THUMBPRINT` (no “notarization” concept on Windows).
-
-**Linux — `build:linux`** (produces `.deb` / `.AppImage` / `.rpm`; default arch: the host's)
-
-| Goal | Command |
-| --- | --- |
-| Current arch | `bun run build:linux` |
-| x64 only | `bun run build:linux x64` |
-| ARM64 only | `bun run build:linux arm64` |
-| Both | `bun run build:linux x64 arm64` |
-
-Arch aliases: `x64`/`x86_64`, `arm64`/`aarch64`/`arm`. Linux has no signing/notarization step.
-⚠️ Cross-arch (e.g. building arm64 on an x64 host) needs the target's sysroot/toolchain and often
-fails on the webkit2gtk link — build on the target architecture's machine/container instead.
-
-> `bun run build` stays as the simple "just build for whatever OS I'm on" shortcut; the
-> `build:<os>` commands above add explicit arch selection, signing, and `dist/desktop/` collection.
-
-<details>
-<summary><b>Full script catalog</b></summary>
-
-<!-- BEGIN GENERATED SCRIPTS (bun run help --readme) -->
-
-| 脚本 | 说明 |
-| --- | --- |
-| **开发（热重载）** | |
-| `bun run dev` | 启动桌面应用开发（tauri dev，热重载） |
-| `bun run dev:web` | 启动 Web 全栈开发（后端 API + 前端 vite） |
-| `bun run dev:ui` | 仅启动前端开发服务器（纯 vite，无后端） |
-| **构建（出制品）** | |
-| `bun run build` | 为当前操作系统打桌面安装包 |
-| `bun run build:win` | 打 Windows 安装包（NSIS），汇总到 dist/desktop/ |
-| `bun run build:mac` | 打 macOS 安装包（.dmg），汇总到 dist/desktop/ |
-| `bun run build:linux` | 打 Linux 安装包（.deb/.AppImage/.rpm），汇总到 dist/desktop/ |
-| `bun run build:signed` | 打桌面包并签名+公证（仅 macOS） |
-| `bun run build:updater` | 打桌面包并产出自更新 .sig 制品 |
-| `bun run make:latest` | 扫描本机更新产物，生成/合并自动更新清单 latest.json |
-| `bun run release:mac` | 一键 macOS 发版：自动判定追加/首发；首发用 -Version 打版本号 + -NotesFile/-Notes 建 Release；-DryRun 只预检 |
-| `bun run release:win` | 一键 Windows 发版：自动判定追加/首发；首发用 -Version 打版本号 + -NotesFile/-Notes 建 Release；-DryRun 只预检 |
-| `bun run release:linux` | 一键 Linux 发版：自动判定追加/首发；首发用 -Version 打版本号 + -NotesFile/-Notes 建 Release；-DryRun 只预检 |
-| `bun run build:ui` | 前端生产构建 → ui/dist |
-| **运行（组装好的应用）** | |
-| `bun run serve:web` | 启动 Web 服务器，托管已构建的前端 |
-| **测试** | |
-| `bun run test` | 运行全部 Rust 测试（含 doctest） |
-| `bun run test:fast` | 用 nextest 快速跑 Rust 测试（日常） |
-| **静态检查 / 门禁** | |
-| `bun run check:process-runtime-boundary` | Enforce the supervised process runtime boundary and exact hand-off allowlist. |
-| `bun run check:agent-vocabulary` | Enforce AgentExecution as the only active collaboration aggregate and permit only exact migration fences. |
-| `bun run check` | 聚合静态门禁：typecheck + i18n + 主题契约 + 图标导入 + 进程运行时边界 + Agent 词汇边界 + 脚本登记 |
-| `bun run typecheck` | 前端 TypeScript 类型检查（tsc --noEmit） |
-| `bun run check:i18n` | 校验 i18n 类型与 locale 键是否一致 |
-| `bun run check:theme` | 校验预设 CSS 主题契约 |
-| `bun run check:icons` | 校验 @icon-park/react 导入禁别名/禁命名空间（别名会被图标包装插件改写成非法代码，tsc 抓不到） |
-| **格式化** | |
-| `bun run fmt` | 格式化 Rust 代码（cargo fmt） |
-| `bun run fmt:check` | 校验 Rust 代码格式（cargo fmt --check） |
-| **代码生成** | |
-| `bun run gen:i18n` | 由 locale 重新生成 i18n 类型声明 |
-| **维护 / 工具** | |
-| `bun run clean` | 深度回收构建空间（debug 产物 + flycheck + 旧安装包） |
-| `bun run seed:dev` | 用生产数据目录播种 dev 数据目录 |
-| `bun run bump` | 统一改版本号：根 Cargo.toml(真源) + package.json + ui + Cargo.lock，可选 --tag 提交并打 tag |
-| `bun run help` | 打印脚本目录（--check 校验登记 / --readme 生成 README 表） |
-
-<!-- END GENERATED SCRIPTS -->
-
-</details>
+- [`docs/SparkFox-v1.1.0-规划.md`](docs/SparkFox-v1.1.0-规划.md) — v1.1.0 实施规划与进度矩阵
+- [`docs/SparkFox-最终融合蓝图-1.0.md`](docs/SparkFox-最终融合蓝图-1.0.md) — 四项目融合蓝图
+- [`docs/SparkFox-重组优化方案-1.0.md`](docs/SparkFox-重组优化方案-1.0.md) — 重组优化方案
+- [`docs/SAG-深度评估与重构方案-1.0.md`](docs/SAG-深度评估与重构方案-1.0.md) — SAG 重构方案
+- [`docs/architecture/`](docs/architecture/) — 技术架构
+- [`docs/getting-started/`](docs/getting-started/) — 安装与首次运行
+- [`docs/guides/`](docs/guides/) — 用户与运维指南
+- [`docs/rfc/`](docs/rfc/) — RFC 设计文档
 
 ---
 
-## 📖 Documentation
+## 🗺️ 当前版本与路线图
 
-- [`docs/README.md`](docs/README.md) — documentation index
-- [`docs/getting-started/`](docs/getting-started) — installation and first run
-- [`docs/guides/`](docs/guides) — user & operator guides (companions, channels, AutoWork, knowledge, computer/browser use, terminal, remote API, …)
-- [`docs/architecture/`](docs/architecture) — technical architecture
-- [`docs/reference/`](docs/reference) — configuration, API overview, FAQ, troubleshooting
+**当前版本**：v0.2.28（v1.1.0 进行中）
 
-Docs are bilingual: every page has an English `*.md` and a Simplified-Chinese `*.zh.md` sibling.
+**v1.1.0 进度**（Task 11.x SAG 多跳检索）：
 
----
+- ✅ W4 里程碑：32/32 sub-step 完成（5 前端组件集成到现有页面）
+- ✅ Task 11.x：12/18 sub-step 完成（2/3 进度）
+  - 11.1.x MULTI 8 步流程骨架 + Step1-Step8 真实实现 + E2E 集成（Recall@5=0.80）
+  - 11.2.x multi / multi1 / hopllm 三策略 + R-07 三道 LIMIT 阀门
+  - 11.3.x KnowledgeGraphView 入口 + 11 类着色 + EntityEditDrawer
+  - 11.4.x 数据契约 + @xyflow/react v12 渲染
 
-## 🗺️ Coming soon
+**后续方向**：
 
-NomiFun is **pre-1.0** and built part-time, so there's a lot still in flight. On the horizon: prebuilt installers, inbound issue-tracker / requirement sources, more knowledge connectors (Feishu, and beyond), official desktop binaries — plus a few surprises we're genuinely excited about. **Stay tuned.** ✨
-
----
-
-## 🤝 Contributing & community
-
-NomiFun very much needs your help to grow — code contributions, community building, and evangelism are all hugely welcome. If you have passion for this project, please [reach out](#-contact--community) and build the NomiFun ecosystem with us.
-
-- Read [`CONTRIBUTING.md`](CONTRIBUTING.md) to get set up and learn the check ladder. Simplified Chinese: [`CONTRIBUTING.zh-CN.md`](CONTRIBUTING.zh-CN.md).
-- Be excellent to each other — see [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md).
-- Found a vulnerability? Follow [`SECURITY.md`](SECURITY.md).
-- Browse [open issues](https://github.com/nomifun/nomifun-tauri/issues) for a place to start.
+- v1.1.0 收尾：11.4.2 EntityEditDrawer IPC / 11.5.x 多跳路径渲染 / 11.6.x hnswlib-rs 集成
+- v1.2.0+：完整 MULTI 策略 + 动态超图
+- v2.0.0：降级为维护版
 
 ---
 
-## 💛 A note from the author
+## 💛 致谢
 
-> This is a part-time effort with limited bandwidth, and many delightful features are still on the way. If this resonates with you, join in any way you like — a line of code, a suggestion, a reshare all mean a lot.
+SparkFox 站在巨人的肩膀上，深度借鉴以下开源项目（按字母序）：
 
-NomiFun is **completely open source, with nothing held back**. Individuals and enterprises are free to build on it and use it commercially.
+| 项目 | 许可证 | 借鉴内容 |
+|---|---|---|
+| **BaiLongma** | MIT | 对话展示方法、思考过程可视化、信息热点跟踪；Scene Protocol 经清洁室重写 |
+| **NomiFun** | Apache-2.0 | Arco Design 界面基础、功能模块设计；crate 命名经 `nomi-*` / `nomifun-*` → `sparkfox-*` 重命名 |
+| **OpenAkita** | MIT | Agent 菜单设计、监控面板设计、组织编排模型 |
 
-- **Forks & commercial use are welcome.** They're also at your own risk — the author and contributors assume no liability for downstream use. Apache-2.0 requires no permission from us.
-- **A friendly heads-up is appreciated, not required.** If you fork or commercialize NomiFun, we'd love a note — *not* as a license condition, simply because knowing the project is valued is the kind of recognition that keeps it going.
-- **Some features were intentionally left out of the open-source release** to keep the local-data promise airtight — without the people and funding to guarantee everyone's data security, removing them was the responsible choice. As time and resources allow, we hope to bring more of them to you.
+**合规说明**：
 
-Thank you for being here. 🙏
-
----
-
-## 🔗 Friendly links
-
-Projects and products we appreciate:
-
-| Product | What it does |
-|---|---|
-| [Saytive](http://saytive.ai/) | **Be Creative, Be Saytive.** A voice input method for creative workers, using strong models and thoughtful product design to sense your work context and deliver fast, accurate, scene-aware transcription. |
-| [Fast](https://fast.saien.pro) | **Search, one tap away.** Type, click, and jump straight to search results across RED, Douyin, Meituan, and dozens of mainstream apps. No feed distraction, just search. |
-| [AionUi](https://github.com/iOfficeAI/AionUi) | AionUi ships with a complete AI agent engine. Unlike tools that require separate CLI-agent installs, AionUi works the moment you install it. |
+- AGPL-3.0-only 与 MIT / Apache-2.0 兼容，衍生作品同样开源
+- BaiLongma MIT 组件经清洁室重写（schema 借鉴与字段重命名）以维持 AGPL 合规
+- API 契约字段（`agent_type === 'nomi'`、`nomi_delegate`、`NOMI_SKILL_DIR` 等）保留以避免功能中断
+- 详见 [`NOTICE`](NOTICE) 与 [`docs/SparkFox-重组优化方案-1.0.md`](docs/SparkFox-重组优化方案-1.0.md)
 
 ---
 
-## 📬 Contact & community
+## 🤝 贡献
 
-We'd love to hear from you. The fastest way to reach us is GitHub; the social channels below are all official.
-
-| Channel | Where |
-|---|---|
-| 🌐 **Website** | [www.nomifun.com](https://www.nomifun.com) |
-| 🐙 **GitHub** | [nomifun/nomifun-tauri](https://github.com/nomifun/nomifun-tauri) · [Issues](https://github.com/nomifun/nomifun-tauri/issues) · [Releases](https://github.com/nomifun/nomifun-tauri/releases) |
-| ✉️ **Email** | `hello@nomifun.com` <sub>(provisional — being finalized)</sub> |
-| 📕 **小红书 / RED** | [NomiFun](https://xhslink.com/m/4x6ti8n6cA1) |
-| 📺 **Bilibili** | [NomiFun](https://b23.tv/0UhgKDh) · [demo video](https://www.bilibili.com/video/BV1kwKZ6UE5X/) |
-| 🎵 **抖音 / Douyin** | [NomiFun](https://v.douyin.com/MDT5QVdYaJk/) |
-| ▶️ **YouTube** | [@NomiFun-o2y](https://www.youtube.com/@NomiFun-o2y) · [demo video](https://youtu.be/AsEToBDFR9s) |
-| 𝕏 **X (Twitter)** | [@colir0](https://x.com/colir0) |
-| 🎬 **TikTok** | [@colir0luo](https://www.tiktok.com/@colir0luo) |
-
-**Join the chat groups** — scan to join:
-
-<div align="center">
-<table>
-  <tr>
-    <td align="center"><img src="docs/images/contact/wechat-group-qr.png" alt="WeChat group QR" width="220"><br/><sub><b>WeChat group / 微信群</b></sub></td>
-    <td align="center"><img src="docs/images/contact/qq-group-qr.png" alt="QQ group QR" width="220"><br/><sub><b>QQ group / QQ 群</b></sub></td>
-  </tr>
-</table>
-</div>
+- 阅读 [`CONTRIBUTING.md`](CONTRIBUTING.md) 了解开发环境与检查阶梯
+- 遵守 [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md)
+- 发现漏洞请按 [`SECURITY.md`](SECURITY.md) 报告
+- 浏览 [open issues](https://github.com/AQWlala/SparkFox/issues) 寻找切入点
 
 ---
 
-## ⚖️ License
+## ⚖️ 许可证
 
-[Apache-2.0](LICENSE) © 2025–2026 NomiFun.
+[AGPL-3.0-only](LICENSE) © 2025–2026 SparkFox Contributors.
 
-See [`NOTICE`](NOTICE) for third-party attributions.
+本仓库未附带 LICENSE 文件时，以 AGPL-3.0-only 为准（见 [`package.json`](package.json) 声明）。
+
+第三方归属详见 [`NOTICE`](NOTICE)。
 
 <div align="center">
 <br/>
-<sub>Built with 💛 for people who want AI on their own terms.</sub>
+<sub>本地优先 · 数据主权 · AGPL 守护</sub>
 <br/><br/>
-<a href="#top">⬆ Back to top</a>
+<a href="#top">⬆ 返回顶部</a>
 </div>
