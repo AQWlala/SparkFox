@@ -1,0 +1,106 @@
+/**
+ * @license
+ * Copyright 2026 SparkFox Contributors — AGPL-3.0-only
+ *
+ * EntityEditDrawer.module.css — 实体编辑抽屉样式（spec §三 11.3.3 / 第 14 波 sub-step C）
+ *
+ * 样式目标：
+ *   - 抽屉主体（drawerBody）：纵向 flex + 间距，与 CitationDetailDrawer 一致
+ *   - 当前实体信息卡片（entityInfo）：浅色背景 + 字段网格
+ *   - 3 操作 Tabs：与 Arco Tabs 间距协调
+ *   - 每个 tab 内：tabHint 提示文案 + formItem 表单项 + formActions 操作按钮
+ */
+
+.drawerBody {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 4px 0 16px;
+}
+
+/* 空 entity 占位文本 */
+.placeholder {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--color-text-3);
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* ─── 当前实体信息卡片 ─── */
+
+.entityInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 12px 14px;
+  background-color: var(--color-fill-1);
+  border-radius: 10px;
+  border: 1px solid var(--color-border-2);
+}
+
+.entityInfoRow {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.entityInfoLabel {
+  flex-shrink: 0;
+  min-width: 56px;
+  color: var(--color-text-3);
+  font-weight: 500;
+}
+
+.entityInfoValue {
+  color: var(--color-text-1);
+  word-break: break-all;
+}
+
+/* ─── Tabs 主体 ─── */
+
+.tabs {
+  margin-top: 4px;
+}
+
+/* 每个 tab 内的主体容器 */
+.tabBody {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 12px 4px 4px;
+}
+
+/* tab 顶部提示文案 */
+.tabHint {
+  margin: 0;
+  padding: 8px 12px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--color-text-2);
+  background-color: var(--color-fill-1);
+  border-radius: 6px;
+}
+
+/* 单个表单项：label + Input 纵向排列 */
+.formItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formLabel {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-1);
+}
+
+/* 表单操作按钮容器（右对齐） */
+.formActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 4px;
+}

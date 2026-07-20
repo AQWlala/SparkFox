@@ -2,16 +2,21 @@
  * @license
  * Copyright 2026 SparkFox Contributors — AGPL-3.0-only
  *
- * KnowledgeGraphView — 知识图谱视图入口（spec §三 11.3.1 / 11.3.2 / 第 13 波并行 sub-step C）
+ * KnowledgeGraphView — 知识图谱视图入口（spec §三 11.3.1 / 11.3.2 / 11.3.3）
  *
  * 本文件提供「知识图谱」页面的入口：
  *   - 顶部：标题「知识图谱」+ 返回按钮（返回知识库详情页）
  *   - PoC 提示卡片：标注「图谱渲染待 11.3.2 实现」（实际 @xyflow/react 渲染推迟到 11.4.1）
  *   - 主体：GraphCanvas 画布组件（11 类着色 + 图例 + SVG 简单节点/边展示）
+ *   - 抽屉：节点点击后打开 EntityEditDrawer（合并 / 拆分 / 重命名 3 操作，spec §三 11.3.3）
  *
  * 范围说明：spec §三 11.3.2 原本包含 @xyflow/react 实际渲染，但 @xyflow/react 依赖
  * 较重且需 v12 升级，本波仅实施「11 类着色常量 + 图例组件 + 简单 SVG 节点展示」，
  * 实际 @xyflow/react 渲染推迟到 11.4.1。这样本波可独立完成无外部依赖冲突。
+ *
+ * 范围说明：spec §三 11.3.3 原本包含「IPC 调用 + 持久化到 entity 表」，但本波仅实施
+ * 前端 UI 部分（Drawer 组件 + 3 操作 tabs + PoC mock 回调），IPC 调用 + 持久化
+ * 推迟到 11.4.x（与后端 entity 编辑命令同步实施）。
  *
  * PoC 数据：使用 useState mock 5 个节点 + 4 条边，覆盖 5 种实体类型
  *   （PERSON / LOCATION / ORGANIZATION / TIME / EVENT）。
@@ -25,6 +30,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button, Card } from '@arco-design/web-react';
 import { Left } from '@icon-park/react';
 import GraphCanvas from './GraphCanvas';
+import EntityEditDrawer from './EntityEditDrawer';
 import type { GraphEdge, GraphNode } from './types';
 import styles from './styles.module.css';
 
@@ -56,16 +62,56 @@ const KnowledgeGraphView: React.FC = () => {
     { source: 'n3', target: 'n5', label: '主办' },
   ]);
 
-  // 节点点击回调（PoC：仅 console.log，后续 11.4.1 接入抽屉/详情面板）
+  // ─── 11.3.3 EntityEditDrawer 抽屉状态 ───
+  // 当前选中的实体（节点点击时设置；null 表示未选中）
+  const [editingEntity, setEditingEntity] = useState<GraphNode | null>(null);
+  // 抽屉可见性（节点点击时打开，onClose 时关闭）
+  const [drawerVisible, setDrawerVisible] = useState<boolean>(false);
+
+  // 节点点击回调（spec §三 11.3.3：打开 EntityEditDrawer 抽屉）
   const handleNodeClick = (nodeId: string) => {
     // eslint-disable-next-line no-console
     console.log('[KnowledgeGraphView] node clicked:', nodeId);
+    // 根据 nodeId 在 nodes 中查找对应的 GraphNode
+    const target = nodes.find((n) => n.id === nodeId) ?? null;
+    setEditingEntity(target);
+    setDrawerVisible(true);
   };
 
   // 边点击回调（PoC：仅 console.log）
   const handleEdgeClick = (edge: GraphEdge) => {
     // eslint-disable-next-line no-console
     console.log('[KnowledgeGraphView] edge clicked:', edge);
+  };
+
+  // 关闭抽屉回调：清空 editingEntity + 隐藏抽屉
+  const handleDrawerClose = () => {
+    setDrawerVisible(false);
+    setEditingEntity(null);
+  };
+
+  // 合并操作回调（PoC：console.log + 关闭抽屉；11.4.x 接入 IPC 持久化到 entity 表）
+  const handleMerge = (sourceId: string, targetId: string) => {
+    // eslint-disable-next-line no-console
+    console.log('[KnowledgeGraphView] merge entities:', sourceId, '->', targetId);
+    setDrawerVisible(false);
+    setEditingEntity(null);
+  };
+
+  // 拆分操作回调（PoC：console.log + 关闭抽屉；11.4.x 接入 IPC 持久化到 entity 表）
+  const handleSplit = (sourceId: string, newNames: string[]) => {
+    // eslint-disable-next-line no-console
+    console.log('[KnowledgeGraphView] split entity:', sourceId, '->', newNames);
+    setDrawerVisible(false);
+    setEditingEntity(null);
+  };
+
+  // 重命名操作回调（PoC：console.log + 关闭抽屉；11.4.x 接入 IPC 持久化到 entity 表）
+  const handleRename = (entityId: string, newName: string) => {
+    // eslint-disable-next-line no-console
+    console.log('[KnowledgeGraphView] rename entity:', entityId, '->', newName);
+    setDrawerVisible(false);
+    setEditingEntity(null);
   };
 
   return (
@@ -93,6 +139,16 @@ const KnowledgeGraphView: React.FC = () => {
         edges={edges}
         onNodeClick={handleNodeClick}
         onEdgeClick={handleEdgeClick}
+      />
+
+      {/* ─── 11.3.3 EntityEditDrawer：节点点击打开抽屉（合并 / 拆分 / 重命名 3 操作） ─── */}
+      <EntityEditDrawer
+        visible={drawerVisible}
+        entity={editingEntity}
+        onClose={handleDrawerClose}
+        onMerge={handleMerge}
+        onSplit={handleSplit}
+        onRename={handleRename}
       />
     </div>
   );

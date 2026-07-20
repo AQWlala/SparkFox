@@ -35,7 +35,7 @@
 use rusqlite::Connection;
 
 use crate::jieba_ner::{EntityMention, JiebaNer};
-use crate::search::{SearchHit, SearchResult};
+use crate::search::{SearchHit, SearchResult, SearchStrategy};
 
 /// bge-small-zh embedding 维度
 ///
@@ -367,6 +367,203 @@ pub fn step8_build_result(state: MultiState) -> SearchResult {
         hits: state.hits,
         latency_ms: 0,
         strategy_name: "multi".to_string(),
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Sub-Step 11.1.3 — Step5/Step6/Step7/Step8 真实实现
+// （保留上方 stub 函数不动；以下 4 个真实实现版本供 11.1.4 E2E 集成时替换调用）
+// ---------------------------------------------------------------------------
+
+/// Step5 真实实现（async）：三策略占位 — 用 multi1 单跳剪枝
+///
+/// 与 stub 版本 [`step5_strategies_placeholder`] 的区别：
+/// - stub：仅记录 thought_process，不执行检索（`hits` 保持为空）
+/// - 真实实现：调用 [`Multi1Strategy`](super::multi::Multi1Strategy)::search（max_hop=1）
+///   作为占位，`hits` 字段填充实际检索结果（含 `hop` / `via_entities`）
+///
+/// ## 参数
+/// - `state`: 含 Step4 输出的 `candidates`（候选 event_ids，当前 stub 留空）
+/// - `multi1`: [`Multi1Strategy`](super::multi::Multi1Strategy) 实例引用
+///
+/// ## 输出
+/// - 更新 `state.hits`（`Vec<SearchHit>`，含 `hop=Some(1)` / `via_entities`）
+/// - 追加 `thought_process` 一条 Step5 记录（含命中数）
+///
+/// ## 为何 async
+/// `Multi1Strategy::search` 是 async 方法（实现 [`SearchStrategy`] trait）。
+/// 推荐在生产环境由 `MultiStrategy::search` 内部 async 上下文直接 `await`，
+/// 避免 `block_on` 复杂性（`futures` 不在 `sparkfox-knowledge` 依赖中）。
+///
+/// ## 后续 11.2.x 完整实现
+/// Task 11.2 将在此步骤并行执行 multi / multi1 / hopllm 三策略并合并结果。
+/// 当前仅用 multi1 占位，确保 8 步流程可端到端跑通。
+pub async fn step5_with_multi1_async(
+    mut state: MultiState,
+    multi1: &super::multi::Multi1Strategy,
+) -> MultiState {
+    match multi1.search(&state.query).await {
+        Ok(search_result) => {
+            let hit_count = search_result.hits.len();
+            state.hits = search_result.hits;
+            state.thought_process.push(format!(
+                "Step5: 三策略占位（multi1 单跳剪枝，命中 {} 个 events）",
+                hit_count
+            ));
+        }
+        Err(e) => {
+            state.thought_process.push(format!(
+                "Step5: 三策略占位失败（multi1 错误: {}）",
+                e
+            ));
+        }
+    }
+    state
+}
+
+/// Step6 真实实现：events → chunks 关联
+///
+/// 与 stub 版本 [`step6_merge_dedupe`] 的区别：
+/// - stub：仅记录 thought_process，不修改 `hits`
+/// - 真实实现：查询 `knowledge_event.chunk_id`，将 `event_id` 关联的 `chunk_id`
+///   填充到 [`SearchHit::chunk_id`]（若原为 `None` 且数据库有对应记录）
+///
+/// ## 参数
+/// - `state`: 含 Step5 输出的 `hits`
+/// - `conn`: SQLite 连接（用于查询 `knowledge_event` 表）
+///
+/// ## 输出
+/// - 更新 `state.hits` 中每个 [`SearchHit`] 的 `chunk_id`（若原为 `None` 且有关联记录）
+/// - 追加 `thought_process` 一条 Step6 记录（含已关联数量）
+///
+/// ## SQL
+/// ```sql
+/// SELECT chunk_id FROM knowledge_event WHERE id = ?
+/// ```
+/// `chunk_id` 为可空字段（schema.rs 中 `DDL_KNOWLEDGE_EVENT` 定义），故查询返回
+/// `Option<String>`；仅当数据库返回 `Some(chunk_id)` 时才覆盖 `hits[i].chunk_id`。
+pub fn step6_associate_chunks(mut state: MultiState, conn: &Connection) -> MultiState {
+    let mut associated = 0;
+    let sql = "SELECT chunk_id FROM knowledge_event WHERE id = ?";
+    for hit in &mut state.hits {
+        // 仅当 chunk_id 未填充时才查询（避免覆盖 Step5 已填充的 chunk_id）
+        if hit.chunk_id.is_some() {
+            continue;
+        }
+        if let Ok(mut stmt) = conn.prepare(sql) {
+            if let Ok(rows) = stmt.query_map([&hit.event_id], |row| {
+                let chunk_id: Option<String> = row.get(0)?;
+                Ok(chunk_id)
+            }) {
+                if let Some(Ok(Some(chunk_id))) = rows.into_iter().next() {
+                    hit.chunk_id = Some(chunk_id);
+                    associated += 1;
+                }
+            }
+        }
+    }
+    state.thought_process.push(format!(
+        "Step6: events → chunks 关联（补充 {} 个 chunk_id）",
+        associated
+    ));
+    state
+}
+
+/// Step7 真实实现：Rerank 重排 + thought_process 完整化
+///
+/// 与 stub 版本 [`step7_rerank`] 的区别：
+/// - stub：仅记录 thought_process，不修改 `hits`
+/// - 真实实现：按 `score` 降序稳定排序 + 截断 `top_k` + 生成 top-3 摘要
+///
+/// ## 参数
+/// - `state`: 含 Step6 输出的 `hits`
+/// - `top_k`: 返回的 Top-K 数量
+///
+/// ## 输出
+/// - 更新 `state.hits`：按 `score` 降序稳定排序 + 取 `top_k`
+/// - 追加 `thought_process` 一条 Step7 记录（含 `top_k` + hits 数量 + top-3 摘要）
+///
+/// ## 排序语义
+/// - 使用 `sort_by`（稳定排序），保证相同 score 的 hit 保持原相对顺序
+/// - `partial_cmp` 处理 NaN（退化为 `Equal`，避免 panic）
+///
+/// ## 后续 11.4.x 接入 rerank 模型
+/// 当前按 `score` 降序（即 hop 衰减后的 score），等价于按 hop 升序排序。
+/// 11.4.x 将接入 bge-reranker 对 `query` vs `event.title + summary` 做交叉编码重排。
+pub fn step7_rerank_with_thought(mut state: MultiState, top_k: usize) -> MultiState {
+    // 按 score 降序稳定排序（sort_by_key 不稳定，用 sort_by + partial_cmp）
+    state.hits.sort_by(|a, b| {
+        b.score
+            .partial_cmp(&a.score)
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
+    // 取 top_k
+    state.hits.truncate(top_k);
+
+    // 生成 top-3 摘要（即使 hits 不足 3 个也只取现有数量）
+    let top3: Vec<String> = state
+        .hits
+        .iter()
+        .take(3)
+        .map(|h| format!("{}({:.3})", h.event_id, h.score))
+        .collect();
+    state.thought_process.push(format!(
+        "Step7: Rerank 重排（按 score 降序，取 top_{}，top-3: [{}]）",
+        top_k,
+        top3.join(", ")
+    ));
+    state
+}
+
+/// Step8 真实实现：聚合返回 [`SearchResult`]（含 hop / via_entities）
+///
+/// 与 stub 版本 [`step8_build_result`] 的区别：
+/// - stub：仅包装 `hits` 为 [`SearchResult`]，`latency_ms=0` / `strategy_name="multi"` 写死
+/// - 真实实现：`strategy_name` 可配置 / `latency_ms` 由调用方传入 / 校验 hop / via_entities
+///
+/// ## 参数
+/// - `state`: 8 步流程执行完毕的 [`MultiState`]（`hits` 已通过 Step5-7 填充）
+/// - `strategy_name`: 策略名称（如 `"multi"` / `"multi1"` / `"hopllm"`）
+/// - `latency_ms`: 检索耗时（由调用方传入，通常用 `Instant::now()` 测量）
+///
+/// ## 返回
+/// [`SearchResult`]（含 `hits` / `latency_ms` / `strategy_name`）
+///
+/// ## 校验
+/// 若 `hits` 中存在 `hop=None` 或 `via_entities` 为空，记录 `log::warn!` 警告
+/// （不修改数据，仅记录日志便于排查数据不一致问题）。
+///
+/// ## thought_process 处理
+/// `state.thought_process` 中累积的 8 步记录由调用方在调用本函数前自行处理
+/// （写入日志 / 暴露给前端 / 持久化）。本函数不重复记录。
+pub fn step8_build_result_with_hop(
+    state: MultiState,
+    strategy_name: &str,
+    latency_ms: u64,
+) -> SearchResult {
+    // 校验 hop / via_entities（仅记录，不修改）
+    let missing_hop = state.hits.iter().filter(|h| h.hop.is_none()).count();
+    let missing_via = state
+        .hits
+        .iter()
+        .filter(|h| h.via_entities.is_empty())
+        .count();
+    if missing_hop > 0 {
+        log::warn!(
+            "Step8: {} 个 hits 缺少 hop 字段（应为 Some(N)）",
+            missing_hop
+        );
+    }
+    if missing_via > 0 {
+        log::warn!(
+            "Step8: {} 个 hits 缺少 via_entities（应为非空 EntityRef 列表）",
+            missing_via
+        );
+    }
+    SearchResult {
+        hits: state.hits,
+        latency_ms,
+        strategy_name: strategy_name.to_string(),
     }
 }
 

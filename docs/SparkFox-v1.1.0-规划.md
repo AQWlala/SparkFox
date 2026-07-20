@@ -3593,14 +3593,15 @@
 |---|---|---|---|---|---|---|---|---|
 | 11.1.1 | Step1-Step4 | 1.5 | P0 | ✅ | subagent A | 2026-07-20 | 2026-07-20 | 第十二波：MULTI 8 步骨架 + Step1-Step2 free function + Step3-8 stub |
 | 11.1.2 | Step3-Step4（矩阵原名 Step5-Step6） | 1.5 | P0 | ✅ | subagent B | 2026-07-20 | 2026-07-20 | 第十三波：Step3 HnswIndex 真实实现 + Step4 event_entity_relation JOIN |
-| 11.1.3 | Step7-Step8 + thought_process | 1.5 | P0 | ⬜ | ____ | ____ | ____ | ____ |
+| 11.1.3 | Step5-Step8 + thought_process（矩阵原名 Step7-Step8） | 1.5 | P0 | ✅ | subagent A | 2026-07-20 | 2026-07-20 | 第十四波：step5_with_multi1_async + step6_associate_chunks + step7_rerank_with_thought + step8_build_result_with_hop |
 | 11.1.4 | 端到端 < 2s 验证 | 1.5 | P0 | ⬜ | ____ | ____ | ____ | ____ |
 | 11.2.1 | multi 策略 | 1.5 | P0 | ✅ | subagent | 2026-07-20 | 2026-07-20 | 矩阵修正：已在 10.8.2 完成 |
 | 11.2.2 | multi1 单跳剪枝 | 1.0 | P0 | ✅ | subagent A | 2026-07-20 | 2026-07-20 | 第十三波：Multi1Strategy 委托 MultiStrategy(max_hop=1) + 1k fixture 性能对比 |
-| 11.2.3 | hopllm LLM 引导 | 1.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
+| 11.2.3 | hopllm LLM 引导 | 1.0 | P0 | ✅ | subagent B | 2026-07-20 | 2026-07-20 | 第十四波：HopllmStrategy + HopllmLlm trait + MockLlm/FailLlm + LLM 失败降级到 multi1 |
 | 11.2.4 | R-07 三道 LIMIT 阀门 | 1.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
 | 11.3.1 | 入口 + 路由 | 1.0 | P0 | ✅ | subagent B | 2026-07-20 | 2026-07-20 | 第十二波：KGView 入口 + /kb/:id/graph 路由 + KnowledgeDetailPage 入口按钮 |
 | 11.3.2 | 11 类着色 + 图例 | 1.0 | P0 | ✅ | subagent C | 2026-07-20 | 2026-07-20 | 第十三波：ENTITY_TYPE_COLORS 11 类互异 + GraphCanvas SVG 渲染 + 节点上限 1000 |
+| 11.3.3 | EntityEditDrawer 编辑（合并/拆分/重命名） | 2.0 | P0 | ✅ | subagent C | 2026-07-20 | 2026-07-20 | 第十四波：Drawer + 3 Tabs（合并/拆分/重命名）+ onMerge/onSplit/onRename 回调 + KGView 集成 |
 | 11.4.1 | 数据契约 + react-flow | 2.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
 | 11.4.2 | EntityEditDrawer 基础 | 2.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
 | 11.5.1 | 多跳路径渲染 | 1.0 | P0 | ⬜ | ____ | ____ | ____ | ____ |
@@ -3683,6 +3684,48 @@
 - `cd ui && bun test KnowledgeGraphView`：**11 pass + 0 fail + 54 expect() calls**（4 现有 + 7 新增）
 
 **Task 11.x 进度**：6/17 已完成（11.2.1 矩阵修正 + 11.1.1 + 11.3.1 + 11.2.2 + 11.1.2 + 11.3.2），下一步进入第十四波（11.1.3 Step5-Step8 / 11.2.3 hopllm LLM 引导 / 11.3.3 EntityEditDrawer / 11.2.4 R-07 LIMIT 阀门）
+
+##### 第十四波（Task 11.x）完成报告 — 11.1.3 Step5-Step8 + 11.2.3 hopllm + 11.3.3 EntityEditDrawer（3 路并行）
+
+> **完成日**：2026-07-20
+> **验收人**：主 agent
+> **执行方式**：3 个 subagent 并行（11.1.3 后端 Step5-Step8 / 11.2.3 后端 hopllm / 11.3.3 前端 EntityEditDrawer），目标隔离无文件冲突；11.2.4 R-07 LIMIT 阀门因同样修改 `search/multi.rs` 推迟至第十五波
+
+| Sub-Step | 类型 | 文件 | 关键产出 | 状态 |
+|---|---|---|---|---|
+| 11.1.3 | 后端 / Step5 真实实现 | [crates/sparkfox/sparkfox-knowledge/src/search/multi_step.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/src/search/multi_step.rs) | `step5_with_multi1_async`：async 调用 Multi1Strategy::search，hits 填充实际检索结果 | ✅ |
+| 11.1.3 | 后端 / Step6 真实实现 | [crates/sparkfox/sparkfox-knowledge/src/search/multi_step.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/src/search/multi_step.rs) | `step6_associate_chunks`：SQL 查询 `SELECT chunk_id FROM knowledge_event WHERE id = ?`，仅填充 chunk_id=None 的 hit | ✅ |
+| 11.1.3 | 后端 / Step7 真实实现 | [crates/sparkfox/sparkfox-knowledge/src/search/multi_step.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/src/search/multi_step.rs) | `step7_rerank_with_thought`：按 score 降序稳定排序 + truncate(top_k) + 生成 top-3 摘要 thought_process | ✅ |
+| 11.1.3 | 后端 / Step8 真实实现 | [crates/sparkfox/sparkfox-knowledge/src/search/multi_step.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/src/search/multi_step.rs) | `step8_build_result_with_hop`：校验 hop/via_entities + `log::warn!` 记录缺失 | ✅ |
+| 11.1.3 | 后端 / TDD 测试 | [crates/sparkfox/sparkfox-knowledge/tests/multi_step5_to_step8_test.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/tests/multi_step5_to_step8_test.rs) | 6 测试：Step5 multi1 / Step6 chunk / Step7 rerank / 7 步 thought_process / Step8 聚合 / hop+via_entities | ✅ |
+| 11.2.3 | 后端 / HopllmStrategy | [crates/sparkfox/sparkfox-knowledge/src/search/multi.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/src/search/multi.rs) | `HopllmStrategy` struct（conn / jieba / top_k / max_hop=3 / llm）+ impl SearchStrategy（name="hopllm"）+ LLM 引导多跳扩展 + LLM 失败降级到 single_hop_expand（multi1 等价） | ✅ |
+| 11.2.3 | 后端 / LLM trait | [crates/sparkfox/sparkfox-knowledge/src/search/multi.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/src/search/multi.rs) | `HopllmLlm` trait（同步，object-safe）+ `MockLlm`（返回第一个候选）+ `FailLlm`（始终错误）+ `build_hopllm_prompt` 辅助函数 | ✅ |
+| 11.2.3 | 后端 / TDD 测试 | [crates/sparkfox/sparkfox-knowledge/tests/multi_strategy_hopllm_test.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/tests/multi_strategy_hopllm_test.rs) | 4 测试：LLM 选路 / max_hop=3 上限 / 语义扩展 / LLM 失败降级；含 4 跳深链 fixture（5 entity / 4 event / 8 relation） | ✅ |
+| 11.3.3 | 前端 / EntityEditDrawer | [ui/src/renderer/views/KnowledgeGraphView/EntityEditDrawer.tsx](file:///d:/xin%20kaifa/SparkFox/ui/src/renderer/views/KnowledgeGraphView/EntityEditDrawer.tsx) | Drawer + 3 Tabs（合并/拆分/重命名）+ 表单 + onMerge/onSplit/onRename 回调 | ✅ |
+| 11.3.3 | 前端 / TDD 测试 | [ui/src/renderer/views/KnowledgeGraphView/EntityEditDrawer.test.tsx](file:///d:/xin%20kaifa/SparkFox/ui/src/renderer/views/KnowledgeGraphView/EntityEditDrawer.test.tsx) | 6 测试：3 操作渲染 / 合并 / 拆分 / 重命名 / 持久化 PoC / 图谱刷新 | ✅ |
+| 11.3.3 | 前端 / 样式 | [ui/src/renderer/views/KnowledgeGraphView/EntityEditDrawer.module.css](file:///d:/xin%20kaifa/SparkFox/ui/src/renderer/views/KnowledgeGraphView/EntityEditDrawer.module.css) | 抽屉样式（drawerBody / entityInfo / tabBody / formItem） | ✅ |
+| 11.3.3 | 前端 / KGView 集成 | [ui/src/renderer/views/KnowledgeGraphView/index.tsx](file:///d:/xin%20kaifa/SparkFox/ui/src/renderer/views/KnowledgeGraphView/index.tsx) | 新增 editingEntity/drawerVisible state + handleNodeClick 打开 + 3 个 PoC 回调（console.log + 关闭抽屉）+ JSX 集成 Drawer | ✅ |
+
+**第十四波合计**：3 个 sub-step / 6 个新增文件 + 3 个修改文件 / 16 个新测试（6 后端 Step5-8 + 4 后端 hopllm + 6 前端 EntityEditDrawer）/ 0 typecheck 错误 / 0 回归测试失败。
+
+**关键设计决策**：
+1. **Step5 设计为 async fn**（11.1.3）：避免引入 `futures` 依赖（spec 推荐 block_on 但 futures 不在依赖中），生产环境由 MultiStrategy::search async 上下文直接 await，测试用 `#[tokio::test]` 调用
+2. **保留 stub + 新增真实实现**（11.1.3）：4 个新函数命名加后缀（`_with_multi1_async` / `_associate_chunks` / `_with_thought` / `_with_hop`）与 stub 区分，`MultiStrategy::search` 中 Step5-8 仍走 10.8.2 BFS + `step8_build_result`，待 11.1.4 E2E 集成时切换调用，避免本波引入回归
+3. **Step8 校验用 `log::warn!` 而非 thought_process**（11.1.3）：函数返回 `SearchResult`（消费 state），无法追加 thought_process；改用 `log::warn!` 输出 missing_hop/missing_via 警告，符合 spec "校验" 语义且不破坏编译
+4. **LLM trait 同步化**（11.2.3）：`HopllmLlm::select_next_hop` 设计为同步方法（非 `async`），原因：同步 trait 天然 object-safe，`Box<dyn HopllmLlm>` 直接可用；测试 mock 无需 `#[async_trait]` 依赖；生产实现可在内部用 `tokio::runtime::Handle::block_on` 包装异步调用
+5. **降级策略独立实现**（11.2.3）：不依赖 `Multi1Strategy`，在 `HopllmStrategy` 内部实现 `single_hop_expand` 方法，避免与 `Multi1Strategy` 共享 `Mutex<Connection>`（不可 `Arc` 共享）。降级触发条件：`llm_call_count > 0 && llm_failure_count == llm_call_count` 且 `expansion.is_empty()`。降级后 `strategy_name` 保持 `"hopllm"` 不变（spec 要求）
+6. **SQL 常量复用 + 方法独立**（11.2.3）：复用 `multi.rs` 顶部已定义的 5 个 `const SQL_*` 常量，但在 `HopllmStrategy` 内独立实现 `find_entity_ids` 等 5 个 SQL helper 方法，保持完全独立不依赖 `MultiStrategy` 内部状态
+7. **Props 接口定义在组件内部**（11.3.3）：避免修改 `types.ts`，3 个回调签名按 spec 设计：`onMerge(sourceId, targetId)` / `onSplit(sourceId, newNames[])` / `onRename(entityId, newName)`
+8. **3 个 Tabs 状态独立管理**（11.3.3）：`targetId` / `splitNames` / `newName` 各用 useState，避免共享状态污染；提交后重置表单 + 调用 `onClose` 关闭抽屉。拆分按中英文逗号正则 `[,，]` 分隔
+9. **PoC 阶段回调策略**（11.3.3）：父组件（KGView）的 `handleMerge/handleSplit/handleRename` 仅 `console.log` + 关闭抽屉，注释明确标注「11.4.x 接入 IPC 持久化到 entity 表」，符合本波「无后端依赖、可独立完成」的范围说明
+10. **3 路并行目标隔离**（主 agent 决策）：11.1.3 修改 `multi_step.rs` / 11.2.3 修改 `multi.rs` 末尾追加 / 11.3.3 修改 `KnowledgeGraphView/` 目录下文件，三个目标完全隔离无冲突；11.2.4 R-07 LIMIT 阀门因同样修改 `multi.rs` 推迟至第十五波
+
+**回归验证**：
+- `cargo test -p sparkfox-knowledge --tests`：**全部通过**（含 11.1.3 新增 6 + 11.2.3 新增 4 + 11.1.2 5 + 11.2.2 3 + 10.8.2 7 + 其他集成测试 + lib 单元测试 50 = 共 161 测试通过 + 1 ignored）
+- `cd SparkFox && bun run typecheck`：**exit code 0，0 个 TS 错误**
+- `cd ui && bun test KnowledgeGraphView`：**17 pass + 0 fail + 94 expect() calls**（4 现有 index + 7 GraphCanvas + 6 EntityEditDrawer）
+
+**Task 11.x 进度**：9/18 已完成（11.2.1 矩阵修正 + 11.1.1 + 11.3.1 + 11.2.2 + 11.1.2 + 11.3.2 + 11.1.3 + 11.2.3 + 11.3.3），下一步进入第十五波（11.1.4 E2E 集成 / 11.2.4 R-07 LIMIT 阀门 / 11.4.1 数据契约 + react-flow / 11.4.2 EntityEditDrawer IPC）
 
 #### 4.1.3 Task 12.x 系列（34.0d，17 个 sub-step）
 
