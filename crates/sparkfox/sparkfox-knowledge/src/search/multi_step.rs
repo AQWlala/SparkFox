@@ -32,6 +32,8 @@
 //! - Step6：合并三策略候选 + 按 event_id 去重
 //! - Step7：调用 rerank 模型（如 bge-reranker）对候选重排
 
+use rusqlite::Connection;
+
 use crate::jieba_ner::{EntityMention, JiebaNer};
 use crate::search::{SearchHit, SearchResult};
 
@@ -176,6 +178,139 @@ pub fn step4_event_search(mut state: MultiState) -> MultiState {
     state
         .thought_process
         .push("Step4: 事件检索（stub，11.2.x 实施 event_entity_relation 查询）".to_string());
+    state
+}
+
+// ---------------------------------------------------------------------------
+// Sub-Step 11.1.2 — Step3 / Step4 真实实现（11.1.3 将在 MultiStrategy::search 中替换 stub）
+// ---------------------------------------------------------------------------
+
+/// Step3 向量检索后端抽象（本地 trait，规避 sparkfox-knowledge → sparkfox-store 循环依赖）
+///
+/// 镜像 `sparkfox_store::vector_index::VectorIndex::search` 的 API 子集（仅 `search`，
+/// 不含 `insert` / `delete` / `len`，因 Step3 只读不写）。
+/// 集成测试通过 adapter 桥接具体实现（如 `HnswIndex` / `SqliteVecIndex`）。
+///
+/// ## 为何不直接依赖 `sparkfox_store::vector_index::VectorIndex`
+/// `sparkfox-store` 已依赖 `sparkfox-knowledge`（用于 [`crate::schema::ALL_SAG_DDL`] 迁移），
+/// 反向依赖会形成循环：`sparkfox-knowledge → sparkfox-store → sparkfox-knowledge`。
+/// 详见 `sparkfox-knowledge/Cargo.toml` 注释 + [`crate::rag`] 模块的同类设计
+/// （[`crate::rag::Embedder`] / [`crate::rag::VectorStore`] trait）。
+///
+/// ## 为何不复用 `crate::rag::VectorStore`
+/// - `rag::VectorStore` 含 `upsert` / `len` 等方法，超出 Step3 仅需 `search` 的范围
+/// - `rag::VectorStore::search` 返回 `Vec<(String, f32)>`，而 Step3 的本地 trait
+///   返回相同结构但语义明确（`id` + `score`），便于未来扩展（如追加 `filter` 参数）
+pub trait Step3VectorIndex {
+    /// 检索 k 个最近邻，返回 `Vec<(id, score)>`（按相似度降序）
+    ///
+    /// `score` 语义：cosine 相似度，范围 `[-1, 1]`，越大越相似
+    /// （与 `sparkfox_store::vector_index::VectorMatch.score` 语义一致）
+    fn search_top_k(&self, query: &[f32], k: usize) -> Vec<(String, f32)>;
+}
+
+/// Step3 真实实现：基于 [`Step3VectorIndex`] 的实体向量检索
+///
+/// 与 stub 版本 [`step3_vector_search`] 的区别：
+/// - stub：留空 `entity_ids`，仅记录 thought_process
+/// - 真实实现：调用 `index.search_top_k(query_vec, top_k)` 返回 Top-K entity_ids
+///
+/// ## 参数
+/// - `state`: 含 Step1 输出的 `query_vec`（384 维 mock embedding）
+/// - `index`: 向量索引实例（实现 [`Step3VectorIndex`]，集成测试中桥接 `HnswIndex`）
+/// - `top_k`: 返回的 Top-K 数量（建议 10）
+///
+/// ## 输出
+/// - 更新 `state.entity_ids`（`Vec<String>`，从 `(id, score)` 提取 `id`）
+/// - 追加 `thought_process` 一条 Step3 记录（含命中数量和最高 score）
+///
+/// ## 后续 11.1.3 集成
+/// [`MultiStrategy`](super::MultiStrategy)::search 内部 Step3 当前用 SQL 文本匹配代替；
+/// 11.1.3 将在 `MultiStrategy::new` 中持有 `Arc<dyn Step3VectorIndex>`，
+/// 在 search 中调用本函数替换 SQL fallback。
+pub fn step3_vector_search_with_index(
+    mut state: MultiState,
+    index: &dyn Step3VectorIndex,
+    top_k: usize,
+) -> MultiState {
+    let matches = index.search_top_k(&state.query_vec, top_k);
+    let hit_count = matches.len();
+    let max_score = matches
+        .iter()
+        .map(|(_, score)| *score)
+        .fold(0.0f32, f32::max);
+    state.entity_ids = matches.into_iter().map(|(id, _)| id).collect();
+    state.thought_process.push(format!(
+        "Step3: 实体向量检索（HnswIndex，top_k={}，命中 {} 个，max_score={:.4}）",
+        top_k, hit_count, max_score
+    ));
+    state
+}
+
+/// Step4 真实实现：基于 entity_ids 查询 `event_entity_relation` 得到候选 event_ids
+///
+/// 与 stub 版本 [`step4_event_search`] 的区别：
+/// - stub：留空 `candidates`
+/// - 真实实现：SQL JOIN `event_entity_relation` 表，返回去重后的 event_ids
+///
+/// ## 参数
+/// - `state`: 含 Step3 输出的 `entity_ids`
+/// - `conn`: SQLite 连接（用于查询 `event_entity_relation` 表）
+///
+/// ## 输出
+/// - 更新 `state.candidates`（`Vec<String>`，去重后的 event_ids）
+/// - 追加 `thought_process` 一条 Step4 记录（含候选数量）
+///
+/// ## SQL
+/// ```sql
+/// SELECT DISTINCT event_id FROM event_entity_relation WHERE entity_id IN (?, ?, ...)
+/// ```
+/// 利用 P-01 反向索引 `idx_eer_entity_event` 高效查找。
+///
+/// ## 后续 11.1.3 集成
+/// [`MultiStrategy`](super::MultiStrategy)::search 内部 Step4 当前为 stub；
+/// 11.1.3 将在 search 中调用本函数，将候选 event_ids 传给 Step5 三策略扩展。
+pub fn step4_event_search_with_conn(mut state: MultiState, conn: &Connection) -> MultiState {
+    if state.entity_ids.is_empty() {
+        state
+            .thought_process
+            .push("Step4: 事件检索（跳过，entity_ids 为空）".to_string());
+        return state;
+    }
+    let placeholders = state
+        .entity_ids
+        .iter()
+        .map(|_| "?")
+        .collect::<Vec<_>>()
+        .join(", ");
+    let sql = format!(
+        "SELECT DISTINCT event_id FROM event_entity_relation WHERE entity_id IN ({})",
+        placeholders
+    );
+    let entity_id_refs: Vec<&dyn rusqlite::ToSql> = state
+        .entity_ids
+        .iter()
+        .map(|s| s as &dyn rusqlite::ToSql)
+        .collect();
+    let candidates: Vec<String> = match conn.prepare(&sql) {
+        Ok(mut stmt) => {
+            let rows = stmt.query_map(entity_id_refs.as_slice(), |row| {
+                let id: String = row.get(0)?;
+                Ok(id)
+            });
+            match rows {
+                Ok(iter) => iter.filter_map(|r| r.ok()).collect(),
+                Err(_) => Vec::new(),
+            }
+        }
+        Err(_) => Vec::new(),
+    };
+    let candidate_count = candidates.len();
+    state.candidates = candidates;
+    state.thought_process.push(format!(
+        "Step4: 事件检索（JOIN event_entity_relation，候选 {} 个 event_ids）",
+        candidate_count
+    ));
     state
 }
 

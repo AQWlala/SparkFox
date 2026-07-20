@@ -1,8 +1,10 @@
 /**
- * KnowledgeGraphView 样式（spec §三 11.3.1 / 第 12 波并行 sub-step B）
+ * KnowledgeGraphView 样式（spec §三 11.3.1 / 11.3.2 / 第 13 波并行 sub-step C）
  *
- * 仅定义图谱视图容器的最小布局：垂直 flex、居中、间距。
- * 实际图谱节点 / 连线 / 力导布局由 11.3.2 阶段接入 d3 / @xyflow/react 实现。
+ * 11.3.1 阶段：定义图谱视图容器的最小布局（垂直 flex、居中、间距）。
+ * 11.3.2 阶段：追加 GraphCanvas 画布、图例、PoC 提示样式。
+ *
+ * 实际力导布局由 11.4.1 阶段接入 @xyflow/react 后实现。
  */
 
 .container {
@@ -30,12 +32,146 @@
   color: var(--color-text-1);
 }
 
-/* 占位卡片居中显示提示文案 */
-.placeholder {
-  display: flex;
-  flex: 1;
-  align-items: center;
-  justify-content: center;
+/* PoC 提示卡片（11.3.2 阶段标注当前实现范围） */
+.pocHint {
+  padding: 8px 16px;
   color: var(--color-text-3);
   font-size: 13px;
+  background-color: var(--color-fill-1);
+  border-radius: 8px;
+}
+
+/* ─── 11.3.2 GraphCanvas 画布 + 图例样式 ─── */
+
+/* 画布外层容器：横向 flex（左 SVG + 右图例） */
+.canvasWrap {
+  display: flex;
+  flex: 1;
+  min-height: 480px;
+  gap: 16px;
+  border: 1px solid var(--color-border-2);
+  border-radius: 12px;
+  padding: 16px;
+  background-color: var(--color-bg-1);
+}
+
+/* SVG 画布：占据剩余空间 */
+.canvasSvg {
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-fill-1);
+  border-radius: 8px;
+  cursor: grab;
+}
+
+/* 节点组（circle + text）：鼠标悬停高亮 */
+.nodeGroup {
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.nodeGroup:hover {
+  transform: scale(1.1);
+  transform-origin: center;
+}
+
+/* 节点圆形：默认描边为浅色 */
+.nodeCircle {
+  transition: stroke-width 0.15s ease;
+}
+
+/* 节点标签：跟随主题文本色 */
+.nodeLabel {
+  font-size: 12px;
+  fill: var(--color-text-1);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* 边组（line + text）：鼠标悬停高亮 */
+.edgeGroup {
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.edgeGroup:hover {
+  opacity: 0.7;
+}
+
+/* 边线：默认颜色 + 虚线样式 */
+.edgeLine {
+  transition: stroke-width 0.15s ease;
+}
+
+/* 边 label：小字体 + 浅色背景 */
+.edgeLabel {
+  font-size: 11px;
+  fill: var(--color-text-2);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ─── 图例样式 ─── */
+
+/* 图例容器：固定宽度，纵向布局 */
+.legend {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+  flex-shrink: 0;
+  padding: 12px;
+  background-color: var(--color-fill-2);
+  border-radius: 8px;
+  gap: 10px;
+}
+
+/* 图例标题 */
+.legendTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-1);
+}
+
+/* 图例网格：2 列布局，11 类分 6 行展示 */
+.legendGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+}
+
+/* 单个图例项：色点 + 标签横向排列 */
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* 图例色点：12px 圆形 */
+.legendDot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid var(--color-border-2);
+}
+
+/* 图例标签 */
+.legendLabel {
+  font-size: 12px;
+  color: var(--color-text-1);
+  white-space: nowrap;
+}
+
+/* 节点上限提示（nodes.length > MAX_RENDER_NODES 时显示） */
+.legendHint {
+  margin-top: 8px;
+  padding: 6px 8px;
+  font-size: 11px;
+  color: var(--color-warning);
+  background-color: var(--color-warning-light-1);
+  border-radius: 4px;
+  line-height: 1.4;
 }
