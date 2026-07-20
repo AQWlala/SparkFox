@@ -3608,7 +3608,7 @@
 | 11.5.2 | hop/via_entities 展示 | 1.0 | P0 | ✅ | subagent A | 2026-07-20 | 2026-07-20 | 第十七波：HopViaEntitiesDisplay.tsx（Tag+Space+Tooltip+箭头）+ ChatMessage 集成 + hop 颜色映射与 MultiHopPathView 一致 |
 | 11.6.1 | hnswlib-rs 集成 | 1.5 | P1 | ✅ | subagent C | 2026-07-20 | 2026-07-20 | 第十六波：hnsw_rs v0.3.4 纯 Rust（Windows 兼容）+ HnswIndex（M=16/ef_construction=200）+ Step3VectorIndex trait impl + 向量缓存持久化 |
 | 11.6.2 | 双向索引 + 优化 | 1.5 | P1 | ✅ | subagent B | 2026-07-20 | 2026-07-20 | 第十七波：BidirectionalIndex（entity↔event HashMap）+ 1000次查询性能对比 8.7x 加速（5.1ms vs 44.7ms） |
-| 11.7.1 | 索引优化 | 1.0 | P1 | ⬜ | ____ | ____ | ____ | ____ |
+| 11.7.1 | 索引优化 | 1.0 | P1 | ✅ | subagent | 2026-07-20 | 2026-07-20 | 第十八波：IndexOptimizer（外部顾问式）+ HnswParams 4 级推荐（<1k/1k-10k/10k-100k/>100k）+ BenchmarkResult 双维度建议（Recall+延迟）+ warmup 预热 |
 | 11.7.2 | 端到端 < 1s 二次验证 | 1.0 | P1 | ✅ | subagent C | 2026-07-20 | 2026-07-20 | 第十七波：5 延迟测试通过（multi1=1ms / multi=0ms / Step1+2=0ms / Step3+4=1ms / 完整 8 步=683ms 全部 < 1s）+ JiebaNer 预构造模式 |
 
 ##### 第十二波（Task 11.x）完成报告 — 11.1.1 MULTI 8 步骨架 + 11.3.1 KGView 入口路由（2 路并行）
@@ -3849,6 +3849,33 @@
 **Task 11.x 收官进度**：**17/18 已完成** ✅（94.4% 进度，仅剩 11.7.1 索引优化 P1 优先级）
 - 11.2.1 / 11.1.1 / 11.3.1 / 11.2.2 / 11.1.2 / 11.3.2 / 11.1.3 / 11.2.3 / 11.3.3 / 11.1.4 / 11.2.4 / 11.4.1 / 11.4.2 / 11.5.1 / 11.6.1 / 11.5.2 / 11.6.2 / 11.7.2 ⭐ 第十七波新增 3 项
 - 剩余 1 项：11.7.1 索引优化（P1，可推迟到 v1.2.0+）
+
+##### 第十八波（Task 11.x）完成报告 — 11.7.1 索引优化（Task 11.x 系列 100% 收官）
+
+> **完成日**：2026-07-20
+> **验收人**：主 agent
+> **执行方式**：1 路串行 subagent（11.7.1 索引优化，Task 11.x 最后一项）
+
+| Sub-Step | 类型 | 文件 | 关键产出 | 状态 |
+|---|---|---|---|---|
+| 11.7.1 | 后端 / IndexOptimizer | [crates/sparkfox/sparkfox-knowledge/src/index/index_optimizer.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/src/index/index_optimizer.rs) | IndexOptimizer struct + HnswParams + BenchmarkResult + new/recommend_params/warmup/benchmark + 4 级参数推荐（<1k/1k-10k/10k-100k/>100k）+ 双维度建议（Recall+延迟）+ 6 内联单元测试 | ✅ |
+| 11.7.1 | 后端 / 模块注册 | [crates/sparkfox/sparkfox-knowledge/src/index/mod.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/src/index/mod.rs) | 注册 `pub mod index_optimizer;` + `pub use` 重导出 | ✅ |
+| 11.7.1 | 后端 / TDD 测试 | [crates/sparkfox/sparkfox-knowledge/tests/index_optimizer_test.rs](file:///d:/xin%20kaifa/SparkFox/crates/sparkfox/sparkfox-knowledge/tests/index_optimizer_test.rs) | 6 集成测试：小数据集参数 / 中等数据集参数 / 大数据集参数 / warmup 插入数 / benchmark 延迟+Recall / suggestions 非空 | ✅ |
+
+**第十八波合计**：1 个 sub-step / 2 个新增文件 + 1 个修改文件 / 12 个新测试（6 集成 + 6 内联单元）/ 0 回归测试失败。
+
+**关键设计决策**：
+1. **「外部顾问」式设计**：IndexOptimizer 不修改 HnswIndex / BidirectionalIndex 实现，仅通过 `&mut HnswIndex` 调用现有 API（insert_batch / search），避免回归 11.6.x 已验证的 8.7x 加速和 683ms 端到端延迟
+2. **4 级参数推荐策略**：基于数据集规模分档（<1k / 1k-10k / 10k-100k / >100k）对应 M=8/16/32/48、ef_construction=100/200/400/500、ef_search=50/100/200/300。同时利用 dim 字段在 reason 中给出高维（≥768）量化建议，既消除 dead_code warning，又提供维度感知的细化建议
+3. **benchmark 双维度建议生成**：基于 Recall（≥0.95 良好 / 0.80-0.95 提升 ef_search / <0.80 重建索引）+ 延迟（>10ms 量化降维 / ≤1ms 且 Recall 高时降 M 减内存）双维度生成优化建议，确保 suggestions 字段始终非空
+
+**回归验证**：
+- `cargo test -p sparkfox-knowledge --tests`：**31 个测试套件全绿**（含 11.7.1 新增 6 集成 + 6 内联单元 = 12 新测试）
+- `cargo build -p sparkfox-knowledge`：无新 warning
+
+**Task 11.x 100% 收官**：**18/18 已完成** ✅（100% 进度）
+- 11.2.1 / 11.1.1 / 11.3.1 / 11.2.2 / 11.1.2 / 11.3.2 / 11.1.3 / 11.2.3 / 11.3.3 / 11.1.4 / 11.2.4 / 11.4.1 / 11.4.2 / 11.5.1 / 11.6.1 / 11.5.2 / 11.6.2 / 11.7.2 / **11.7.1** ⭐ 第十八波收官
+- **Task 11.x SAG 多跳检索全部完成**
 
 #### 4.1.3 Task 12.x 系列（34.0d，17 个 sub-step）
 

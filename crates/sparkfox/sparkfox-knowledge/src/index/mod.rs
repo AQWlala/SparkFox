@@ -18,8 +18,11 @@
 //! 不依赖 `sparkfox-store`。集成测试中可通过 adapter 桥接两个实现。
 
 // Sub-Step 11.6.2: BidirectionalIndex（entity ↔ event 双向 HashMap 索引，加速 multi-hop BFS）
+// Sub-Step 11.7.1: IndexOptimizer（HnswIndex 参数调优 + 启动期预热，外部顾问式优化）
 pub mod bidirectional_index;
 pub mod hnsw_index;
+pub mod index_optimizer;
 
 pub use bidirectional_index::BidirectionalIndex;
 pub use hnsw_index::HnswIndex;
+pub use index_optimizer::{BenchmarkResult, HnswParams, IndexOptimizer};
