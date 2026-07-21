@@ -52,13 +52,21 @@ jobs:
           $tag = if ('${{ github.event.release.tag_name }}') { '${{ github.event.release.tag_name }}' } else { (gh release list --repo ${{ github.repository }} --limit 1 --json tagName --jq '.[0].tagName') }
 
           # NSIS installer
-          $nsis = Get-ChildItem -Path "apps/desktop/target/release/bundle/nsis" -Filter "*.exe" | Select-Object -First 1
+          $nsis = Get-ChildItem -Path "target/release/bundle/nsis" -Filter "*.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+          if (-not $nsis) {
+            $nsis = Get-ChildItem -Path "apps/desktop/target/release/bundle/nsis" -Filter "*.exe" -ErrorAction SilentlyContinue | Select-Object -First 1
+          }
           if ($nsis) {
+            Write-Host "Uploading NSIS: $($nsis.FullName)"
             gh release upload $tag $nsis.FullName --repo ${{ github.repository }} --clobber
           }
 
           # MSI installer (if WiX is available)
-          $msi = Get-ChildItem -Path "apps/desktop/target/release/bundle/msi" -Filter "*.msi" -ErrorAction SilentlyContinue | Select-Object -First 1
+          $msi = Get-ChildItem -Path "target/release/bundle/msi" -Filter "*.msi" -ErrorAction SilentlyContinue | Select-Object -First 1
+          if (-not $msi) {
+            $msi = Get-ChildItem -Path "apps/desktop/target/release/bundle/msi" -Filter "*.msi" -ErrorAction SilentlyContinue | Select-Object -First 1
+          }
           if ($msi) {
+            Write-Host "Uploading MSI: $($msi.FullName)"
             gh release upload $tag $msi.FullName --repo ${{ github.repository }} --clobber
           }
