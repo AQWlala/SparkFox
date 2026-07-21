@@ -10,12 +10,17 @@ permissions:
 
 jobs:
   build-windows:
-    name: Build Windows (sparkfox-web)
+    name: Build Windows Desktop
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Rust toolchain
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Rust
         uses: dtolnay/rust-toolchain@stable
         with:
           toolchain: stable
@@ -30,18 +35,30 @@ jobs:
           key: ${{ runner.os }}-cargo-release-${{ hashFiles('**/Cargo.lock') }}
           restore-keys: ${{ runner.os }}-cargo-release-
 
-      - name: Build sparkfox-web
-        run: cargo build --release -p sparkfox-web --features static-webui
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
 
-      - name: Package artifact
-        shell: pwsh
-        run: |
-          Compress-Archive -Path target/release/sparkfox-web.exe -DestinationPath sparkfox-web-windows-x64.zip
+      - name: Build frontend
+        run: bun run --filter=./ui build
 
-      - name: Upload to release
+      - name: Build Tauri desktop app
+        run: bun run build
+
+      - name: Upload artifacts to release
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           $tag = if ('${{ github.event.release.tag_name }}') { '${{ github.event.release.tag_name }}' } else { (gh release list --repo ${{ github.repository }} --limit 1 --json tagName --jq '.[0].tagName') }
-          gh release upload $tag sparkfox-web-windows-x64.zip --repo ${{ github.repository }} --clobber
+
+          # NSIS installer
+          $nsis = Get-ChildItem -Path "apps/desktop/target/release/bundle/nsis" -Filter "*.exe" | Select-Object -First 1
+          if ($nsis) {
+            gh release upload $tag $nsis.FullName --repo ${{ github.repository }} --clobber
+          }
+
+          # MSI installer (if WiX is available)
+          $msi = Get-ChildItem -Path "apps/desktop/target/release/bundle/msi" -Filter "*.msi" -ErrorAction SilentlyContinue | Select-Object -First 1
+          if ($msi) {
+            gh release upload $tag $msi.FullName --repo ${{ github.repository }} --clobber
+          }
