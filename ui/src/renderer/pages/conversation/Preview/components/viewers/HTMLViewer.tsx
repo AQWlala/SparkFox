@@ -404,7 +404,7 @@ const HTMLPreview: React.FC<HTMLPreviewProps> = ({ content, file_path, hideToolb
           <iframe
             ref={iframeRef}
             className='w-full h-full border-0'
-            sandbox='allow-scripts allow-same-origin'
+            sandbox='allow-scripts allow-forms'
             title='HTML Preview'
           />
         </div>

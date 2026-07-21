@@ -167,7 +167,7 @@ open = { version = "5", features = ["shellexecute-on-windows"] }
 which = "7"
 
 # --- Office ---
-calamine = "0.26"
+calamine = "0.27"
 rust_xlsxwriter = "0.82"
 sha1 = "0.10"
 sha2 = "0.10"

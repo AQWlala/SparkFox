@@ -200,12 +200,13 @@ async fn serve(cli: sparkfox_be_app::cli::Cli, merged_path: String, args: Args) 
         },
     )
     .await?;
+    // 修复 S-05: 非 loopback 首次启动必须预置管理员密码，防止匿名访客抢占管理员账户
     if needs_first_run_setup && !ip.is_loopback() {
-        tracing::warn!(
-            %ip,
-            "first-run setup is OPEN on a non-loopback address: the NEXT client to reach this \
-             port will create the admin account. Complete setup over a trusted network/tunnel \
-             first, or pre-seed with SPARKFOX_ADMIN_PASSWORD."
+        anyhow::bail!(
+            "refusing non-loopback startup before admin provisioning: the first-run setup \
+             window would allow any remote client to create the admin account. \
+             Please complete setup on loopback first, or pre-seed with SPARKFOX_ADMIN_PASSWORD \
+             (and SPARKFOX_ADMIN_USERNAME if needed)."
         );
     }
 
@@ -240,7 +241,10 @@ async fn serve(cli: sparkfox_be_app::cli::Cli, merged_path: String, args: Args) 
         );
     }
     sparkfox_be_app::bootstrap::announce_bound_port(&cli.data_dir, &args.host, actual_port);
-    axum::serve(listener, app).await?;
+    // 修复 S-03: 使用 into_make_service_with_connect_info 注入真实 TCP 对端地址，
+    // 防止 X-Forwarded-For 头伪造绕过登录限流
+    let service = app.into_make_service_with_connect_info::<SocketAddr>();
+    axum::serve(listener, service).await?;
 
     services.database.close().await;
     drop(env);

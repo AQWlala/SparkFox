@@ -571,11 +571,27 @@ fn read_json_lenient<T: serde::de::DeserializeOwned + Default>(path: &Path) -> T
 /// `state.json`, `companion.json`, `knowledge_refs.json`, `events/*.jsonl`); every
 /// entry path is sanitized (zip-slip) and symlink entries are rejected.
 /// Returns the manifest `kind` after the format/version checks passed.
+///
+/// 修复 S-06: 添加 Zip Bomb 防护 — 限制条目数、单文件大小、总大小和压缩比
 fn extract_zip_validated(archive_path: &Path, destination: &Path) -> Result<String, AppError> {
+    const MAX_ENTRIES: usize = 2_000;
+    const MAX_FILE_BYTES: u64 = 64 * 1024 * 1024; // 64 MB
+    const MAX_TOTAL_BYTES: u64 = 512 * 1024 * 1024; // 512 MB
+    const MAX_COMPRESSION_RATIO: u64 = 200;
+
     let file = std::fs::File::open(archive_path)
         .map_err(|e| AppError::BadRequest(format!("failed to open import file: {e}")))?;
     let mut archive =
         zip::ZipArchive::new(file).map_err(|_| AppError::BadRequest("不是 NomiFun 导出包".into()))?;
+
+    if archive.len() > MAX_ENTRIES {
+        return Err(AppError::BadRequest(format!(
+            "import archive has too many entries ({} > {MAX_ENTRIES})",
+            archive.len()
+        )));
+    }
+
+    let mut total_uncompressed: u64 = 0;
 
     for index in 0..archive.len() {
         let mut entry = archive
@@ -584,6 +600,29 @@ fn extract_zip_validated(archive_path: &Path, destination: &Path) -> Result<Stri
         let entry_name = entry.name().to_string();
         reject_zip_symlink(&entry, &entry_name)?;
         let rel = safe_zip_entry_path(&entry_name)?;
+
+        let uncompressed_size = entry.size();
+        let compressed_size = entry.compressed_size();
+
+        // 单文件大小限制
+        if uncompressed_size > MAX_FILE_BYTES {
+            return Err(AppError::BadRequest(format!(
+                "entry '{entry_name}' exceeds max file size ({uncompressed_size} > {MAX_FILE_BYTES})"
+            )));
+        }
+        // 压缩比限制（防止 Zip Bomb）
+        if compressed_size > 0 && uncompressed_size > compressed_size.saturating_mul(MAX_COMPRESSION_RATIO) {
+            return Err(AppError::BadRequest(format!(
+                "entry '{entry_name}' exceeds max compression ratio ({uncompressed_size} / {compressed_size} > {MAX_COMPRESSION_RATIO})"
+            )));
+        }
+        // 累计总大小限制
+        total_uncompressed = total_uncompressed.saturating_add(uncompressed_size);
+        if total_uncompressed > MAX_TOTAL_BYTES {
+            return Err(AppError::BadRequest(format!(
+                "import archive exceeds max total size ({total_uncompressed} > {MAX_TOTAL_BYTES})"
+            )));
+        }
 
         if entry.is_dir() {
             if rel != Path::new("events") {

@@ -16,6 +16,7 @@ fn poc4_cold_start_under_3s() {
 }
 
 #[test]
+#[ignore = "requires sqlite-vec extension; run in dedicated perf CI job"]
 fn poc4_100k_vector_search_under_800ms() {
     let tmp = tempfile::NamedTempFile::new().unwrap();
     let store = Store::open(StoreConfig::for_path(tmp.path())).unwrap();

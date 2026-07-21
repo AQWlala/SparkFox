@@ -375,6 +375,13 @@ impl KnowledgeMcpConfig {
 pub const GATEWAY_CAPABILITY_DOMAIN: &str = "sparkfox-be-gateway-mcp-v2";
 pub const GATEWAY_LIST_TOOLS_OPERATION: &str = "tools/list";
 pub const GATEWAY_CALL_TOOL_OPERATION: &str = "tools/call";
+
+/// MCP 工具名预算（修复 O-01: 共享常量，消除 41/42 双事实源）
+///
+/// Anthropic MCP 协议硬限制为 64 字符。`sparkfox-desktop`（16 字符）产生
+/// 23 字符前缀 `mcp__sparkfox-desktop__`，实际硬限制 = 64 - 23 = 41。
+/// 此常量由 `sparkfox-be-api-types` 和 `sparkfox-be-gateway` 共享引用。
+pub const MCP_TOOL_NAME_BUDGET: usize = 41;
 /// Top-level Conversation creation is a companion capability, not a capability
 /// of an ordinary Conversation. User-driven creation enters through the
 /// authenticated Conversation REST route; scheduled and Agent Execution
@@ -1179,8 +1186,8 @@ mod tests {
         let prefix = format!("mcp__{}__", GatewayMcpConfig::SERVER_NAME).len();
         let budget = 64usize.saturating_sub(prefix);
         assert!(
-            budget >= 41,
-            "server name '{}' leaves only {budget} chars for tool names (need >= 41); pick a shorter SERVER_NAME",
+            budget >= MCP_TOOL_NAME_BUDGET,
+            "server name '{}' leaves only {budget} chars for tool names (need >= {MCP_TOOL_NAME_BUDGET}); pick a shorter SERVER_NAME",
             GatewayMcpConfig::SERVER_NAME,
         );
     }

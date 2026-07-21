@@ -2,7 +2,7 @@
 #
 #   docker compose up -d --build
 #   # then open http://<server-ip>:8787. The FIRST reachable browser creates
-#   # the initial admin unless you pre-seed NOMIFUN_ADMIN_PASSWORD below.
+#   # the initial admin unless you pre-seed SPARKFOX_ADMIN_PASSWORD below.
 #
 # `restart: unless-stopped` makes it start on boot — installing the service IS
 # enabling the WebUI. Pre-seed the admin or complete setup on a trusted network
@@ -10,7 +10,7 @@
 # for anything internet-facing.
 
 services:
-  nomifun:
+  sparkfox:
     build:
       context: .
       args:
@@ -25,31 +25,31 @@ services:
         BUN_REGISTRY: ${BUN_REGISTRY:-}
         APT_MIRROR: ${APT_MIRROR:-}
         CARGO_REGISTRY_MIRROR: ${CARGO_REGISTRY_MIRROR:-}
-    image: nomifun-web:local
+    image: sparkfox-web:local
     restart: unless-stopped
     ports:
       - "8787:8787" # LAN / VPN / localhost. Finish setup or pre-seed admin first.
     volumes:
-      - nomifun-data:/data # SQLite db, logs, bun runtime cache, agent state.
+      - sparkfox-data:/data # SQLite db, logs, bun runtime cache, agent state.
     environment:
       # Pre-seed the admin to CLOSE the open first-run claim window (recommended
       # before exposing the port on an untrusted network). Set the value in a
       # local `.env` file or your shell, e.g.:
-      #   NOMIFUN_ADMIN_USERNAME=admin
-      #   NOMIFUN_ADMIN_PASSWORD=change-me-to-something-strong
+      #   SPARKFOX_ADMIN_USERNAME=admin
+      #   SPARKFOX_ADMIN_PASSWORD=change-me-to-something-strong
       # The bare (value-less) entries below pass a var through ONLY when it is
       # set — leaving it unset keeps the interactive first-run claim. Do NOT set
-      # NOMIFUN_ADMIN_PASSWORD to an empty string: an empty password is rejected
+      # SPARKFOX_ADMIN_PASSWORD to an empty string: an empty password is rejected
       # and the container would fail to boot.
-      - NOMIFUN_ADMIN_USERNAME
-      - NOMIFUN_ADMIN_PASSWORD
-      # Set NOMIFUN_HTTPS=true (e.g. when fronted by the caddy service below) so
+      - SPARKFOX_ADMIN_USERNAME
+      - SPARKFOX_ADMIN_PASSWORD
+      # Set SPARKFOX_HTTPS=true (e.g. when fronted by the caddy service below) so
       # the session cookie gets the Secure flag.
-      - NOMIFUN_HTTPS
+      - SPARKFOX_HTTPS
 
   # --- Optional: TLS + reverse proxy for internet exposure --------------------
-  # To use it: (1) edit Caddyfile with your domain, (2) set NOMIFUN_HTTPS=true
-  # in the nomifun environment above, (3) replace the nomifun `ports:` block
+  # To use it: (1) edit Caddyfile with your domain, (2) set SPARKFOX_HTTPS=true
+  # in the sparkfox environment above, (3) replace the sparkfox `ports:` block
   # with `expose: ["8787"]` so only Caddy is published, (4) uncomment below.
   #
   # caddy:

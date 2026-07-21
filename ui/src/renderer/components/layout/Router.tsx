@@ -36,6 +36,10 @@ const KnowledgeListPage = React.lazy(() => import('@renderer/pages/knowledge/Kno
 const KnowledgeDetailPage = React.lazy(() => import('@renderer/pages/knowledge/KnowledgeDetailPage'));
 // SparkFox v1.1.0 第 12 波 / spec §三 11.3.1：知识图谱视图入口
 const KnowledgeGraphView = React.lazy(() => import('@renderer/views/KnowledgeGraphView'));
+// SparkFox v1.1.0 营销页（spec §三 12.5.1 + 12.5.2）— 公开访问，无需鉴权
+const MarketingPage = React.lazy(() =>
+  import('@renderer/pages/marketing/MarketingPage').then((m) => ({ default: m.MarketingPage }))
+);
 const WorkshopListPage = React.lazy(() => import('@renderer/pages/workshop'));
 const WorkshopCanvasPage = React.lazy(() => import('@renderer/pages/workshop/CanvasPage'));
 const AssetLibraryPage = React.lazy(() => import('@renderer/pages/assets'));
@@ -200,6 +204,8 @@ const PanelRoute: React.FC<{ layout: React.ReactElement }> = ({ layout }) => {
         <Route path='/nomi-memory-panel' element={withRouteFallback(MemoryPanelPage)} />
         {/* ─── SparkFox 骨架路由（步骤 0.5 验证用，公开访问不需鉴权） ─── */}
         <Route path='/sparkfox/*' element={<SparkFoxRouter />} />
+        {/* ─── SparkFox v1.1.0 营销页 — 公开访问，无需登录鉴权（spec §三 12.5.x） ─── */}
+        <Route path='/marketing' element={withRouteFallback(MarketingPage)} />
         <Route element={<ProtectedLayout layout={layout} />}>
           <Route index element={<Navigate to='/guid' replace />} />
           {/* Models, presets, skills, and MCP are independent top-level capabilities. */}

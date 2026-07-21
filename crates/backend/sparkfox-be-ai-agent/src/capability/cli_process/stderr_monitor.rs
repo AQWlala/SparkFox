@@ -88,13 +88,22 @@ pub(super) fn force_kill(pid: u32, process_group_id: Option<u32>) -> Result<(), 
             // 128 与 255 均表示"进程已退出"：128 是早期 Windows 版本的 not-found
             // 码，255 是现代 Windows 版本（含中文本地化）的 not-found 码。
             // taskkill /T 遍历子进程树时，若任一后代 PID 已被内核回收，会返回 255。
+            // 修复 Y-08: 检查 stderr 以区分"进程不存在"和"权限/参数错误"
             Ok(output) if matches!(output.status.code(), Some(128) | Some(255)) => {
-                debug!(
-                    pid,
-                    code = ?output.status.code(),
-                    "Process already exited before taskkill (treated as success)"
-                );
-                Ok(())
+                let stderr = String::from_utf8_lossy(&output.stderr);
+                if is_taskkill_not_found(&stderr) {
+                    debug!(
+                        pid,
+                        code = ?output.status.code(),
+                        "Process already exited before taskkill (treated as success)"
+                    );
+                    Ok(())
+                } else {
+                    error!(pid, code = ?output.status.code(), %stderr, "taskkill returned not-found code but stderr indicates a different error");
+                    Err(AppError::Internal(format!(
+                        "taskkill failed for pid {pid} (exit {output.status.code():?}): {stderr}"
+                    )))
+                }
             }
             Ok(output) => {
                 let stderr = String::from_utf8_lossy(&output.stderr);
@@ -116,6 +125,18 @@ pub(super) fn force_kill(pid: u32, process_group_id: Option<u32>) -> Result<(), 
             "Force kill not supported on this platform for pid {pid}"
         )))
     }
+}
+
+/// 修复 Y-08: 检查 taskkill stderr 是否包含"进程不存在"的提示信息
+#[cfg(windows)]
+fn is_taskkill_not_found(stderr: &str) -> bool {
+    let lower = stderr.to_lowercase();
+    lower.contains("not found")
+        || lower.contains("没有找到")
+        || lower.contains("找不到")
+        || lower.contains("不存在")
+        || lower.contains("no process")
+        || lower.contains("no such")
 }
 
 #[cfg(test)]

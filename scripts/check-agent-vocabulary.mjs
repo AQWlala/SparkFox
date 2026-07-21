@@ -51,29 +51,29 @@ const LEGACY_LINE_ALLOWLIST = new Map([
     [/\bsubagent_token_budget\b/],
   ],
   [
-    'crates/backend/nomifun-companion/src/migrate.rs',
+    'crates/backend/sparkfox-be-companion/src/migrate.rs',
     [/smart_orchestration/],
   ],
   [
-    'crates/backend/nomifun-companion/src/profile.rs',
+    'crates/backend/sparkfox-be-companion/src/profile.rs',
     [/smart_orchestration/],
   ],
   [
-    'crates/backend/nomifun-conversation/src/service.rs',
+    'crates/backend/sparkfox-be-conversation/src/service.rs',
     [/\bagent_cluster_mode\b/, /\borchestrator_(?:legacy_identity|role)\b/, /key\.starts_with\("orchestrator_"\)/],
   ],
   [
-    'crates/backend/nomifun-gateway/src/registry/mod.rs',
+    'crates/backend/sparkfox-be-gateway/src/registry/mod.rs',
     [
       /\/\/ vocabulary-guard: retired-name-deny(?:-fixture)?$/,
     ],
   ],
   [
-    'crates/backend/nomifun-db/src/database.rs',
+    'crates/backend/sparkfox-be-db/src/database.rs',
     [/['"](?:fleets|fleet_members|orch_(?:workspaces|runs|run_tasks|run_task_deps|assignments))['"]/],
   ],
   [
-    'crates/backend/nomifun-app/tests/agent_execution_e2e.rs',
+    'crates/backend/sparkfox-be-app/tests/agent_execution_e2e.rs',
     [/\/api\/orchestrator\/fleets/, /removed Fleet\/Orchestrator surface/],
   ],
   [
@@ -191,13 +191,13 @@ function sorted(values) {
 // on a long Rust test run, so concept/schema drift fails the ordinary fast
 // `check` command immediately.
 const canonicalMigration = readFileSync(
-  resolve(ROOT, 'crates/backend/nomifun-db/migrations/001_id_contract_v2.sql'),
+  resolve(ROOT, 'crates/backend/sparkfox-be-db/migrations/001_id_contract_v2.sql'),
   'utf8',
 );
 
 const migrationDirectory = resolve(
   ROOT,
-  'crates/backend/nomifun-db/migrations',
+  'crates/backend/sparkfox-be-db/migrations',
 );
 const nonBaselineExecutionCreates = readdirSync(migrationDirectory)
   .filter((name) => name.endsWith('.sql') && name !== '001_id_contract_v2.sql')
@@ -242,7 +242,7 @@ invariant(
 );
 
 const gatewayExecution = readFileSync(
-  resolve(ROOT, 'crates/backend/nomifun-gateway/src/caps_agent_execution.rs'),
+  resolve(ROOT, 'crates/backend/sparkfox-be-gateway/src/caps_agent_execution.rs'),
   'utf8',
 );
 const executionTools = sorted(
@@ -261,7 +261,7 @@ invariant(
 );
 
 const executionDomain = readFileSync(
-  resolve(ROOT, 'crates/backend/nomifun-common/src/agent_execution.rs'),
+  resolve(ROOT, 'crates/backend/sparkfox-be-common/src/agent_execution.rs'),
   'utf8',
 );
 const eventBlock = executionDomain.match(
@@ -319,7 +319,7 @@ for (const [name, value] of [
 }
 
 const executionFacade = readFileSync(
-  resolve(ROOT, 'crates/backend/nomifun-agent-execution/src/lib.rs'),
+  resolve(ROOT, 'crates/backend/sparkfox-be-agent-execution/src/lib.rs'),
   'utf8',
 );
 invariant(

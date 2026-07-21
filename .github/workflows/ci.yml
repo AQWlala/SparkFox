@@ -39,7 +39,6 @@ jobs:
 
       - name: Full frontend tests
         run: cd ui && bun test
-        continue-on-error: true # 部分测试可能依赖 Tauri runtime，允许失败
 
   backend:
     name: Backend (cargo test -p sparkfox-knowledge)
@@ -78,7 +77,9 @@ jobs:
 
       - name: Check Rust formatting
         run: cargo fmt --all -- --check
-        continue-on-error: true # 格式问题不阻塞 CI
+
+      - name: Run quality gates (bun run check)
+        run: bun run check
 
       - name: Build sparkfox-knowledge
         run: cargo build -p sparkfox-knowledge --locked
@@ -88,7 +89,6 @@ jobs:
 
       - name: Test sparkfox-core
         run: cargo test -p sparkfox-core --lib --locked
-        continue-on-error: true
 
   lint:
     name: Lint (clippy)
@@ -119,8 +119,6 @@ jobs:
 
       - name: Clippy sparkfox-knowledge
         run: cargo clippy -p sparkfox-knowledge --all-targets --locked -- -D warnings
-        continue-on-error: true # clippy 警告不阻塞 CI（先观察）
 
       - name: Clippy sparkfox-core
         run: cargo clippy -p sparkfox-core --all-targets --locked -- -D warnings
-        continue-on-error: true

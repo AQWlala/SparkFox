@@ -52,17 +52,17 @@ jobs:
         run: cargo fmt --all -- --check
 
       - name: Lint Wave A crates
-        run: cargo clippy -p nomi-process-runtime -p nomifun-runtime -p nomi-tools -p nomi-agent --all-targets --locked -- -D warnings
+        run: cargo clippy -p sparkfox-sh-process-runtime -p sparkfox-be-ai-agent -p sparkfox-ag-tools -p sparkfox-ag-agent --all-targets --locked -- -D warnings
 
-      - name: Test nomi-process-runtime
-        run: cargo test -p nomi-process-runtime --locked -- --test-threads=1
+      - name: Test sparkfox-sh-process-runtime
+        run: cargo test -p sparkfox-sh-process-runtime --locked -- --test-threads=1
 
-      - name: Test nomi-tools
-        run: cargo test -p nomi-tools --locked -- --test-threads=1
+      - name: Test sparkfox-ag-tools
+        run: cargo test -p sparkfox-ag-tools --locked -- --test-threads=1
 
-      - name: Test nomifun-runtime
-        run: cargo test -p nomifun-runtime --locked -- --test-threads=1
+      - name: Test sparkfox-be-ai-agent
+        run: cargo test -p sparkfox-be-ai-agent --locked -- --test-threads=1
 
       - name: Test Windows knowledge broker security boundary
         if: runner.os == 'Windows'
-        run: cargo test -p nomifun-knowledge --lib --locked windows_broker_ -- --test-threads=1
+        run: cargo test -p sparkfox-be-knowledge --lib --locked windows_broker_ -- --test-threads=1

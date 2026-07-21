@@ -442,19 +442,12 @@ mod tests {
 
     #[test]
     fn token_cache_expired() {
-        // Windows 上 `Instant` epoch 为系统启动时间；若系统刚重启或从睡眠唤醒不久，
-        // `Instant::now() - 7200s` 可能溢出。此时跳过测试而非判定失败。
-        let acquired_at = match Instant::now().checked_sub(Duration::from_secs(7200)) {
-            Some(t) => t,
-            None => {
-                eprintln!("skip token_cache_expired: system uptime < 2h, Instant overflow");
-                return;
-            }
-        };
+        // 修复 Y-05: 使用 expires_in = Duration::ZERO 构造已过期 token，
+        // 避免 Instant::checked_sub 在系统运行时间不足时静默跳过测试
         let cache = TokenCache {
             token: "test".into(),
-            acquired_at,
-            expires_in: Duration::from_secs(7200),
+            acquired_at: Instant::now(),
+            expires_in: Duration::ZERO,
         };
         assert!(cache.is_expired());
     }

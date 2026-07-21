@@ -8,13 +8,13 @@ ARG RUST_IMAGE="rust:1-slim-bookworm"
 ARG RUNTIME_IMAGE="debian:bookworm-slim"
 
 # ============================================================================
-# nomifun-web — headless WebUI server image (no GUI / WebView; runs anywhere)
+# sparkfox-web — headless WebUI server image (no GUI / WebView; runs anywhere)
 #   Stage 1  builds the React SPA (ui/dist)
-#   Stage 2  compiles the nomifun-web Rust binary
+#   Stage 2  compiles the sparkfox-web Rust binary
 #   Stage 3  slim runtime with bun (required by the agent engine)
 #
 # Authentication is ON by default, but first-run setup is a claim window: the
-# first reachable browser creates the admin account unless NOMIFUN_ADMIN_PASSWORD
+# first reachable browser creates the admin account unless SPARKFOX_ADMIN_PASSWORD
 # pre-seeds it. Bind on trusted networks only until setup is complete, and put
 # TLS in front (see Caddyfile) for anything internet-facing.
 # ============================================================================
@@ -36,7 +36,7 @@ COPY . .
 RUN bun run build:ui
 # -> /app/ui/dist
 
-# ---- Stage 2: compile nomifun-web ------------------------------------------
+# ---- Stage 2: compile sparkfox-web ------------------------------------------
 FROM ${RUST_IMAGE} AS rust
 # Optional Debian mirror to speed up apt fetches (e.g. in CN). Empty = upstream
 # (deb.debian.org). Pass `--build-arg APT_MIRROR=http://mirrors.aliyun.com`.
@@ -72,15 +72,15 @@ RUN if [ -n "$CARGO_REGISTRY_MIRROR" ]; then \
 
 COPY . .
 # Pair the Rust host build with the exact UI artifact produced by the UI stage.
-COPY --from=ui /app/ui/dist/nomifun-build.json /src/ui/dist/nomifun-build.json
+COPY --from=ui /app/ui/dist/sparkfox-build.json /src/ui/dist/sparkfox-build.json
 # BuildKit cache mounts persist the cargo registry + compiled artifacts across
 # rebuilds, so a one-line source change recompiles in seconds, not minutes. The
 # binary is copied OUT of the (ephemeral) target cache mount into a real layer.
 RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/src/target \
-    cargo build --release --locked -p nomifun-web \
-    && cp target/release/nomifun-web /usr/local/bin/nomifun-web
-# -> /usr/local/bin/nomifun-web
+    cargo build --release --locked -p sparkfox-web \
+    && cp target/release/sparkfox-web /usr/local/bin/sparkfox-web
+# -> /usr/local/bin/sparkfox-web
 
 # ---- Stage 3: slim runtime --------------------------------------------------
 FROM ${RUNTIME_IMAGE}
@@ -102,16 +102,16 @@ COPY --from=bun-base /usr/local/bin/bun /usr/local/bin/bun
 # RUN apt-get update && apt-get install -y --no-install-recommends nodejs npm \
 #     && rm -rf /var/lib/apt/lists/*
 
-COPY --from=rust /usr/local/bin/nomifun-web /usr/local/bin/nomifun-web
-COPY --from=ui   /app/ui/dist                    /opt/nomifun/web
+COPY --from=rust /usr/local/bin/sparkfox-web /usr/local/bin/sparkfox-web
+COPY --from=ui   /app/ui/dist                    /opt/sparkfox/web
 
-ENV NOMIFUN_WEB_HOST=0.0.0.0 \
-    NOMIFUN_WEB_PORT=8787 \
-    NOMIFUN_DATA_DIR=/data \
-    NOMIFUN_WEB_DIST=/opt/nomifun/web \
+ENV SPARKFOX_WEB_HOST=0.0.0.0 \
+    SPARKFOX_WEB_PORT=8787 \
+    SPARKFOX_DATA_DIR=/data \
+    SPARKFOX_WEB_DIST=/opt/sparkfox/web \
     SHELL=/bin/bash
-# Set NOMIFUN_HTTPS=true when a TLS proxy fronts the app (makes cookies Secure).
-# Set NOMIFUN_ADMIN_PASSWORD (+ NOMIFUN_ADMIN_USERNAME) to pre-seed the admin
+# Set SPARKFOX_HTTPS=true when a TLS proxy fronts the app (makes cookies Secure).
+# Set SPARKFOX_ADMIN_PASSWORD (+ SPARKFOX_ADMIN_USERNAME) to pre-seed the admin
 # and skip the interactive first-run setup.
 
 VOLUME /data
@@ -120,5 +120,5 @@ EXPOSE 8787
 # SPA (200). bun is already in the image, so no extra curl/wget is needed. The
 # start-period covers first-run data-dir + DB init.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=40s --retries=3 \
-  CMD bun -e "fetch('http://127.0.0.1:'+(process.env.NOMIFUN_WEB_PORT||'8787')+'/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
-CMD ["nomifun-web"]
+  CMD bun -e "fetch('http://127.0.0.1:'+(process.env.SPARKFOX_WEB_PORT||'8787')+'/').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
+CMD ["sparkfox-web"]

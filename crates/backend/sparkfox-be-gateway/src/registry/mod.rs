@@ -411,9 +411,8 @@ mod tests {
         let prefix = format!("mcp__{}__", GatewayMcpConfig::SERVER_NAME).len();
         // Hard ceiling Anthropic enforces on the wire name.
         const HARD_WIRE_LIMIT: usize = 64;
-        // Style budget for the tool name alone (see CapabilityMeta::name doc):
-        // keeps a comfortable margin under the ceiling as domains grow.
-        const TOOL_NAME_BUDGET: usize = 42;
+        // 修复 O-01: 使用 sparkfox_be_api_types 中的共享常量，消除 41/42 双事实源
+        let tool_name_budget = sparkfox_be_api_types::mcp_bridge::MCP_TOOL_NAME_BUDGET;
 
         for (name, cap) in reg.by_name.iter() {
             // 品牌迁移过渡期：同时允许 nomi_ 和 sparkfox_ 前缀。
@@ -428,8 +427,8 @@ mod tests {
                 name.len()
             );
             assert!(
-                name.len() <= TOOL_NAME_BUDGET,
-                "tool name exceeds the {TOOL_NAME_BUDGET}-char style budget (keep `<prefix>_<domain>_<verb_object>` concise): {name} ({} chars)",
+                name.len() <= tool_name_budget,
+                "tool name exceeds the {tool_name_budget}-char style budget (keep `<prefix>_<domain>_<verb_object>` concise): {name} ({} chars)",
                 name.len()
             );
             assert!(

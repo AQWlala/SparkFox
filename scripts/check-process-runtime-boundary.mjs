@@ -6,32 +6,32 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const PLATFORM_PREFIX = 'crates/shared/nomi-process-runtime/src/platform/';
+const PLATFORM_PREFIX = 'crates/shared/sparkfox-sh-process-runtime/src/platform/';
 const UNIX_PTY_PATH =
-  'crates/shared/nomi-process-runtime/src/platform/unix_pty.rs';
-const TOOLS_MANIFEST = 'crates/agent/nomi-tools/Cargo.toml';
+  'crates/shared/sparkfox-sh-process-runtime/src/platform/unix_pty.rs';
+const TOOLS_MANIFEST = 'crates/agent/sparkfox-ag-tools/Cargo.toml';
 const COMMAND_TOOL_FILES = new Set([
-  'crates/agent/nomi-tools/src/bash.rs',
-  'crates/agent/nomi-tools/src/exec_command.rs',
-  'crates/agent/nomi-tools/src/write_stdin.rs',
+  'crates/agent/sparkfox-ag-tools/src/bash.rs',
+  'crates/agent/sparkfox-ag-tools/src/exec_command.rs',
+  'crates/agent/sparkfox-ag-tools/src/write_stdin.rs',
 ]);
 const RETIRED_TEST_ONLY_FILES = [
-  'crates/agent/nomi-tools/src/pty.rs',
-  'crates/agent/nomi-tools/src/persistent_shell.rs',
+  'crates/agent/sparkfox-ag-tools/src/pty.rs',
+  'crates/agent/sparkfox-ag-tools/src/persistent_shell.rs',
 ];
 // Existing CLI and user-terminal runtimes are outside the Wave A Agent
 // command paths. Pin the exact reviewed primitive counts until their own
 // migration wave so any added or changed ownership path fails closed.
 const REVIEWED_EXTERNAL_OWNERSHIP = new Map([
   [
-    'crates/backend/nomifun-ai-agent/src/capability/cli_process/stderr_monitor.rs',
+    'crates/backend/sparkfox-be-ai-agent/src/capability/cli_process/stderr_monitor.rs',
     new Map([
       ['unix-group-owner', 1],
       ['windows-tree-kill-owner', 1],
     ]),
   ],
   [
-    'crates/backend/nomifun-terminal/src/pty.rs',
+    'crates/backend/sparkfox-be-terminal/src/pty.rs',
     new Map([
       ['pty-owner', 1],
       ['unix-group-owner', 1],
@@ -39,9 +39,9 @@ const REVIEWED_EXTERNAL_OWNERSHIP = new Map([
   ],
 ]);
 const HAND_OFF_ALLOWLIST = new Set([
-  'crates/agent/nomi-computer/src/launch.rs',
-  'crates/backend/nomifun-shell/src/opener.rs',
-  'crates/shared/nomi-process-runtime/src/command_builder.rs',
+  'crates/agent/sparkfox-ag-computer/src/launch.rs',
+  'crates/backend/sparkfox-be-shell/src/opener.rs',
+  'crates/shared/sparkfox-sh-process-runtime/src/command_builder.rs',
 ]);
 
 const normalizePath = (path) => path.replaceAll('\\', '/');
@@ -58,7 +58,7 @@ function workspacePaths() {
       '--',
       '*.rs',
       TOOLS_MANIFEST,
-      'crates/shared/nomi-process-runtime/Cargo.toml',
+      'crates/shared/sparkfox-sh-process-runtime/Cargo.toml',
     ],
     { cwd: ROOT, encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 },
   );
@@ -552,7 +552,7 @@ function scanEntries(entries) {
           collectOwnership(
             match.index,
             rule,
-            'process ownership primitive must live under nomi-process-runtime/src/platform',
+            'process ownership primitive must live under sparkfox-sh-process-runtime/src/platform',
           );
         }
       }
@@ -561,7 +561,7 @@ function scanEntries(entries) {
         collectOwnership(
           taskkillIndex,
           'windows-tree-kill-owner',
-          'process ownership primitive must live under nomi-process-runtime/src/platform',
+          'process ownership primitive must live under sparkfox-sh-process-runtime/src/platform',
         );
       }
     }
@@ -594,9 +594,9 @@ function scanEntries(entries) {
 
     const inToolSurface =
       COMMAND_TOOL_FILES.has(path) ||
-      path === 'crates/agent/nomi-tools/src/process_store.rs' ||
-      path === 'crates/agent/nomi-tools/src/lib.rs' ||
-      path === 'crates/agent/nomi-agent/src/bootstrap.rs';
+      path === 'crates/agent/sparkfox-ag-tools/src/process_store.rs' ||
+      path === 'crates/agent/sparkfox-ag-tools/src/lib.rs' ||
+      path === 'crates/agent/sparkfox-ag-agent/src/bootstrap.rs';
     if (!inToolSurface) continue;
 
     if (COMMAND_TOOL_FILES.has(path)) {
@@ -638,7 +638,7 @@ function scanEntries(entries) {
     }
   }
 
-  const toolsLibPath = 'crates/agent/nomi-tools/src/lib.rs';
+  const toolsLibPath = 'crates/agent/sparkfox-ag-tools/src/lib.rs';
   const toolsLib = byPath.get(toolsLibPath) ?? '';
   for (const module of ['pty', 'persistent_shell']) {
     const gate = new RegExp(
@@ -668,7 +668,7 @@ function scanEntries(entries) {
     }
   }
 
-  const storePath = 'crates/agent/nomi-tools/src/process_store.rs';
+  const storePath = 'crates/agent/sparkfox-ag-tools/src/process_store.rs';
   const storeSource = byPath.get(storePath) ?? '';
   const store = productionMask(storeSource);
   for (const required of [
@@ -719,7 +719,7 @@ function scanEntries(entries) {
         toolsManifest,
         index,
         'portable-pty-production-dependency',
-        'nomi-tools may depend on portable-pty only through dev-dependencies',
+        'sparkfox-ag-tools may depend on portable-pty only through dev-dependencies',
       );
     }
   }
@@ -734,7 +734,7 @@ function scanEntries(entries) {
     );
   }
 
-  const processManifestPath = 'crates/shared/nomi-process-runtime/Cargo.toml';
+  const processManifestPath = 'crates/shared/sparkfox-sh-process-runtime/Cargo.toml';
   const processManifest = byPath.get(processManifestPath) ?? '';
   for (const pattern of [
     /\bnomifun-[\w-]*\b/g,
@@ -748,7 +748,7 @@ function scanEntries(entries) {
         processManifest,
         match.index,
         'process-runtime-dependency-boundary',
-        'nomi-process-runtime must remain backend-neutral',
+        'sparkfox-sh-process-runtime must remain backend-neutral',
       );
     }
   }
@@ -785,7 +785,7 @@ function assertViolation(entries, rule, message) {
 function selfTest() {
   const base = [
     {
-      path: 'crates/agent/nomi-tools/src/lib.rs',
+      path: 'crates/agent/sparkfox-ag-tools/src/lib.rs',
       source:
         '#[cfg(test)]\npub mod persistent_shell;\n#[cfg(test)]\npub mod pty;\n',
     },
@@ -794,7 +794,7 @@ function selfTest() {
       source: 'use nomi_process_runtime::ProcessSupervisor;\n',
     })),
     {
-      path: 'crates/agent/nomi-tools/src/process_store.rs',
+      path: 'crates/agent/sparkfox-ag-tools/src/process_store.rs',
       source:
         'use nomi_process_runtime::{ProcessOwner, SessionId, OutputCursor, Transport};\n',
     },
@@ -807,7 +807,7 @@ function selfTest() {
       source: '[dependencies]\ntokio = "1"\n[dev-dependencies]\nportable-pty = "0.8"\n',
     },
     {
-      path: 'crates/shared/nomi-process-runtime/Cargo.toml',
+      path: 'crates/shared/sparkfox-sh-process-runtime/Cargo.toml',
       source: '[dependencies]\ntokio = "1"\n',
     },
   ];
@@ -846,7 +846,7 @@ function selfTest() {
   );
   assertViolation(
     base.concat({
-      path: 'crates/shared/nomi-process-runtime/src/platform/unix.rs',
+      path: 'crates/shared/sparkfox-sh-process-runtime/src/platform/unix.rs',
       source: 'fn open() { native_pty_system(); }\n',
     }),
     'pty-owner',
@@ -967,7 +967,7 @@ function selfTest() {
   );
   assertNoViolation(
     base.concat({
-      path: 'crates/shared/nomi-process-runtime/tests/ownership_fixture.rs',
+      path: 'crates/shared/sparkfox-sh-process-runtime/tests/ownership_fixture.rs',
       source:
         'fn cleanup(pgid: i32) { unsafe { libc::kill(-pgid, 9); } }\n',
     }),

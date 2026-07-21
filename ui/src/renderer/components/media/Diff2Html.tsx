@@ -140,7 +140,8 @@ const Diff2Html = ({
 
       const name = header.querySelector('.d2h-file-name') as HTMLDivElement;
       if (name && title) {
-        name.innerHTML = title;
+        // 修复 S-02: 使用 textContent 防止 XSS 注入（文件名可能包含 < > 等特殊字符）
+        name.textContent = title;
       }
     } else {
       console.warn('[Diff2Html] Header or operatorRef missing', { hasHeader: !!header, hasRef: !!operatorRef.current });

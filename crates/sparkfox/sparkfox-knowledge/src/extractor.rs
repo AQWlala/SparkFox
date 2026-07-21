@@ -75,10 +75,11 @@ pub struct EventCandidate {
 /// - 实现方需自行处理 prompt 注入防御（S-03，复用 v1.0.0 [`crate::processor`] 工具）
 /// - LLM 失败时由实现方自行重试 + JSON repair + jieba 降级（Sub-Step 10.2.2）
 /// - 抽取阶段不可恢复错误向上透传给 [`EventExtractor`]
-// 抑制 `async fn in public trait` lint：本 trait 仅在 crate 内部 + 测试中实现，
-// 实现方（LlmEventProcessor / MockProcessor）已通过 `'static` / `Send + Sync`
-// 约束保证 Future 可跨线程传递；引入 async_trait 会改写签名且增加 Box 开销，
-// 与 v1.1.0 设计意图（零成本泛型 + 静态分发）冲突，故选择就地抑制。
+///
+/// 修复 Y-09: 修正注释——本 trait 是公开 API（被 re-export 到 `sparkfox_knowledge`），
+/// 外部 crate 和测试文件均可实现它。`async fn in trait` 的 `Send` 限制是已知的
+/// Rust 语言限制（RPITIT 尚未支持 `+ Send` 约束），v1.2.0+ 应在 Rust 稳定化后
+/// 迁移到 `fn process(...) -> impl Future<Output = ...> + Send` 签名。
 #[allow(async_fn_in_trait)]
 pub trait EventProcessor: Send + Sync {
     /// 处理单个 chunk，返回 0..N 条事件候选
