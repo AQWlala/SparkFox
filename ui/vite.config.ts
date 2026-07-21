@@ -13,12 +13,12 @@ function uiBuildManifestPlugin(): Plugin {
   const manifest = createUiBuildManifest(uiPackage.version, rawApiContractVersion);
 
   return {
-    name: 'nomifun-ui-build-manifest',
+    name: 'sparkfox-ui-build-manifest',
     apply: 'build' as const,
     generateBundle() {
       this.emitFile({
         type: 'asset',
-        fileName: 'nomifun-build.json',
+        fileName: 'sparkfox-build.json',
         source: `${JSON.stringify(manifest, null, 2)}\n`,
       });
     },
