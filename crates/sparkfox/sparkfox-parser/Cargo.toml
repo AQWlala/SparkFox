@@ -10,7 +10,7 @@ description = "SparkFox multi-format document parser"
 sparkfox-core = { path = "../sparkfox-core" }
 lopdf = "0.42"
 docx-rs = "0.4"
-calamine = "0.27"
+calamine = "0.26"
 quick-xml = "0.41"
 serde = { workspace = true }
 log = "0.4"

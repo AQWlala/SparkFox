@@ -47,7 +47,7 @@ const LEGACY_MIGRATION_ALLOWLIST = new Set();
 // fails this check.
 const LEGACY_LINE_ALLOWLIST = new Map([
   [
-    'crates/agent/nomi-config/src/config.rs',
+    'crates/agent/sparkfox-ag-config/src/config.rs',
     [/\bsubagent_token_budget\b/],
   ],
   [
@@ -328,7 +328,7 @@ invariant(
 );
 
 const agentConfig = readFileSync(
-  resolve(ROOT, 'crates/agent/nomi-config/src/config.rs'),
+  resolve(ROOT, 'crates/agent/sparkfox-ag-config/src/config.rs'),
   'utf8',
 );
 const toolsConfigBlock = agentConfig.match(
