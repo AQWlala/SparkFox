@@ -7,6 +7,9 @@
 /build.*.noindex/
 Cargo.lock.bak
 
+# Review reports (temporary)
+docs/SparkFox-*.md
+
 # Packaging / runtime artifacts
 /dist/
 # Legacy dev data dirs from before all hosts shared one per-user default
