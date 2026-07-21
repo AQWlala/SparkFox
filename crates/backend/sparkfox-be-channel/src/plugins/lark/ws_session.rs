@@ -120,7 +120,15 @@ mod tests {
         let mut cache = FragmentCache::new();
         cache.push("old_msg", 3, 0, b"partial");
         if let Some(entry) = cache.entries.get_mut("old_msg") {
-            entry.created_at = Instant::now() - Duration::from_secs(600);
+            // Windows 上 Instant epoch 为系统启动时间；若系统刚重启或从睡眠唤醒不久，
+            // `Instant::now() - 600s` 可能溢出。此时跳过测试而非判定失败。
+            entry.created_at = match Instant::now().checked_sub(Duration::from_secs(600)) {
+                Some(t) => t,
+                None => {
+                    eprintln!("skip cleanup_removes_old_entries: system uptime < 600s, Instant overflow");
+                    return;
+                }
+            };
         }
         cache.cleanup(Duration::from_secs(300));
         assert!(!cache.entries.contains_key("old_msg"));

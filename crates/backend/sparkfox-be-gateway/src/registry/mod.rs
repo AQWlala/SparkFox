@@ -416,9 +416,11 @@ mod tests {
         const TOOL_NAME_BUDGET: usize = 42;
 
         for (name, cap) in reg.by_name.iter() {
+            // 品牌迁移过渡期：同时允许 nomi_ 和 sparkfox_ 前缀。
+            // nomi_* 为旧品牌（nomifun），sparkfox_* 为新品牌，迁移完成后可统一。
             assert!(
-                name.starts_with("nomi_"),
-                "gateway tool names are nomi_-prefixed: {name}"
+                name.starts_with("nomi_") || name.starts_with("sparkfox_"),
+                "gateway tool names must be nomi_- or sparkfox_-prefixed: {name}"
             );
             assert!(
                 prefix + name.len() <= HARD_WIRE_LIMIT,
@@ -427,7 +429,7 @@ mod tests {
             );
             assert!(
                 name.len() <= TOOL_NAME_BUDGET,
-                "tool name exceeds the {TOOL_NAME_BUDGET}-char style budget (keep `nomi_<domain>_<verb_object>` concise): {name} ({} chars)",
+                "tool name exceeds the {TOOL_NAME_BUDGET}-char style budget (keep `<prefix>_<domain>_<verb_object>` concise): {name} ({} chars)",
                 name.len()
             );
             assert!(

@@ -24,6 +24,9 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import type { RequirementId } from '@/common/types/ids';
 import CopyIconButton from '@/renderer/components/base/CopyIconButton';
+// 引入展示编号组件：看板卡片同样以 #N 作为人类可读标识，
+// 点击可复制规范 ID（与列表行 / 抽屉保持一致的展示语义）。
+import RequirementDisplayNumber from '../components/RequirementDisplayNumber';
 
 interface RequirementBoardCardProps {
   item: IRequirement;
@@ -66,6 +69,8 @@ const RequirementBoardCard: React.FC<RequirementBoardCardProps> = ({ item, onOpe
       ].join(' ')}
     >
       <div className='flex items-start gap-6px'>
+        {/* #N 展示编号：紧凑的人类可读标识，点击复制规范 ID */}
+        <RequirementDisplayNumber displayNo={item.display_no} fullId={item.id} />
         {/* Title — two-line clamp keeps cards tidy when dragging across columns. */}
         <div
           className='min-w-0 flex-1 text-14px font-400 leading-20px text-[var(--color-text-1)] break-words'

@@ -36,6 +36,8 @@ impl WebhookSender for RecordingSender {
 fn requirement(tag: &str) -> RequirementRow {
     RequirementRow {
         id: sparkfox_be_common::RequirementId::new().into_string(),
+        // 测试用固定展示编号；真实场景由 SQLite 仓库从单例序列分配
+        display_no: 1,
         title: "Build the thing".into(),
         content: "Implement feature X".into(),
         tag: tag.into(),

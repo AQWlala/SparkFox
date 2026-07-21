@@ -822,9 +822,9 @@ async fn windows_preserves_complex_unicode_argv_environment_and_cwd() {
     );
     process.cwd = cwd.clone();
     process.capability = CapabilityPolicy::local_owner(cwd.clone());
-    process
-        .env
-        .insert(OsString::from("nomifun_windows_env_case"), env_value.clone());
+    // 品牌迁移修复：env_key 已从 NOMIFUN_ 迁移为 SPARKFOX_，
+    // env.insert 必须使用相同的键，否则 helper 二进制查不到该环境变量（退出码 2）
+    process.env.insert(env_key.clone(), env_value.clone());
 
     let supervisor = ProcessSupervisor::new(SupervisorConfig::default());
     let handle = supervisor

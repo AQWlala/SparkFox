@@ -1293,6 +1293,10 @@ mod tests {
         );
     }
 
+    // Windows 兼容：该测试验证 Pipe 传输模式下的 STDOUT/STDERR 分流，
+    // 但 Windows 上 tty=false 仍走 PTY 传输（见 line 1724-1733 的平台分支），
+    // PTY 输出无流标签，故仅在非 Windows 平台执行。
+    #[cfg(not(windows))]
     #[tokio::test]
     async fn tty_false_quick_command_keeps_both_streams_through_terminal_exit() {
         let (tool, _) = tool(std::env::current_dir().unwrap());

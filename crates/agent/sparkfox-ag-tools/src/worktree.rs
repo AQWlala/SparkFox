@@ -855,6 +855,9 @@ mod tests {
         git(&["init", "-q"], p);
         git(&["config", "user.email", "t@t"], p);
         git(&["config", "user.name", "t"], p);
+        // Windows 兼容：禁用 git 的行尾自动转换，防止 worktree 检出时
+        // 将 LF 转为 CRLF 导致测试断言失败（如 "original\n" 变成 "original\r\n"）
+        git(&["config", "core.autocrlf", "false"], p);
         std::fs::write(p.join("a.txt"), "original\n").unwrap();
         git(&["add", "-A"], p);
         git(&["commit", "-q", "-m", "init"], p);
@@ -1183,6 +1186,8 @@ mod tests {
     fn unborn_git_repository_can_still_form_an_isolation_baseline() {
         let repo = tempfile::tempdir().unwrap();
         git(&["init", "-q"], repo.path());
+        // Windows 兼容：禁用行尾自动转换，与 init_repo() 保持一致
+        git(&["config", "core.autocrlf", "false"], repo.path());
         std::fs::write(repo.path().join("first.txt"), "unborn source\n").unwrap();
         let source_index = source_index_path(repo.path()).unwrap();
         assert!(!source_index.exists());

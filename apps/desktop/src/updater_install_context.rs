@@ -62,6 +62,11 @@ fn classify_install(
     classify_macos_install(app_bundle, app_device_id, temp_device_id)
 }
 
+/// 从可执行文件路径推导 macOS `.app` bundle 根目录。
+///
+/// 仅在 `#[cfg(target_os = "macos")]` 的生产代码路径中调用，
+/// Windows/Linux 构建中保留为 dead_code 以便跨平台单元测试覆盖。
+#[allow(dead_code)]
 fn app_bundle_from_executable(executable: &Path) -> Option<PathBuf> {
     executable
         .ancestors()

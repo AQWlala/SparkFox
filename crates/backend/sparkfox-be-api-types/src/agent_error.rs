@@ -12,6 +12,9 @@ pub enum AgentErrorOwnership {
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "SCREAMING_SNAKE_CASE")]
 pub enum AgentErrorCode {
+    // 品牌迁移：NOMIFUN_CONVERSATION_BUSY → sparkfox_be_conversation_BUSY
+    // 保留旧名作为反序列化别名，兼容存量客户端 / 前端 i18n 键
+    #[serde(rename = "sparkfox_be_conversation_BUSY", alias = "NOMIFUN_CONVERSATION_BUSY")]
     NomifunConversationBusy,
     NomifunStreamBroken,
     NomifunStateInconsistent,

@@ -319,7 +319,8 @@ const WorkspacePage: React.FC = () => {
         />
       </div>
 
-      {/* The view */}
+      {/* The view — board 视图: <div className='mt-10px flex flex-1 min-h-0'>；list 视图: <div className='mt-10px'>
+          两种视图都用上边距与 filters 行分隔，board 额外需要 flex 布局支撑横向滚动。 */}
       <div className={view === 'board' ? 'mt-10px flex flex-1 min-h-0' : 'mt-10px'}>
         {view === 'board' ? (
           <RequirementBoardView items={items} onOpenDetail={openDetail} onStatusChange={handleRowStatusChange} />

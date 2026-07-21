@@ -369,6 +369,11 @@ fn show_main_window(app: &tauri::AppHandle) {
     }
 }
 
+/// macOS Reopen 事件处理：当用户点击 Dock 图标且无可见窗口时返回 true。
+///
+/// 仅在 `#[cfg(target_os = "macos")]` 的 RunEvent 分支中被调用，
+/// Windows/Linux 构建中保留为 dead_code 以便单元测试覆盖决策逻辑。
+#[allow(dead_code)]
 fn should_show_main_window_for_macos_reopen(_has_visible_windows: bool) -> bool {
     true
 }

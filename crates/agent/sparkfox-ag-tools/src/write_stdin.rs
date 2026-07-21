@@ -448,6 +448,10 @@ mod tests {
         assert!(parse_session_id(&output.content).is_none());
     }
 
+    // Windows 兼容：ConPTY 无法证明通用 stdin EOF（会注入 cooked-console
+    // EOF 序列代替真正的 EOF），close_stdin 在 Windows 上必然失败，
+    // 这是 portable-pty + ConPTY 的已知限制，仅在非 Windows 平台执行。
+    #[cfg(not(windows))]
     #[tokio::test]
     async fn close_stdin_reaches_truthful_exit_through_the_binding() {
         let (exec, writer, store) = tools();

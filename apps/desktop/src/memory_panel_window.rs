@@ -19,6 +19,9 @@ pub struct PhysicalRect {
 }
 
 impl PhysicalRect {
+    /// 构造函数。当前生产代码通过 serde 反序列化构建 PhysicalRect，
+    /// 保留 `new` 用于测试与未来程序化构造场景。
+    #[allow(dead_code)]
     pub fn new(x: i32, y: i32, width: u32, height: u32) -> Self {
         Self { x, y, width, height }
     }
@@ -38,6 +41,9 @@ struct MemoryPanelSession {
     rect: Option<PhysicalRect>,
 }
 
+/// Memory panel 状态快照。当前仅供单元测试断言使用，
+/// 保留为公共 API 以便未来 IPC 诊断端点消费。
+#[allow(dead_code)]
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct MemoryPanelSessionSnapshot {
     pub request_id: Option<String>,
@@ -67,6 +73,8 @@ impl MemoryPanelWindowState {
         self.0.lock().map(|state| state.request_id.as_deref() == Some(request_id) && state.owner_companion_id.as_deref() == Some(owner_companion_id) && state.rect.is_some()).unwrap_or(false)
     }
 
+    /// 当前是否无活跃 panel 会话。仅供测试断言使用。
+    #[allow(dead_code)]
     pub fn is_empty(&self) -> bool {
         self.0.lock().map(|state| state.request_id.is_none()).unwrap_or(false)
     }
@@ -110,6 +118,8 @@ impl MemoryPanelWindowState {
         invalid
     }
 
+    /// 获取当前会话快照。仅供测试断言使用，保留为公共 API 以便未来诊断端点消费。
+    #[allow(dead_code)]
     pub fn snapshot(&self) -> MemoryPanelSessionSnapshot {
         self.0.lock().map(|state| MemoryPanelSessionSnapshot { request_id: state.request_id.clone(), owner_companion_id: state.owner_companion_id.clone(), rect: state.rect }).unwrap_or(MemoryPanelSessionSnapshot { request_id: None, owner_companion_id: None, rect: None })
     }

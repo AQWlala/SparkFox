@@ -41,7 +41,11 @@ pub const WECOM_PING_INTERVAL_SECS: u64 = 30;
 pub struct WecomEnvelope {
     #[serde(default)]
     pub cmd: String,
+    /// 企微回调信封中的 headers 字段。当前实现仅消费 `body`，
+    /// 但保留该字段以便未来扩展（如 req_id 透传、租户校验等），
+    /// 避免 serde 反序列化丢弃未知字段。
     #[serde(default)]
+    #[allow(dead_code)]
     pub headers: WecomHeaders,
     #[serde(default)]
     pub body: serde_json::Value,
@@ -49,7 +53,9 @@ pub struct WecomEnvelope {
 
 #[derive(Debug, Clone, Default, Deserialize)]
 pub struct WecomHeaders {
+    /// 企微回调请求 ID。当前未在链路中消费，保留用于未来日志追踪。
     #[serde(default)]
+    #[allow(dead_code)]
     pub req_id: String,
 }
 

@@ -346,9 +346,18 @@ mod tests {
 
     #[test]
     fn token_cache_expired() {
+        // Windows 上 `Instant` epoch 为系统启动时间；若系统刚重启或从睡眠唤醒不久，
+        // `Instant::now() - 7200s` 可能溢出。此时跳过测试而非判定失败。
+        let acquired_at = match Instant::now().checked_sub(Duration::from_secs(7200)) {
+            Some(t) => t,
+            None => {
+                eprintln!("skip token_cache_expired: system uptime < 2h, Instant overflow");
+                return;
+            }
+        };
         let cache = TokenCache {
             token: "test".into(),
-            acquired_at: Instant::now() - Duration::from_secs(7200),
+            acquired_at,
             expires_in: Duration::from_secs(7200),
         };
         assert!(cache.is_expired());
@@ -357,9 +366,16 @@ mod tests {
     #[test]
     fn token_cache_near_expiry() {
         // Token acquired 6900s ago with 7200s TTL — within 5min margin
+        let acquired_at = match Instant::now().checked_sub(Duration::from_secs(6900)) {
+            Some(t) => t,
+            None => {
+                eprintln!("skip token_cache_near_expiry: system uptime < 6900s, Instant overflow");
+                return;
+            }
+        };
         let cache = TokenCache {
             token: "test".into(),
-            acquired_at: Instant::now() - Duration::from_secs(6900),
+            acquired_at,
             expires_in: Duration::from_secs(7200),
         };
         assert!(cache.is_expired());

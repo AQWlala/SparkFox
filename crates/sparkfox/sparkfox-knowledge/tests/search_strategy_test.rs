@@ -63,7 +63,7 @@ async fn test_search_result_contains_hits_and_metadata() {
     let strategy = MockStrategy;
     let result = strategy.search("test").await.expect("search 应成功");
     assert!(!result.hits.is_empty(), "hits 不应为空");
-    assert!(result.latency_ms >= 0, "latency_ms 应 ≥ 0");
+    // latency_ms 为 u64 类型，恒 >= 0，无需断言（移除无效的类型边界比较 warning）
     assert!(!result.strategy_name.is_empty(), "strategy_name 不应为空");
     // SearchHit 字段验证
     let hit = &result.hits[0];

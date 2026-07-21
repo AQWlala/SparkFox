@@ -63,9 +63,16 @@ pub(super) fn force_kill(pid: u32, process_group_id: Option<u32>) -> Result<(), 
     {
         // `taskkill` exit codes:
         //   0   — process killed
-        //   128 — "not found" (already exited): treat as success, identical to
-        //         the unix branch's behaviour
+        //   128 — "not found" (already exited) on some Windows versions
+        //   255 — "not found" (process not found / 已退出) on most Windows
+        //         versions; taskkill /T walks the tree and returns 255 when
+        //         any descendant PID has already been reaped. Both are mapped
+        //         to Ok, mirroring the unix branch's ESRCH handling.
         //   other — unexpected; surface as Internal so callers can log
+        //
+        // 注：`process_group_id` 在 Windows 分支不参与 taskkill 调用
+        // （`/T` 自身会遍历进程树），此处显式标记避免 unused_variables 警告。
+        let _ = process_group_id;
         use std::os::windows::process::CommandExt;
         // CREATE_NO_WINDOW (0x0800_0000): don't flash a console when force-killing.
         let result = std::process::Command::new("taskkill")
@@ -78,8 +85,15 @@ pub(super) fn force_kill(pid: u32, process_group_id: Option<u32>) -> Result<(), 
                 debug!(pid, "taskkill /F /T succeeded");
                 Ok(())
             }
-            Ok(output) if output.status.code() == Some(128) => {
-                debug!(pid, "Process already exited before taskkill");
+            // 128 与 255 均表示"进程已退出"：128 是早期 Windows 版本的 not-found
+            // 码，255 是现代 Windows 版本（含中文本地化）的 not-found 码。
+            // taskkill /T 遍历子进程树时，若任一后代 PID 已被内核回收，会返回 255。
+            Ok(output) if matches!(output.status.code(), Some(128) | Some(255)) => {
+                debug!(
+                    pid,
+                    code = ?output.status.code(),
+                    "Process already exited before taskkill (treated as success)"
+                );
                 Ok(())
             }
             Ok(output) => {

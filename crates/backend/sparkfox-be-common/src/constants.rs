@@ -1,7 +1,8 @@
 // --- File processing ---
 
 pub const SPARKFOX_TIMESTAMP_SEPARATOR: &str = "_SPARKFOX_";
-pub const sparkfox_be_fileS_MARKER: &str = "[[NOMI_FILES]]";
+// 文件标记常量：与前端 NOMIFUN_FILES_MARKER 对齐，用于在消息文本中分隔附件路径
+pub const SPARKFOX_BE_FILES_MARKER: &str = "[[NOMI_FILES]]";
 
 // --- WebSocket ---
 
