@@ -1,0 +1,47 @@
+name: Release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-windows:
+    name: Build Windows (sparkfox-web)
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+
+      - name: Cache Cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-release-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: ${{ runner.os }}-cargo-release-
+
+      - name: Build sparkfox-web
+        run: cargo build --release -p sparkfox-web --features static-webui
+
+      - name: Package artifact
+        shell: pwsh
+        run: |
+          Compress-Archive -Path target/release/sparkfox-web.exe -DestinationPath sparkfox-web-windows-x64.zip
+
+      - name: Upload to release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = if ('${{ github.event.release.tag_name }}') { '${{ github.event.release.tag_name }}' } else { (gh release list --repo ${{ github.repository }} --limit 1 --json tagName --jq '.[0].tagName') }
+          gh release upload $tag sparkfox-web-windows-x64.zip --repo ${{ github.repository }} --clobber
