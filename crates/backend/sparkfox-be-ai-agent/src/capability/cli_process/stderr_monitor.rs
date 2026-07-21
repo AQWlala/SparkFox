@@ -99,9 +99,10 @@ pub(super) fn force_kill(pid: u32, process_group_id: Option<u32>) -> Result<(), 
                     );
                     Ok(())
                 } else {
-                    error!(pid, code = ?output.status.code(), %stderr, "taskkill returned not-found code but stderr indicates a different error");
+                    let code = output.status.code();
+                    error!(pid, ?code, %stderr, "taskkill returned not-found code but stderr indicates a different error");
                     Err(AppError::Internal(format!(
-                        "taskkill failed for pid {pid} (exit {output.status.code():?}): {stderr}"
+                        "taskkill failed for pid {pid} (exit {code:?}): {stderr}"
                     )))
                 }
             }
